@@ -1,0 +1,38 @@
+{
+    "name": "jQuery.TagsManager",
+    "version": "1.0.1",
+    "title": "jQuery.TagsManager",
+    "author": {
+        "name": "Max Favilli",
+        "url": "http://maxfavilli.com"
+    },
+    "licenses": [
+        {
+            "type": "MPL",
+            "url": "http://www.mozilla.org/MPL/2.0/index.txt"
+        }
+    ],
+    "dependencies": {
+        "jquery": "1"
+    },
+    "description": "A tags manager, with this plugin a input field is used to collect tags and rendered as tags.",
+    "keywords": [
+        "tags",
+        "manager",
+        "input",
+        "form"
+    ],
+    "homepage": "https://github.com/max-favilli/tagmanager",
+    "maintainers": [
+        {
+            "name": "Max Favilli",
+            "url": "https://github.com/max-favilli"
+        }
+    ],
+    "files": [
+        "README.md",
+        "bootstrap-tagmanager.css",
+        "bootstrap-tagmanager.js",
+        "license.txt"
+    ]
+}
