@@ -3,7 +3,11 @@
 
 A jQuery plugin (working nicely with [Twitter Bootstrap](http://twitter.github.com/bootstrap))
 
-=================
+
+[Demo](http://welldonethings.com/tags/manager)
+-----------
+
+See a demo and read all the documentation at http://welldonethings.com/tags/manager.
 
 
 Quick start
@@ -29,9 +33,9 @@ Read more detailed announcements, discussions, and more on [The Official Tags Ma
 Thanks to
 ------------
 
-The development of Tags Manager was financed by LogMyMoney.com [Simple and stupid online personal finance tool to track all your expenses.](https:logmymoney.com), so...
+The development of Tags Manager was financed by LogMyMoney.com a [simple and stupid online personal finance tool to track all your expenses](https:logmymoney.com), so...
 
-Thanks [logmymoney](https:logmymoney.com)
+Thanks [logmymoney.com](https:logmymoney.com)
 
 
 Authors
