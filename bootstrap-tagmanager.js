@@ -20,6 +20,11 @@
 
    var queuedTag = "";
 
+   if (typeof console === "undefined" || typeof console.log === "undefined") {
+      console = {};
+      console.log = function () { };
+   }
+
    inputObj = this;
 
    jQuery.fn.trimTag = function (tag) {
