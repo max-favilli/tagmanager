@@ -236,7 +236,7 @@
       };
       jQuery.extend(tagManagerOptions, options);
 
-      this.each(function() {
+      return this.each(function() {
          var obj = jQuery(this);
 
          //let's store some instance specific data directly into the DOM object
