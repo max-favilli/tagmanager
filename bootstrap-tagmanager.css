@@ -4,9 +4,13 @@
     border: 1px solid #A5D24A;
     border-radius: 3px 3px 3px 3px;
     color: #638421;
-    //display: block;
-    //float: left;
-    font-family: helvetica;
+
+// to be tested    
+	display: block;
+    float: left;
+//
+    
+	font-family: helvetica;
     font-size: 13px;
     margin-bottom: 5px;
     margin-right: 5px;
