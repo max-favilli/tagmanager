@@ -176,6 +176,11 @@
          tag = tag.charAt(0).toUpperCase() + tag.slice(1).toLowerCase();
       }
 
+      // call the validator (if any) and do not let the tag pass if invalid
+      if (tagManagerOptions.validator !== undefined) {
+        if ( tagManagerOptions.validator(tag) !== true ) return;
+      }
+
       var obj;
       if (robj == null)
          obj = jQuery(this);
