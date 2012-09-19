@@ -144,6 +144,10 @@
          obj.refreshHiddenTagList(obj);
          console.log(tlis);
       }
+
+      if ( tagManagerOptions.maxTags > 0 && tlis.length < tagManagerOptions.maxTags ) {
+         obj.show();
+      }
    };
 
    jQuery.fn.popTag = function (robj) {
@@ -190,6 +194,9 @@
       var tlis = obj.data("tlis");
       var tlid = obj.data("tlid");
 
+      // dont accept new tags beyond the defined maximum
+      if ( tagManagerOptions.maxTags > 0 && tlis.length >= tagManagerOptions.maxTags ) return;
+
       var alreadyInList = false;
       var p = jQuery.inArray(tag, tlis);
       if (-1 != p) {
@@ -224,6 +231,10 @@
 
          obj.refreshHiddenTagList(obj);
 
+         if ( tagManagerOptions.maxTags > 0 && tlis.length >= tagManagerOptions.maxTags ) {
+            obj.hide();
+         }
+
       }
       obj.val("");
 
@@ -238,7 +249,8 @@
          typeaheadAjaxSource: null,
          typeaheadSource: null,
          delimeters: [44, 188, 13],
-         backspace: [8]
+         backspace: [8],
+         maxTags: 0
       };
       jQuery.extend(tagManagerOptions, options);
 
