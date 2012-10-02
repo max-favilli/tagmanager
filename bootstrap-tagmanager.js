@@ -216,11 +216,26 @@
          tlid.push(TagId);
 
          var html = '';
-         html += '<span class="myTag" id="myTag_' + TagId + '"><span>' + tag + '&nbsp;&nbsp;</span><a href="#" class="myTagRemover" id="myRemover_' + TagId + '" TagIdToRemove="' + TagId + '" title="Removing tag">x</a></span>';
+         html += '<'+obj.data("tagElement")+' class="'+obj.data("tagClass")+'" id="myTag_' + TagId + '"><'+obj.data("tagInner")+'>' + tag + '&nbsp;&nbsp;</'+obj.data("tagInner")+'><'+obj.data("tagClose")+' href="#" class="'+obj.data("tagCloseClass")+'" id="myRemover_' + TagId + '" TagIdToRemove="' + TagId + '" title="Removing tag">'+obj.data("tagCloseString")+'</'+obj.data("tagClose")+'></'+obj.data("tagElement")+'>';
          console.log(
               "tagList: " + tlis
             );
-         obj.before(html);
+         
+         switch(obj.data("tagInsert")){
+            case "before":
+                obj.data("tagsParent").before(html);
+                break;
+            case "after":
+                obj.data("tagsParent").after(html);
+                break;
+            case "append":
+                obj.data("tagsParent").append(html);
+                break;
+            case "prepend":
+                obj.data("tagsParent").prepend(html);
+                break;                
+         }
+         
          jQuery("#myRemover_" + TagId).on("click", obj, function (e) {
 			e.preventDefault();
             var TagIdToRemove = parseInt(jQuery(this).attr("TagIdToRemove"));
@@ -252,21 +267,46 @@
          delimeters: [44, 188, 13],
          backspace: [8],
          maxTags: 0 ,
-         inputTag: '<input type="text" name="TagList" class="tag" id="TagList" />'
+         inputTag: '<input type="text" name="TagList" class="tag" id="TagList" placeholder="Add Tag" />',
+         tagsParent: jQuery(this),
+         tagInsert: 'before',
+         tagElement: 'span',
+         tagClass: 'myTag',
+         tagInner: 'span',
+         tagInnerClass: '',   
+         tagClose : 'a',      
+         tagCloseClass : 'myTagRemover',
+         tagCloseString : 'x'
       };
       jQuery.extend(tagManagerOptions, options);
 
       return this.each(function() {
+         
          // use baseObj instead obj to keep it hidden
          var baseObj = jQuery(this);
          // use inputTag for our visible input
          var obj = $(tagManagerOptions.inputTag);
 
-         // return if element exist
-         if (baseObj.parent().find("input[name='"+obj.attr('name')+"']").length > 0){
+         // return if element exist , search by ID
+         if (baseObj.parent().find("input[name='"+obj.attr('id')+"']").length > 0){
               return;
          }
-
+         
+         // check is tagParent exist!
+         if ($(tagManagerOptions.tagsParent) == undefined || tagManagerOptions.tagsParent == false){
+              tagManagerOptions.tagsParent = jQuery(this);
+         }                  
+         obj.data("tagsParent",$(tagManagerOptions.tagsParent));
+         obj.data("tagInsert",tagManagerOptions.tagInsert);
+         
+         obj.data("tagElement",tagManagerOptions.tagElement);
+         obj.data("tagClass",tagManagerOptions.tagClass);
+         obj.data("tagInner",tagManagerOptions.tagInner);
+         obj.data("tagInnerClass",tagManagerOptions.tagInnerClass);
+         obj.data("tagClose",tagManagerOptions.tagClose);
+         obj.data("tagCloseClass",tagManagerOptions.tagCloseClass);
+         obj.data("tagCloseString",tagManagerOptions.tagCloseString);
+         
          //let's store some instance specific data directly into the DOM object
          var tlis = new Array();
          var tlid = new Array();

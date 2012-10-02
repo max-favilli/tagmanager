@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>Bootstrap, from Twitter</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="description">
+    <meta content="" name="author"><!-- Le styles -->
+    <link href="http:/twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
+    <style>
+body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+    <link href="http:/twitter.github.com/bootstrap/css/bootstrap-responsive.css" rel="stylesheet"><!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http:/html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="http:/twitter.github.com/bootstrap/assets/js/google-code-prettify/prettify.css" rel="stylesheet">
+    <script src="http://twitter.github.com/bootstrap/assets/js/jquery.js"></script>
+    <script src="http:/twitter.github.com/bootstrap/assets/js/google-code-prettify/prettify.js"></script>
+    <script src="http:/twitter.github.com/bootstrap/assets/js/bootstrap-transition.js"></script>
+    <script src="http:/twitter.github.com/bootstrap/assets/js/bootstrap-alert.js"></script>
+    <script src="http:/twitter.github.com/bootstrap/assets/js/bootstrap-modal.js"></script>
+    <script src="http:/twitter.github.com/bootstrap/assets/js/bootstrap-dropdown.js"></script>
+    <script src="http:/twitter.github.com/bootstrap/assets/js/bootstrap-scrollspy.js"></script>
+    <script src="http:/twitter.github.com/bootstrap/assets/js/bootstrap-tab.js"></script>
+    <script src="http:/twitter.github.com/bootstrap/assets/js/bootstrap-tooltip.js"></script>
+    <script src="http:/twitter.github.com/bootstrap/assets/js/bootstrap-popover.js"></script>
+    <script src="http:/twitter.github.com/bootstrap/assets/js/bootstrap-button.js"></script>
+    <script src="http:/twitter.github.com/bootstrap/assets/js/bootstrap-collapse.js"></script>
+    <script src="http:/twitter.github.com/bootstrap/assets/js/bootstrap-carousel.js"></script>
+    <script src="http:/twitter.github.com/bootstrap/assets/js/bootstrap-typeahead.js"></script>
+    <script src="http:/twitter.github.com/bootstrap/assets/js/bootstrap-affix.js"></script>
+    <script src="http:/twitter.github.com/bootstrap/assets/js/application.js"></script><!-- Tagmanager -->
+    <link href="bootstrap-tagmanager.css" rel="stylesheet">
+    <script src="bootstrap-tagmanager.js"></script>
+</head>
+
+<body>
+    <div class="navbar navbar-fixed-top navbar-inner container">
+        <a class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse"></a> <a class="brand" href="#">Tagmanager</a>
+
+        <div class="nav-collapse collapse">
+            <ul class="nav">
+                <li class="active"><a href="#">Home</a></li>
+
+                <li><a href="#about">About</a></li>
+
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+
+    <div class="container">
+        <h1>Tagmanager Example Usage</h1>
+
+        <h3>Basic Usage</h3>
+
+        <p class="well"><input class="tagManager" name="tags" type="text"></p>
+        <script>
+$(".tagManager").tagsManager();
+        </script>
+
+        <div class="bs-docs-example">
+            <ul class="nav nav-tabs" id="myTab">
+                <li class="active"><a data-toggle="tab" href="#basic_html">HTML</a></li>
+
+                <li><a data-toggle="tab" href="#basic_js">JS</a></li>
+            </ul>
+
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade in active" id="basic_html">
+                    <pre class="prettyprint linenums">
+&lt;input type="text" name="tags" class="tagManager"/&gt;
+</pre>
+                </div>
+
+                <div class="tab-pane fade" id="basic_js">
+                    <pre class="prettyprint linenums">
+&lt;script&gt;
+    $(".tagManager").tagsManager();
+&lt;/script&gt;        
+      
+</pre>
+                </div>
+            </div>
+        </div>
+        
+        
+        <h3>Custom tagInput</h3>
+        <p class="well"><input class="tagManager2" name="tags" type="text"></p>
+        <script>
+$(".tagManager2").tagsManager({inputTag:'<input type="text" class="input-medium search-query">'});
+        </script>
+        <div class="bs-docs-example">
+            <ul class="nav nav-tabs" id="myTab">
+                <li class="active"><a data-toggle="tab" href="#custom_input_html">HTML</a></li>
+
+                <li><a data-toggle="tab" href="#custom_input_js">JS</a></li>
+            </ul>
+
+            <div class="tab-content" id="myTabContent2">
+                <div class="tab-pane fade in active" id="custom_input_html">
+                    <div class="alert alert-block">
+                      <button type="button" class="close" data-dismiss="alert">×</button>
+                      <h4>Warning!</h4>
+                      id attribute is highly required
+                    </div>
+                    <pre class="prettyprint linenums">
+&lt;input type="text" id="tags" class="tagManager2"/&gt;
+</pre>
+                </div>
+
+                <div class="tab-pane fade" id="custom_input_js">
+                    <pre class="prettyprint linenums">
+&lt;script&gt;
+    $(&quot;.tagManager2&quot;).tagsManager({
+        inputTag:'&lt;input type=&quot;text&quot; class=&quot;input-medium search-query&quot;&gt;'
+    });
+&lt;/script&gt;       
+      
+</pre>
+                </div>
+            </div>
+        </div>
+        
+        <h3>Custom tagsParent element</h3>
+        
+        <div class="well" style="background:#FFE491">
+            <div id="myCustomTagsParent"></div>
+        </div>
+        <p class="well">            
+            <input class="tagManager3" name="tags" type="text"/>
+        </p>
+        <script>
+$(".tagManager3").tagsManager({tagsParent:'#myCustomTagsParent'});
+        </script>
+        <div class="bs-docs-example">
+            <ul class="nav nav-tabs" id="myTab">
+                <li class="active"><a data-toggle="tab" href="#custom_parent_html">HTML</a></li>
+
+                <li><a data-toggle="tab" href="#custom_parent_js">JS</a></li>
+            </ul>
+
+            <div class="tab-content" id="myTabContent2">
+                <div class="tab-pane fade in active" id="custom_parent_html">
+                    <pre class="prettyprint linenums">
+&lt;div class=&quot;well&quot; style=&quot;background:#FFE491&quot;&gt;
+    &lt;div id=&quot;myCustomTagsParent&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p class=&quot;well&quot;&gt;            
+    &lt;input class=&quot;tagManager3&quot; name=&quot;tags&quot; type=&quot;text&quot;/&gt;
+&lt;/p&gt;
+</pre>
+                </div>
+
+                <div class="tab-pane fade" id="custom_parent_js">
+                    <pre class="prettyprint linenums">
+&lt;script&gt;
+    $(&quot;.tagManager3&quot;).tagsManager({
+        tagsParent:'#myCustomTagsParent'
+    });
+&lt;/script&gt;      
+      
+</pre>
+                </div>
+            </div>
+        </div>
+        
+        <h3>Custom tagInsert method(before,after,append,prepend)</h3>
+        
+        <div id="myCustomTagsParentAppend" class="well" style="background:#FEE491"></div>
+        <p class="well">            
+            <input class="tagManager4" name="tags" type="text"/>
+        </p>
+        <script>
+$(".tagManager4").tagsManager({tagInsert:'prepend',tagsParent:'#myCustomTagsParentAppend',backspace:[46]});
+        </script>
+        <div class="bs-docs-example">
+            <ul class="nav nav-tabs" id="myTab">
+                <li class="active"><a data-toggle="tab" href="#custom_insert_html">HTML</a></li>
+
+                <li><a data-toggle="tab" href="#custom_insert_js">JS</a></li>
+            </ul>
+
+            <div class="tab-content" id="myTabContent2">
+                <div class="tab-pane fade in active" id="custom_insert_html">
+                    <pre class="prettyprint linenums">
+&lt;div id=&quot;myCustomTagsParentAppend&quot; class=&quot;well&quot; style=&quot;background:#FEE491&quot;&gt;&lt;/div&gt;
+&lt;p class=&quot;well&quot;&gt;            
+    &lt;input class=&quot;tagManager4&quot; name=&quot;tags&quot; type=&quot;text&quot;/&gt;
+&lt;/p&gt;
+</pre>
+                </div>
+
+                <div class="tab-pane fade" id="custom_insert_js">
+                    <pre class="prettyprint linenums">
+&lt;script&gt;
+    $(&quot;.tagManager4&quot;).tagsManager({
+        tagInsert:'prepend',
+        tagsParent:'#myCustomTagsParentAppend',
+        backspace:[46] // use DELETE key instead BACKSPACE
+    });
+&lt;/script&gt;     
+      
+</pre>
+                </div>
+            </div>
+        </div>
+        
+        <h3>Custom tag </h3>
+                
+        <p class="well">            
+            <input class="tagManager5" name="tags" type="text"/>
+        </p>
+        <script>
+$(".tagManager5").tagsManager({
+    tagElement: 'div',
+    tagClass: 'btn btn-warning btn-mini pull-left mytag',
+    tagInner: 'span',
+    tagInnerClass: 'tagInner',   
+    tagClose : 'i',      
+    tagCloseClass: 'icon-remove icon-white',
+    tagCloseString: ''
+});
+        </script>
+        <style>
+        .mytag{margin:0 5px;}
+        </style>
+        <div class="bs-docs-example">
+            <ul class="nav nav-tabs" id="myTab">
+                <li class="active"><a data-toggle="tab" href="#custom_tag_html">HTML</a></li>
+                <li><a data-toggle="tab" href="#custom_tag_js">JS</a></li>
+                <li><a data-toggle="tab" href="#custom_tag_css">CSS</a></li>
+                <li><a data-toggle="tab" href="#custom_tag_def">Default</a></li>
+            </ul>
+
+            <div class="tab-content" id="myTabContent2">
+                <div class="tab-pane fade in active" id="custom_tag_html">
+                    <pre class="prettyprint linenums">
+&lt;input class=&quot;tagManager5&quot; name=&quot;tags&quot; type=&quot;text&quot;/&gt;
+</pre>
+                </div>
+
+                <div class="tab-pane fade" id="custom_tag_js">
+                    <pre class="prettyprint linenums">
+&lt;script&gt;
+$(&quot;.tagManager5&quot;).tagsManager({
+    tagElement: 'div',
+    tagClass: 'btn btn-warning btn-mini pull-left mytag',
+    tagInner: 'span',
+    tagInnerClass: 'tagInner',   
+    tagClose : 'i',      
+    tagCloseClass: 'icon-remove icon-white',
+    tagCloseString: ''
+});
+&lt;/script&gt;   
+      
+</pre>
+                </div>
+                <div class="tab-pane fade" id="custom_tag_css">
+                    <pre class="prettyprint linenums">
+&lt;style&gt;
+        .mytag{margin:0 5px;}
+&lt;/style&gt;         
+</pre>       
+                </div>
+                <div class="tab-pane fade" id="custom_tag_def">
+                    <pre class="prettyprint linenums">
+&lt;script&gt;
+myconf = {
+         tagElement: 'span',
+         tagClass: 'myTag',
+         tagInner: 'span',
+         tagInnerClass: '',   
+         tagClose : 'a',      
+         tagCloseClass : 'myTagRemover',
+         tagCloseString : 'x'
+}  
+&lt;/script&gt;  
+</pre>              
+                </div>
+            </div>
+        </div>
+    </div><!-- /container -->
+</body>
+</html>
