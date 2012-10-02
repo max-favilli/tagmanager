@@ -114,7 +114,7 @@
 
       var tlis = obj.data("tlis");
       var lhiddenTagList = obj.data("lhiddenTagList");
-      
+
       if(lhiddenTagList == undefined)
          return;
 
@@ -173,6 +173,7 @@
    };
 
    jQuery.fn.pushTag = function (tag, robj) {
+
       if (!tag || tag.length <= 0) {
          return;
       }
@@ -250,12 +251,21 @@
          typeaheadSource: null,
          delimeters: [44, 188, 13],
          backspace: [8],
-         maxTags: 0
+         maxTags: 0 ,
+         inputTag: '<input type="text" name="TagList" class="tag" id="TagList" />'
       };
       jQuery.extend(tagManagerOptions, options);
 
       return this.each(function() {
-         var obj = jQuery(this);
+         // use baseObj instead obj to keep it hidden
+         var baseObj = jQuery(this);
+         // use inputTag for our visible input
+         var obj = $(tagManagerOptions.inputTag);
+
+         // return if element exist
+         if (baseObj.parent().find("input[name='"+obj.attr('name')+"']").length > 0){
+              return;
+         }
 
          //let's store some instance specific data directly into the DOM object
          var tlis = new Array();
@@ -263,12 +273,12 @@
          obj.data("tlis", tlis); //list of string tags
          obj.data("tlid", tlid); //list of ID of the string tags
 
-         var html = "";
-         html += "<input name='hiddenTagList' type='hidden' value=''/>";
-         obj.after(html);
-         obj.data("lhiddenTagList", 
-            obj.siblings("input[name='hiddenTagList']")[0]
-         );
+         // hide the element
+         baseObj.hide();
+
+         baseObj.after(obj);
+
+         obj.data("lhiddenTagList", baseObj );
 
          delimeters = tagManagerOptions.delimeters;
          backspace = tagManagerOptions.backspace;
@@ -361,7 +371,7 @@
             var is_explorer = navigator.userAgent.indexOf('MSIE') > -1;
             var is_firefox = navigator.userAgent.indexOf('Firefox') > -1;
             var is_safari = navigator.userAgent.indexOf("Safari") > -1;
-            
+
             if(!is_chrome && !is_safari )
                jQuery(this).focus();
 
@@ -370,7 +380,7 @@
             if (ao[0] != undefined){
                console.log('change: typeaheadIsVisible is visible');
                //when the user click with the mouse on the typeahead li element we get the change event fired twice, once when the input field loose focus and later with the input field value is replaced with li value
-               var user_input = jQuery(".typeahead .active").attr("data-value"); 
+               var user_input = jQuery(".typeahead .active").attr("data-value");
                user_input = jQuery(this).trimTag(user_input);
                if( queuedTag == obj.val() && queuedTag == user_input ){
                   queuedTag = "";
