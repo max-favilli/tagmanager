@@ -250,7 +250,8 @@
          typeaheadSource: null,
          delimeters: [44, 188, 13],
          backspace: [8],
-         maxTags: 0
+         maxTags: 0,
+         hiddenTagListName: 'hiddenTagList'
       };
       jQuery.extend(tagManagerOptions, options);
 
@@ -264,10 +265,10 @@
          obj.data("tlid", tlid); //list of ID of the string tags
 
          var html = "";
-         html += "<input name='hiddenTagList' type='hidden' value=''/>";
+         html += "<input name='" + tagManagerOptions.hiddenTagListName + "' type='hidden' value=''/>";
          obj.after(html);
          obj.data("lhiddenTagList", 
-            obj.siblings("input[name='hiddenTagList']")[0]
+            obj.siblings("input[name='" + tagManagerOptions.hiddenTagListName + "']")[0]
          );
 
          delimeters = tagManagerOptions.delimeters;
