@@ -281,11 +281,11 @@
                var p = jQuery.inArray(e.which, backspace);
                if (-1 != p) {
                   //user just entered backspace or equivalent
-				  e.preventDefault();
                   var user_input = jQuery(this).val(); //user_input = jQuery().inArray(delimeters[p]);
                   var i = user_input.length;
                   if (i <= 0) {
                      // console.log("backspace detected");
+					 e.preventDefault();
                      popTag();
                   }
                }
