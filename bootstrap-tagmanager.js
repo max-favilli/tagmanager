@@ -30,7 +30,9 @@
          preventSubmitOnEnter: true,
          typeahead: false,
          typeaheadAjaxSource: null,
+         typeaheadAjaxPolling: false,
          typeaheadSource: null,
+         AjaxPush: null,
          delimeters: [44, 188, 13],
          backspace: [8],
          maxTags: 0,
@@ -56,27 +58,45 @@
       var setupTypeahead = function () {
          if(!obj.typeahead) return;
 
-         var sourceAjaxArray = [];
          if (tagManagerOptions.typeaheadSource != null) {
             obj.typeahead();
             obj.data('active', true);
             obj.data('typeahead').source = tagManagerOptions.typeaheadSource;
             obj.data('active', false);
          } else if (tagManagerOptions.typeaheadAjaxSource != null) {
-            obj.typeahead();
-            jQuery.getJSON(tagManagerOptions.typeaheadAjaxSource, function (data) {
-               if (data != undefined && data.tags != undefined) {
-                  SourceAjaxArray.length = 0;
-                  jQuery.each(data.tags, function (key, val) {
-                     var a = 1;
-                     sourceAjaxArray.push(val.tag);
-                     obj.data('active', true);
-                     obj.data('typeahead').source = sourceAjaxArray;
-                     obj.data('active', false);
-                  });
-               }
-            });
+            if(!tagManagerOptions.typeaheadAjaxPolling){
+               obj.typeahead();
+               jQuery.getJSON(tagManagerOptions.typeaheadAjaxSource, function (data) {
+                  var sourceAjaxArray = [];
+                  if (data != undefined && data.tags != undefined) {
+                     sourceAjaxArray.length = 0;
+                     jQuery.each(data.tags, function (key, val) {
+                        var a = 1;
+                        sourceAjaxArray.push(val.tag);
+                        obj.data('active', true);
+                        obj.data('typeahead').source = sourceAjaxArray;
+                        obj.data('active', false);
+                     });
+                  }
+               });
+            }else if(tagManagerOptions.typeaheadAjaxPolling){
+               obj.typeahead({source: ajaxPolling});
+            }
          }
+      };
+
+      var ajaxPolling = function (query,process) {
+         jQuery.getJSON(tagManagerOptions.typeaheadAjaxSource, function (data) {
+            var sourceAjaxArray = [];
+            if (data != undefined && data.tags != undefined) {
+               sourceAjaxArray.length = 0;
+               jQuery.each(data.tags, function (key, val) {
+                  var a = 1;
+                  sourceAjaxArray.push(val.tag);
+               });
+               process(sourceAjaxArray);
+            }
+         });
       };
 
       var trimTag = function (tag) {
@@ -188,6 +208,10 @@
             var tagId = lastTagId++;
             tlis.push(tag);
             tlid.push(tagId);
+
+            if (tagManagerOptions.AjaxPush != null){
+               jQuery.post(tagManagerOptions.AjaxPush, {tag: tag});
+            }
 
             // console.log("tagList: " + tlis);
 
