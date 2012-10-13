@@ -118,7 +118,7 @@
       if(lhiddenTagList == undefined)
          return;
 
-      jQuery(lhiddenTagList).val(tlis.join(","));
+      jQuery(lhiddenTagList).val(tlis.join(",")).change();
    };
 
    jQuery.fn.spliceTag = function (TagId,robj) {
