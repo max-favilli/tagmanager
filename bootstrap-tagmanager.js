@@ -221,7 +221,7 @@
             );
          obj.before(html);
          jQuery("#myRemover_" + TagId).on("click", obj, function (e) {
-			e.preventDefault();
+			      e.preventDefault();
             var TagIdToRemove = parseInt(jQuery(this).attr("TagIdToRemove"));
 
             e.data.spliceTag(TagIdToRemove,e.data);
