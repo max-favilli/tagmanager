@@ -58,13 +58,15 @@
       var setupTypeahead = function () {
          if(!obj.typeahead) return;
 
-         if (tagManagerOptions.typeaheadSource != null) {
-            obj.typeahead();
-            obj.data('active', true);
-            obj.data('typeahead').source = tagManagerOptions.typeaheadSource;
-            obj.data('active', false);
+         if (tagManagerOptions.typeaheadSource != null && jQuery.isFunction(tagManagerOptions.typeaheadSource)) {
+           obj.typeahead({ source: tagManagerOptions.typeaheadSource });
+         } else if (tagManagerOptions.typeaheadSource != null) {
+           obj.typeahead();
+           obj.data('active', true);
+           obj.data('typeahead').source = tagManagerOptions.typeaheadSource;
+           obj.data('active', false);
          } else if (tagManagerOptions.typeaheadAjaxSource != null) {
-            if(!tagManagerOptions.typeaheadAjaxPolling){
+           if (!tagManagerOptions.typeaheadAjaxPolling) {
                obj.typeahead();
                jQuery.getJSON(tagManagerOptions.typeaheadAjaxSource, function (data) {
                   var sourceAjaxArray = [];
