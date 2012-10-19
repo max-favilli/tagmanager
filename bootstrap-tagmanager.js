@@ -84,6 +84,8 @@
             }else if(tagManagerOptions.typeaheadAjaxPolling){
                obj.typeahead({source: ajaxPolling});
             }
+         } else if (tagManagerOptions.typeaheadDelegate) {
+             obj.typeahead(tagManagerOptions.typeaheadDelegate)
          }
       };
 
