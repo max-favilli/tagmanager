@@ -199,7 +199,7 @@
 
          if (alreadyInList) {
             var pTagId = tlid[p];
-            jQuery(objName+"_"+ pTagId).stop()
+            jQuery("#"+objName+"_"+ pTagId).stop()
                .animate({ backgroundColor: tagManagerOptions.blinkBGColor_1 }, 100)
                .animate({ backgroundColor: tagManagerOptions.blinkBGColor_2 }, 100)
                .animate({ backgroundColor: tagManagerOptions.blinkBGColor_1 }, 100)
