@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="nl">
+  <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+    <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="http://twitter.github.com/bootstrap/assets/css/docs.css" rel="stylesheet">
+
+    <script src="bootstrap-tagmanager.js" type="text/javascript"></script>
+    <link href="bootstrap-tagmanager.css" rel="stylesheet" type="text/css" media="screen" />
+  </head>
+
+  <body>
+    <header class="jumbotron subhead">
+      <div class="container">
+        <h1>Tests</h1>
+      </div>
+    </header>
+
+    <section name="tests">
+      <div class="container">
+        <div class="row">
+
+        </div>
+        <div class="row">
+          <form method="get" action="#" class="span8 well form">
+            <legend>strategy: parameters, field name: tags[]</legend>
+            <label for="test1">Test 1:</label>
+            <input type="text" name="test1" id="test1" />
+            <br />
+            <button type="submit" value="x">Try it</button>
+          </form>
+        </div>
+
+        <div class="row">
+          <form method="get" action="#" class="span8 well form">
+            <legend>strategy: parameters, field names: tags(2|3)[]</legend>
+            <label for="test2">Test 2:</label>
+            <input type="text" name="test2" id="test2" />
+
+            <label for="test3">Test 3:</label>
+            <input type="text" name="test3" id="test3" />
+
+            <br />
+            <button type="submit" value="x">Try it</button>
+          </form>
+        </div>
+
+        <div class="row">
+          <form method="get" action="#" class="span8 well form">
+            <legend>strategy: comma-seperated, field names: tags(4|5)[]</legend>
+            <label for="test4">Test 4:</label>
+            <input type="text" name="test4" id="test4" />
+
+            <label for="test5">Test 5:</label>
+            <input type="text" name="test5" id="test5" />
+
+            <br />
+            <button type="submit" value="x">Try it</button>
+          </form>
+        </div>
+
+        <div class="row">
+          <form method="get" action="#" class="span8 well form">
+            <legend>3-tags maximum</legend>
+            <label for="test6">Test 6:</label>
+            <input type="text" name="test6" id="test6" />
+
+            <br />
+            <button type="submit" value="x">Try it</button>
+          </form>
+        </div>
+
+        <div class="row">
+          <form method="get" action="#" class="span8 well form">
+            <legend>only tags with an 'a' are allowed</legend>
+            <label for="test7">Test 7:</label>
+            <input type="text" name="test7" id="test7" />
+
+            <br />
+            <button type="submit" value="x">Try it</button>
+          </form>
+        </div>
+
+      </div>
+    </section>
+    <script type="text/javascript">
+      $("#test1").tagsManager({ strategy : 'parameters', hiddenTagListName : 'tags[]' });
+      $("input[name='test2']").tagsManager({ strategy : 'parameters', hiddenTagListName : 'tags2[]' });
+      $("input[name='test3']").tagsManager({ strategy : 'parameters', hiddenTagListName : 'tags3[]' });
+      $("input[name='test4']").tagsManager({ strategy : 'comma-seperated', hiddenTagListName : 'tags4' });
+      $("input[name='test5']").tagsManager({ strategy : 'comma-seperated', hiddenTagListName : 'tags5' });
+      $("input[name='test6']").tagsManager({ maxTags : 3 });
+      $("input[name='test7']").tagsManager({ validator : function(tag) { return /a/.test(tag) } });
+    </script>
+  </body>
+</html>
