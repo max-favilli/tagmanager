@@ -39,7 +39,8 @@
          hiddenTagListName: null,
          deleteTagsOnBackspace: true,
          tagsContainer: null,
-         tagCloseIcon:'x'
+         tagCloseIcon:'x',
+         strategy: 'comma-seperated',
       };
 
       jQuery.extend(tagManagerOptions, options);
@@ -47,7 +48,7 @@
       if(tagManagerOptions.hiddenTagListName === null){
          tagManagerOptions.hiddenTagListName = "hidden-"+this.attr('name');
       }
-      
+
       var obj = this;
       var objName = obj.attr('name');
       var lastTagId = 0;
@@ -145,11 +146,34 @@
       var refreshHiddenTagList = function () {
          var tlis = obj.data("tlis");
          var lhiddenTagList = obj.data("lhiddenTagList");
-         
+
          if(lhiddenTagList == undefined)
             return;
 
-         jQuery(lhiddenTagList).val(tlis.join(",")).change();
+         if ( tagManagerOptions.strategy == 'comma-seperated' ) {
+            jQuery(lhiddenTagList).val(tlis.join(",")).change();
+
+         } else if ( tagManagerOptions.strategy == 'parameters' ) {
+            var tlid = obj.data("tlid");
+
+            // remove all hidden-fields from the DOM
+            jQuery.each(lhiddenTagList, function(i, hidden) { console.log(hidden); hidden.remove() });
+            lhiddenTagList = [];
+
+            // and re-place them
+            jQuery.each(tlis, function(i, value) {
+               var input = $("<input name='" +
+                  tagManagerOptions.hiddenTagListName +
+                  "' type='hidden' value='" + value + "'/>");
+
+               // attach the hidden to the tag to ensure the right order
+               jQuery("#"+objName+"_"+ tlid[i]).after(input);
+               lhiddenTagList.push(input);
+            });
+
+            // store the new list
+            obj.data("lhiddenTagList", lhiddenTagList);
+         }
       };
 
       var spliceTag = function (tagId) {
@@ -157,7 +181,7 @@
          var tlid = obj.data("tlid");
 
          var p = jQuery.inArray(tagId, tlid)
-         
+
          // console.log("TagIdToRemove: " + tagId);
          // console.log("position: " + p);
 
@@ -223,10 +247,10 @@
             var newTagRemoveId = objName+'_Remover_'+ tagId;
             var html = '';
             html += '<span class="myTag" id="'+newTagId+ '"><span>' + tag + '&nbsp;&nbsp;</span><a href="#" class="myTagRemover" id="'+newTagRemoveId+'" TagIdToRemove="'+tagId+'" title="Remove">'+tagManagerOptions.tagCloseIcon+'</a></span>';
-        
+
             if(tagManagerOptions.tagsContainer != null)
             {
-               jQuery(tagManagerOptions.tagsContainer).append(html)  
+               jQuery(tagManagerOptions.tagsContainer).append(html)
             }else {
                obj.before(html);
             }
@@ -254,12 +278,19 @@
          obj.data("tlis", tlis); //list of string tags
          obj.data("tlid", tlid); //list of ID of the string tags
 
-         var html = "";
-         html += "<input name='" + tagManagerOptions.hiddenTagListName + "' type='hidden' value=''/>";
-         obj.after(html);
-         obj.data("lhiddenTagList", 
-            obj.siblings("input[name='" + tagManagerOptions.hiddenTagListName + "']")[0]
-         );
+         if ( tagManagerOptions.strategy == 'comma-seperated' ) {
+            var html = "";
+            html += "<input name='" + tagManagerOptions.hiddenTagListName + "' type='hidden' value=''/>";
+            obj.after(html);
+            obj.data("lhiddenTagList",
+               obj.siblings("input[name='" + tagManagerOptions.hiddenTagListName + "']")[0]
+            );
+         } else if ( tagManagerOptions.strategy == 'parameters' ) {
+            obj.data("lhiddenTagList", []);
+
+         } else {
+            // FIXME: what to do when someone specifies an unknown strategy..?
+         }
 
          if (tagManagerOptions.typeahead) {
             setupTypeahead();
@@ -330,7 +361,7 @@
             var is_explorer = navigator.userAgent.indexOf('MSIE') > -1;
             var is_firefox = navigator.userAgent.indexOf('Firefox') > -1;
             var is_safari = navigator.userAgent.indexOf("Safari") > -1;
-            
+
             if(!is_chrome && !is_safari )
                jQuery(this).focus();
 
@@ -339,7 +370,7 @@
             if (ao[0] != undefined){
                // console.log('change: typeaheadIsVisible is visible');
                //when the user click with the mouse on the typeahead li element we get the change event fired twice, once when the input field loose focus and later with the input field value is replaced with li value
-               var user_input = jQuery(".typeahead .active").attr("data-value"); 
+               var user_input = jQuery(".typeahead .active").attr("data-value");
                user_input = trimTag(user_input);
                if( queuedTag == obj.val() && queuedTag == user_input ){
                   queuedTag = "";
