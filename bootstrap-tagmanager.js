@@ -32,7 +32,7 @@ jQuery.fn.tagsManager = function(options) {
         delimeters: [44, 188, 13],
         backspace: [8],
         maxTags: 0,
-        hiddenTagListName: "hidden_" + this.attr('name'),
+        tagValuesFieldName: "hidden_" + this.attr('name'),
         deleteTagsOnBackspace: true,
         duplicateHandler: null,
         insertTagHandler: null,
@@ -46,7 +46,7 @@ jQuery.fn.tagsManager = function(options) {
          *
          * array: multiple hidden fields will each store one tag with a
          *        common hidden_field_name[] If you use this strategy you _must_ change
-         *        your hiddenTagListName to an array[] ending with [] e.g. tags[]
+         *        your tagValuesFieldName to an array[] ending with [] e.g. tags[]
          */
         strategy: 'comma-delimited'
     };
@@ -210,7 +210,7 @@ jQuery.fn.tagsManager = function(options) {
         if (tagManagerOptions.strategy == 'array') {
             jQuery('<input></input>')
                 .attr('type', 'hidden')
-                .attr('name', tagManagerOptions.hiddenTagListName)
+                .attr('name', tagManagerOptions.tagValuesFieldName)
                 .val(tag)
                 .appendTo(tagHtml);
         }
@@ -297,7 +297,7 @@ jQuery.fn.tagsManager = function(options) {
         case 'comma-delimited':
         default:
             var hiddenTagsField = jQuery('<input></input')
-                .attr('name', tagManagerOptions.hiddenTagListName)
+                .attr('name', tagManagerOptions.tagValuesFieldName)
                 .attr('type', 'hidden')
                 .val('');
 
