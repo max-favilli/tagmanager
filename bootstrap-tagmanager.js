@@ -26,7 +26,7 @@ jQuery.fn.tagsManager = function(options) {
         prefilled: null,
         capitalizeFirstLetter: false,
         preventSubmitOnEnter: true,
-        typeahead: false,
+        typeahead: null,
         ajaxAdd: null,
         ajaxDelete: null,
         delimeters: [44, 188, 13],
