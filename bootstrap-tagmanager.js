@@ -44,13 +44,13 @@ jQuery.fn.tagsManager = function(options)
          * Strategy refers to how data is stored locally and posted when
          * the form is submitted.
          *
-         * comma-delimited: a hidden field will store all tags in a comma delimited list
+         * csv: a hidden field will store all tags in a comma delimited list
          *
          * array: multiple hidden fields will each store one tag with a
          *        common hidden_field_name[] If you use this strategy you _must_ change
          *        your tagValuesFieldName to an array[] ending with [] e.g. tags[]
          */
-        strategy: 'comma-delimited'
+        strategy: 'csv'
     };
 
     jQuery.extend(tagManagerOptions, options);
@@ -61,7 +61,7 @@ jQuery.fn.tagsManager = function(options)
      */
     jQuery(this).on('refreshTagList', function(e)
     {
-        if (jQuery(this).data('tagManagerOptions').strategy == 'comma-delimited')
+        if (jQuery(this).data('tagManagerOptions').strategy == 'csv')
             jQuery(jQuery(this).data("tagList")).val(
                 jQuery(this).data("tagStrings").join(",")).change();
     });
@@ -296,16 +296,15 @@ jQuery.fn.tagsManager = function(options)
         }
     });
 
-    // store instance specific data
-    jQuery(this).data("tagStrings", new Array()); //list of string tags
-    jQuery(this).data("tagIds", new Array()); //list of ID of the string tags
-
+    // Initialize the manager
+    jQuery(this).data("tagStrings", new Array());
+    jQuery(this).data("tagIds", new Array());
 
     switch (jQuery(this).data('tagManagerOptions').strategy) {
         case 'array':
             break;
 
-        case 'comma-delimited':
+        case 'csv':
         default:
             var hiddenTagsField = jQuery('<input></input')
                 .attr('name', jQuery(this).data('tagManagerOptions').tagValuesFieldName)
@@ -317,10 +316,12 @@ jQuery.fn.tagsManager = function(options)
             break;
     }
 
+    // Init bootstrap typeahead
     if (jQuery(this).data('tagManagerOptions').typeahead) {
         jQuery(this).typeahead(jQuery(this).data('tagManagerOptions').typeahead);
     }
 
+    // Pre-populate values
     if (jQuery(this).data('tagManagerOptions').prefilled) {
         jQuery(this).trigger('importTags',
             [ jQuery(this).data('tagManagerOptions').prefilled ]);
