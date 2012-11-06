@@ -35,7 +35,7 @@ jQuery.fn.tagsManager = function(options) {
         hiddenTagListName: "hidden-" + this.attr('name'),
         deleteTagsOnBackspace: true,
         notifyDuplicate: null,
-        tagsContainer: null,
+        insertTagHandler: null,
         tagCloseIcon:'x'
     };
 
@@ -195,8 +195,8 @@ jQuery.fn.tagsManager = function(options) {
             .text(tagManagerOptions.tagCloseIcon)
             .appendTo(tagHtml);
 
-        if(tagManagerOptions.tagsContainer != null) {
-            jQuery(tagManagerOptions.tagsContainer).append(tagHtml)
+        if(tagManagerOptions.insertTagHandler != null) {
+            tagManagerOptions.insertTagHandler(tagHtml);
         }else {
             jQuery(this).before(tagHtml);
         }
