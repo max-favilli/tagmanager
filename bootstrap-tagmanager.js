@@ -34,7 +34,7 @@ jQuery.fn.tagsManager = function(options) {
         maxTags: 0,
         hiddenTagListName: "hidden-" + this.attr('name'),
         deleteTagsOnBackspace: true,
-        notifyDuplicate: null,
+        duplicateHandler: null,
         insertTagHandler: null,
         tagCloseIcon:'x'
     };
@@ -157,7 +157,7 @@ jQuery.fn.tagsManager = function(options) {
          if ( tagManagerOptions.maxTags > 0 && tlis.length >= tagManagerOptions.maxTags ) return;
 
         if (jQuery.inArray(tag, tlis) != -1) {
-            if (jQuery(this).notifyDuplicate) jQuery(this).notifyDuplicate(tlid[p]);
+            if (jQuery(this).duplicateHandler) jQuery(this).duplicateHandler(tlid[p]);
             jQuery(this).focus();
             return;
         }
