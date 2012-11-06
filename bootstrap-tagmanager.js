@@ -59,7 +59,7 @@ jQuery.fn.tagsManager = function(options) {
      */
     jQuery(this).on('refreshTagList', function(e) {
         if (jQuery(this).data('tagManagerOptions').strategy == 'comma-delimited')
-            jQuery(jQuery(this).data("tagList")).val(jQuery(this).data("tlis").join(",")).change();
+            jQuery(jQuery(this).data("tagList")).val(jQuery(this).data("tagStrings").join(",")).change();
     });
 
 
@@ -75,8 +75,8 @@ jQuery.fn.tagsManager = function(options) {
      * Empty the tag manager
      */
     jQuery(this).on('emptyTags', function(e) {
-        jQuery(this).data("tlis", new Array());
-        jQuery(this).data("tlid", new Array());
+        jQuery(this).data("tagStrings", new Array());
+        jQuery(this).data("tagIds", new Array());
 
         var field = this;
 
@@ -92,9 +92,9 @@ jQuery.fn.tagsManager = function(options) {
      * Delete the last tag
      */
     jQuery(this).on('popTag', function (e) {
-        if (jQuery(this).data("tlid").length > 0) {
-            var tlid = jQuery(this).data("tlid");
-            var id = 'tag_' + tlid[tlid.length - 1];
+        if (jQuery(this).data("tagIds").length > 0) {
+            var tagIds = jQuery(this).data("tagIds");
+            var id = 'tag_' + tagIds[tagIds.length - 1];
 
             jQuery(this).trigger('deleteTag', [ jQuery('#' + id) ]);
         }
@@ -105,10 +105,10 @@ jQuery.fn.tagsManager = function(options) {
      */
     jQuery(this).on('deleteTag', function(e, tagHtml) {
 
-        var tlis = jQuery(this).data("tlis");
-        var tlid = jQuery(this).data("tlid");
+        var tagStrings = jQuery(this).data("tagStrings");
+        var tagIds = jQuery(this).data("tagIds");
 
-        var p = jQuery.inArray(parseInt(jQuery(tagHtml).attr("tagMarker")), tlid)
+        var p = jQuery.inArray(parseInt(jQuery(tagHtml).attr("tagMarker")), tagIds)
 
         if (p != -1) {
             if (jQuery(this).data('tagManagerOptions').ajaxDelete != null) {
@@ -122,8 +122,8 @@ jQuery.fn.tagsManager = function(options) {
                 });
             }
 
-            tlis.splice(p, 1);
-            tlid.splice(p, 1);
+            tagStrings.splice(p, 1);
+            tagIds.splice(p, 1);
             jQuery(tagHtml).remove();
             jQuery(this).trigger('refreshTagList');
         }
@@ -168,13 +168,13 @@ jQuery.fn.tagsManager = function(options) {
            if ( jQuery(this).data('tagManagerOptions').validator(tag) !== true ) return;
          }
 
-         var tlis = jQuery(this).data("tlis");
-         var tlid = jQuery(this).data("tlid");
+         var tagStrings = jQuery(this).data("tagStrings");
+         var tagIds = jQuery(this).data("tagIds");
 
-         if ( jQuery(this).data('tagManagerOptions').maxTags > 0 && tlis.length >= jQuery(this).data('tagManagerOptions').maxTags ) return;
+         if ( jQuery(this).data('tagManagerOptions').maxTags > 0 && tagStrings.length >= jQuery(this).data('tagManagerOptions').maxTags ) return;
 
-        if (jQuery.inArray(tag, tlis) != -1) {
-            if (jQuery(this).duplicateHandler) jQuery(this).duplicateHandler(tlid[p]);
+        if (jQuery.inArray(tag, tagStrings) != -1) {
+            if (jQuery(this).duplicateHandler) jQuery(this).duplicateHandler(tagIds[p]);
             jQuery(this).focus();
             return;
         }
@@ -191,8 +191,8 @@ jQuery.fn.tagsManager = function(options) {
         }
 
         var tagId = +new Date(); // fetch ms
-        tlis.push(tag);
-        tlid.push(tagId);
+        tagStrings.push(tag);
+        tagIds.push(tagId);
 
 
         var newTagId = 'tag_' + tagId;
@@ -230,7 +230,7 @@ jQuery.fn.tagsManager = function(options) {
 
         jQuery(this).trigger('refreshTagList');
 
-        if (jQuery(this).data('tagManagerOptions').maxTags > 0 && tlis.length >= jQuery(this).data('tagManagerOptions').maxTags ) {
+        if (jQuery(this).data('tagManagerOptions').maxTags > 0 && tagStrings.length >= jQuery(this).data('tagManagerOptions').maxTags ) {
             jQuery(this).hide();
         }
 
@@ -302,8 +302,8 @@ jQuery.fn.tagsManager = function(options) {
     });
 
     // store instance specific data
-    jQuery(this).data("tlis", new Array()); //list of string tags
-    jQuery(this).data("tlid", new Array()); //list of ID of the string tags
+    jQuery(this).data("tagStrings", new Array()); //list of string tags
+    jQuery(this).data("tagIds", new Array()); //list of ID of the string tags
 
 
     switch (jQuery(this).data('tagManagerOptions').strategy) {
