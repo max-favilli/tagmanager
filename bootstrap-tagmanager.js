@@ -321,12 +321,12 @@ jQuery.fn.tagsManager = function(options) {
             break;
     }
 
-    if (tagManagerOptions.prefilled) {
-        jQuery(this).trigger('importTags', [ tagManagerOptions.prefilled ]);
-    }
-
     if (tagManagerOptions.typeahead) {
         jQuery(this).typeahead(tagManagerOptions.typeahead);
+    }
+
+    if (tagManagerOptions.prefilled) {
+        jQuery(this).trigger('importTags', [ tagManagerOptions.prefilled ]);
     }
 }
 
