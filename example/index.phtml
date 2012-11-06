@@ -1,0 +1,39 @@
+<div class="hero-unit">
+    <h1>Typeahead Tagmanager</h1>
+</div>
+
+
+<?= $this->headLink()->prependStylesheet($this->basePath() . '/js/bootstrap/docs/assets/css/bootstrap.css'); ?>
+<?= $this->headLink()->prependStylesheet($this->basePath() . '/js/bootstrap/docs/assets/css/bootstrap-responsive.css'); ?>
+<?= $this->headScript()->prependFile($this->basePath() . '/js/bootstrap/docs/assets/js/bootstrap.js', 'text/javascript'); ?>
+
+<?= $this->headLink()->prependStylesheet($this->basePath() . '/js/tagmanager/bootstrap-tagmanager.css'); ?>
+<?= $this->headScript()->prependFile($this->basePath() . '/js/tagmanager/bootstrap-tagmanager.js', 'text/javascript'); ?>
+
+<script>
+$(function() {
+
+    $('.tagManager').tagsManager({
+        prefilled: ['seven', 'eight'],
+        CapitalizeFirstLetter: true,
+        preventSubmitOnEnter: true,
+        typeahead: {
+            autoselect: true,
+            source: ['one', 'two', 'three', 'four', 'five', 'six'],
+            suppressKeyPressRepeat: true,
+            updater: function(tag) {
+                this.$element.trigger('addTag', [ tag ]);
+            }
+        },
+        delimeters: [44, 188, 13],
+        backspace: [8],
+        hiddenTagListName: 'hiddenTagListA',
+        ajaxAdd: 'http://localhost/tag/add',
+        ajaxDelete: 'http://localhost/tag/delete'
+    });
+
+});
+</script>
+
+
+<input type="text" name="tags" placeholder="Tags" class="tagManager"/>

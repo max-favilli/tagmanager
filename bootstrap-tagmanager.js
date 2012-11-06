@@ -24,7 +24,7 @@ jQuery(function() {
 jQuery.fn.tagsManager = function(options) {
     var tagManagerOptions = {
         prefilled: null,
-        CapitalizeFirstLetter: false,
+        capitalizeFirstLetter: false,
         preventSubmitOnEnter: true,
         typeahead: false,
         ajaxAdd: null,
@@ -66,9 +66,7 @@ jQuery.fn.tagsManager = function(options) {
     jQuery(this).on('popTag', function (e) {
         if (jQuery(this).data("tlid").length > 0) {
             var tlid = jQuery(this).data("tlid");
-            var tagId = tlid[tlid.length - 1];
-
-            var id = jQuery(this).attr('name') + '_' + tagId;
+            var id = jQuery(this).attr('name') + '_' + tlid[tlid.length - 1];
 
             jQuery(this).trigger('deleteTag', [ jQuery('#' + id) ]);
         }
@@ -134,7 +132,7 @@ jQuery.fn.tagsManager = function(options) {
 
          if (!tag || tag.length <= 0) return;
 
-         if (tagManagerOptions.CapitalizeFirstLetter) {
+         if (tagManagerOptions.capitalizeFirstLetter) {
             tag = tag.charAt(0).toUpperCase() + tag.slice(1).toLowerCase();
          }
 
@@ -149,6 +147,8 @@ jQuery.fn.tagsManager = function(options) {
 
         if (jQuery.inArray(tag, tlis) != -1) {
             if (jQuery(this).notifyDuplicate) jQuery(this).notifyDuplicate(tlid[p]);
+            jQuery(this).focus();
+            return;
         }
 
         var tagId = lastTagId++;
@@ -233,13 +233,18 @@ jQuery.fn.tagsManager = function(options) {
     jQuery(this).keyup(function (e) {
         if (jQuery.inArray(e.which, tagManagerOptions.delimeters) != -1) {
             e.preventDefault();
+
+            // If the typeahead is selected use that value else use field value
+            if (jQuery(this).data('typeahead').shown
+                && jQuery(this).data('typeahead').$menu.find('.active').length
+            ) {
+                jQuery(this).val(jQuery(this).data('typeahead').$menu.find('.active').attr('data-value'));
+            }
+
             jQuery(this).trigger('addTag', [ jQuery(this).val() ]);
         }
     });
 
-    /**
-     * Populate prefilled values
-     */
     // store instance specific data
     jQuery(this).data("tlis", new Array()); //list of string tags
     jQuery(this).data("tlid", new Array()); //list of ID of the string tags
@@ -254,6 +259,10 @@ jQuery.fn.tagsManager = function(options) {
         $(this).typeahead(tagManagerOptions.typeahead);
     }
 
+    /**
+     * Populate prefilled values
+     */
+    // FIXME:  Find a way to populate prefilled values without triggering ajax calls
     if (tagManagerOptions.prefilled != null) {
         if (typeof (tagManagerOptions.prefilled) == "object") {
             jQuery.each(tagManagerOptions.prefilled, function (key, val) {
