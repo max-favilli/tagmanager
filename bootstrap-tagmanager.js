@@ -53,8 +53,6 @@ jQuery.fn.tagsManager = function(options) {
 
     jQuery.extend(tagManagerOptions, options);
 
-    var field = this;
-
     /**
      * Refresh the selected values tag list hidden field
      */
@@ -79,7 +77,7 @@ jQuery.fn.tagsManager = function(options) {
         jQuery(this).data("tlis", new Array());
         jQuery(this).data("tlid", new Array());
 
-        field = this;
+        var field = this;
 
         jQuery('[id*="tag_"]').each(function(index, node) {
             if (jQuery(this).data('tagmanager') == field)
@@ -106,8 +104,8 @@ jQuery.fn.tagsManager = function(options) {
      */
     jQuery(this).on('deleteTag', function(e, tagHtml) {
 
-        var tlis = field.data("tlis");
-        var tlid = field.data("tlid");
+        var tlis = jQuery(this).data("tlis");
+        var tlid = jQuery(this).data("tlid");
 
         var p = jQuery.inArray(parseInt(jQuery(tagHtml).attr("tagMarker")), tlid)
 
@@ -244,6 +242,8 @@ jQuery.fn.tagsManager = function(options) {
      * Import prefilled tags without triggering ajaxAdd
      */
     jQuery(this).on('importTags', function (e, tags) {
+        var field = this;
+
         if (typeof (tags) == "object") {
             jQuery.each(tags, function (key, val) {
                 jQuery(field).trigger('addTag', [ val, true ]);
