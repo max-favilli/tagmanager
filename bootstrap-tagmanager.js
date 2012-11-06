@@ -36,7 +36,16 @@ jQuery.fn.tagsManager = function(options) {
         deleteTagsOnBackspace: true,
         duplicateHandler: null,
         insertTagHandler: null,
-        tagCloseHtml:'x'
+        tagCloseHtml:'x',
+
+        /**
+         * Strategy refers to how data is stored locally and posted when
+         * the form is submitted.
+         *
+         * comma-delimited: a hidden field will store all tags in a comma delimited list
+         * array: multiple hidden fields will each store one tag with a common hidden_field_name[]
+         */
+        strategy: 'comma-delimited'
     };
 
     jQuery.extend(tagManagerOptions, options);
@@ -47,7 +56,8 @@ jQuery.fn.tagsManager = function(options) {
      * Refresh the selected values tag list hidden field
      */
     jQuery(this).on('refreshTagList', function(e) {
-        jQuery(jQuery(this).data("tagList")).val(jQuery(this).data("tlis").join(",")).change();
+        if (tagManagerOptions.strategy == 'comma-delimited')
+            jQuery(jQuery(this).data("tagList")).val(jQuery(this).data("tlis").join(",")).change();
     });
 
 
@@ -66,9 +76,14 @@ jQuery.fn.tagsManager = function(options) {
         jQuery(this).data("tlis", new Array());
         jQuery(this).data("tlid", new Array());
 
-        jQuery('[id*="' + jQuery(this).attr('name') + '_"]').remove();
+        field = this;
 
-        jQuery(this).data("tagList").val('');
+        jQuery('[id*="tag_"]').each(function(index, node) {
+            if (jQuery(this).data('tagmanager') == field)
+                jQuery(this).remove();
+        });
+
+        jQuery(this).trigger('refreshTagList');
     });
 
     /**
@@ -188,6 +203,7 @@ jQuery.fn.tagsManager = function(options) {
             .attr('id', newTagId)
             .data('tagmanager', this)
             .text(tag);
+
         var tagRemover = jQuery('<a></a>')
             .addClass('myTagRemover')
             .attr('title', 'Remove')
@@ -261,13 +277,22 @@ jQuery.fn.tagsManager = function(options) {
     jQuery(this).data("tlis", new Array()); //list of string tags
     jQuery(this).data("tlid", new Array()); //list of ID of the string tags
 
-    var hiddenTagsField = jQuery('<input></input')
-        .attr('name', tagManagerOptions.hiddenTagListName)
-        .attr('type', 'hidden')
-        .val('');
 
-    jQuery(this).after(hiddenTagsField);
-    jQuery(this).data("tagList", hiddenTagsField);
+    switch (tagManagerOptions.strategy) {
+        case 'array':
+            break;
+
+        case 'comma-delimited':
+        default:
+            var hiddenTagsField = jQuery('<input></input')
+                .attr('name', tagManagerOptions.hiddenTagListName)
+                .attr('type', 'hidden')
+                .val('');
+
+            jQuery(this).after(hiddenTagsField);
+            jQuery(this).data("tagList", hiddenTagsField);
+            break;
+    }
 
     if (tagManagerOptions.typeahead) {
         jQuery(this).typeahead(tagManagerOptions.typeahead);
