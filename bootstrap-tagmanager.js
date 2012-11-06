@@ -5,7 +5,8 @@
  * ===================================================
  * Copyright 2012 Max Favilli
  *
- * Licensed under the Mozilla Public License, Version 2.0 You may not use this work except in compliance with the License.
+ * Licensed under the Mozilla Public License, Version 2.0 You may not use
+ * this work except in compliance with the License.
  *
  * http://www.mozilla.org/MPL/2.0/
  *
@@ -61,7 +62,8 @@ jQuery.fn.tagsManager = function(options)
     jQuery(this).on('refreshTagList', function(e)
     {
         if (jQuery(this).data('tagManagerOptions').strategy == 'comma-delimited')
-            jQuery(jQuery(this).data("tagList")).val(jQuery(this).data("tagStrings").join(",")).change();
+            jQuery(jQuery(this).data("tagList")).val(
+                jQuery(this).data("tagStrings").join(",")).change();
     });
 
 
@@ -70,7 +72,8 @@ jQuery.fn.tagsManager = function(options)
      */
     jQuery('a.tagmanagerRemoveTag').live('click', function(e)
     {
-        jQuery(jQuery(this).parent().data('tagmanager')).trigger('deleteTag', [ jQuery(this).parent() ]);
+        jQuery(jQuery(this).parent().data('tagmanager')).trigger('deleteTag',
+            [ jQuery(this).parent() ]);
         return false;
     });
 
@@ -139,25 +142,29 @@ jQuery.fn.tagsManager = function(options)
      */
      jQuery(this).on('addTag', function (e, tag, skipAjax)
      {
-         var tag = jQuery.trim(tag);
+        var tag = jQuery.trim(tag);
 
-         if (!tag || tag.length <= 0) return;
+        if (!tag || tag.length <= 0) return;
 
-         if (jQuery(this).data('tagManagerOptions').capitalizeFirstLetter) {
+        if (jQuery(this).data('tagManagerOptions').capitalizeFirstLetter) {
             tag = tag.charAt(0).toUpperCase() + tag.slice(1).toLowerCase();
-         }
+        }
 
-         if (jQuery(this).data('tagManagerOptions').validator !== undefined) {
-           if ( jQuery(this).data('tagManagerOptions').validator(tag) !== true ) return;
-         }
+        // Validate Tag
+        if (jQuery(this).data('tagManagerOptions').validator !== undefined) {
+            if ( jQuery(this).data('tagManagerOptions').validator(tag) !== true ) return;
+        }
 
-         var tagStrings = jQuery(this).data("tagStrings");
-         var tagIds = jQuery(this).data("tagIds");
+        var tagStrings = jQuery(this).data("tagStrings");
+        var tagIds = jQuery(this).data("tagIds");
 
-         if ( jQuery(this).data('tagManagerOptions').maxTags > 0 && tagStrings.length >= jQuery(this).data('tagManagerOptions').maxTags ) return;
+        if (jQuery(this).data('tagManagerOptions').maxTags > 0
+            && tagStrings.length >= jQuery(this).data('tagManagerOptions').maxTags)
+            return;
 
         if (jQuery.inArray(tag, tagStrings) != -1) {
-            if (jQuery(this).duplicateHandler) jQuery(this).duplicateHandler(tagIds[p]);
+            if (jQuery(this).duplicateHandler)
+                jQuery(this).duplicateHandler(tagIds[p]);
             jQuery(this).focus();
             return;
         }
@@ -213,7 +220,8 @@ jQuery.fn.tagsManager = function(options)
 
         jQuery(this).trigger('refreshTagList');
 
-        if (jQuery(this).data('tagManagerOptions').maxTags > 0 && tagStrings.length >= jQuery(this).data('tagManagerOptions').maxTags ) {
+        if (jQuery(this).data('tagManagerOptions').maxTags > 0
+            && tagStrings.length >= jQuery(this).data('tagManagerOptions').maxTags ) {
             jQuery(this).hide();
         }
 
@@ -314,7 +322,8 @@ jQuery.fn.tagsManager = function(options)
     }
 
     if (jQuery(this).data('tagManagerOptions').prefilled) {
-        jQuery(this).trigger('importTags', [ jQuery(this).data('tagManagerOptions').prefilled ]);
+        jQuery(this).trigger('importTags',
+            [ jQuery(this).data('tagManagerOptions').prefilled ]);
     }
 }
 
