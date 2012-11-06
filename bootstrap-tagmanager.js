@@ -32,7 +32,7 @@ jQuery.fn.tagsManager = function(options) {
         delimeters: [44, 188, 13],
         backspace: [8],
         maxTags: 0,
-        hiddenTagListName: "hidden-" + this.attr('name'),
+        hiddenTagListName: "hidden_" + this.attr('name'),
         deleteTagsOnBackspace: true,
         duplicateHandler: null,
         insertTagHandler: null,
