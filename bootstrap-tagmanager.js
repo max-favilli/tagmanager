@@ -42,7 +42,6 @@ jQuery.fn.tagsManager = function(options) {
     jQuery.extend(tagManagerOptions, options);
 
     var field = this;
-    var lastTagId = 0;
 
     /**
      * Refresh the selected values tag list hidden field
@@ -78,7 +77,7 @@ jQuery.fn.tagsManager = function(options) {
     jQuery(this).on('popTag', function (e) {
         if (jQuery(this).data("tlid").length > 0) {
             var tlid = jQuery(this).data("tlid");
-            var id = jQuery(this).attr('name') + '_' + tlid[tlid.length - 1];
+            var id = 'tag_' + tlid[tlid.length - 1];
 
             jQuery(this).trigger('deleteTag', [ jQuery('#' + id) ]);
         }
@@ -94,7 +93,7 @@ jQuery.fn.tagsManager = function(options) {
 
         var p = jQuery.inArray(parseInt(jQuery(tagHtml).attr("tagMarker")), tlid)
 
-        if (-1 != p) {
+        if (p != -1) {
             if (tagManagerOptions.ajaxDelete != null) {
                 jQuery.ajax({
                     url: tagManagerOptions.ajaxDelete,
@@ -163,10 +162,6 @@ jQuery.fn.tagsManager = function(options) {
             return;
         }
 
-        var tagId = lastTagId++;
-        tlis.push(tag);
-        tlid.push(tagId);
-
         if (tagManagerOptions.ajaxAdd != null) {
             jQuery.ajax({
                 url: tagManagerOptions.ajaxAdd,
@@ -178,8 +173,13 @@ jQuery.fn.tagsManager = function(options) {
             });
         }
 
-        var newTagId = jQuery(this).attr('name') + '_' + tagId;
-        var newTagRemoveId = jQuery(this).attr('name') + '_Remover_' + tagId;
+        var tagId = +new Date(); // fetch ms
+        tlis.push(tag);
+        tlid.push(tagId);
+
+
+        var newTagId = 'tag_' + tagId;
+        var newTagRemoveId = 'tag_remover_' + tagId;
 
         var tagHtml = $('<span></span>')
             .addClass('myTag')
