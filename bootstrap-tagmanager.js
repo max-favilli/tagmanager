@@ -133,7 +133,7 @@ jQuery.fn.tagsManager = function(options) {
     /**
      * Add a new tag
      */
-     jQuery(this).on('addTag', function (e, tag) {
+     jQuery(this).on('addTag', function (e, tag, skipAjax) {
 
         // Trim tag
          var txt = jQuery.trim(tag);
@@ -180,7 +180,7 @@ jQuery.fn.tagsManager = function(options) {
             return;
         }
 
-        if (tagManagerOptions.ajaxAdd != null) {
+        if (tagManagerOptions.ajaxAdd != null && !skipAjax) {
             jQuery.ajax({
                 url: tagManagerOptions.ajaxAdd,
                 type: 'post',
@@ -238,6 +238,21 @@ jQuery.fn.tagsManager = function(options) {
         jQuery(this).data('typeahead').hide();
         jQuery(this).val('');
         jQuery(this).focus();
+    });
+
+    /**
+     * Import prefilled tags without triggering ajaxAdd
+     */
+    jQuery(this).on('importTags', function (e, tags) {
+        if (typeof (tags) == "object") {
+            jQuery.each(tags, function (key, val) {
+                jQuery(field).trigger('addTag', [ val, true ]);
+            });
+        } else if (typeof (tags) == "string") {
+            jQuery.each(tags.split(','), function (key, val) {
+                jQuery(field).trigger('addTag', [ val, true ]);
+            });
+        }
     });
 
     /**
@@ -306,24 +321,12 @@ jQuery.fn.tagsManager = function(options) {
             break;
     }
 
-    if (tagManagerOptions.typeahead) {
-        jQuery(this).typeahead(tagManagerOptions.typeahead);
+    if (tagManagerOptions.prefilled) {
+        jQuery(this).trigger('importTags', [ tagManagerOptions.prefilled ]);
     }
 
-    /**
-     * Populate prefilled values
-     */
-    // FIXME:  Find a way to populate prefilled values without triggering ajax calls
-    if (tagManagerOptions.prefilled != null) {
-        if (typeof (tagManagerOptions.prefilled) == "object") {
-            jQuery.each(tagManagerOptions.prefilled, function (key, val) {
-                jQuery(field).trigger('addTag', [ val ]);
-            });
-        } else if (typeof (tagManagerOptions.prefilled) == "string") {
-            jQuery.each(tagManagerOptions.prefilled.split(','), function (key, val) {
-                jQuery(field).trigger('addTag', [ val ]);
-            });
-        }
+    if (tagManagerOptions.typeahead) {
+        jQuery(this).typeahead(tagManagerOptions.typeahead);
     }
 }
 
