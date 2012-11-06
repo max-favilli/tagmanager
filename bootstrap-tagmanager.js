@@ -36,7 +36,7 @@ jQuery.fn.tagsManager = function(options) {
         deleteTagsOnBackspace: true,
         duplicateHandler: null,
         insertTagHandler: null,
-        tagCloseIcon:'x'
+        tagCloseHtml:'x'
     };
 
     jQuery.extend(tagManagerOptions, options);
@@ -192,7 +192,7 @@ jQuery.fn.tagsManager = function(options) {
             .addClass('myTagRemover')
             .attr('title', 'Remove')
             .attr('href', '#')
-            .text(tagManagerOptions.tagCloseIcon)
+            .html(tagManagerOptions.tagCloseHtml)
             .appendTo(tagHtml);
 
         if(tagManagerOptions.insertTagHandler != null) {
