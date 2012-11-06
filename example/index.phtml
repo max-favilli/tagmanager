@@ -29,7 +29,8 @@ $(function() {
         backspace: [8],
         hiddenTagListName: 'hiddenTagListA',
         ajaxAdd: 'http://localhost/tag/add',
-        ajaxDelete: 'http://localhost/tag/delete'
+        ajaxDelete: 'http://localhost/tag/delete',
+        strategy: 'comma-delimited'
     });
 
     $('.tagManager2').tagsManager({
@@ -48,14 +49,19 @@ $(function() {
         backspace: [8],
         hiddenTagListName: 'hiddenTagListA',
         ajaxAdd: 'http://localhost/tag/add',
-        ajaxDelete: 'http://localhost/tag/delete'
+        ajaxDelete: 'http://localhost/tag/delete',
+        strategy: 'array',
+        hiddenTagListName: 'tags[]'
     });
 
 
 });
 </script>
 
-
-<input type="text" name="tags" placeholder="Tags" class="tagManager1"/>
+<form>
+<input type="text" name="tags1" placeholder="Tags" class="tagManager1"/>
 <br><br>
-<input type="text" name="tags" placeholder="Tags" class="tagManager2"/>
+<input type="text" name="tags2" placeholder="Tags" class="tagManager2"/>
+
+<input type="submit">
+</form>

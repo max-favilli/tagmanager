@@ -43,7 +43,10 @@ jQuery.fn.tagsManager = function(options) {
          * the form is submitted.
          *
          * comma-delimited: a hidden field will store all tags in a comma delimited list
-         * array: multiple hidden fields will each store one tag with a common hidden_field_name[]
+         *
+         * array: multiple hidden fields will each store one tag with a
+         *        common hidden_field_name[] If you use this strategy you _must_ change
+         *        your hiddenTagListName to an array[] ending with [] e.g. tags[]
          */
         strategy: 'comma-delimited'
     };
@@ -203,6 +206,15 @@ jQuery.fn.tagsManager = function(options) {
             .attr('id', newTagId)
             .data('tagmanager', this)
             .text(tag);
+
+        if (tagManagerOptions.strategy == 'array') {
+            jQuery('<input></input>')
+                .attr('type', 'hidden')
+                .attr('name', tagManagerOptions.hiddenTagListName)
+                .val(tag)
+                .appendTo(tagHtml);
+        }
+
 
         var tagRemover = jQuery('<a></a>')
             .addClass('myTagRemover')
