@@ -66,7 +66,7 @@ jQuery.fn.tagsManager = function(options) {
     /**
      * Bind remove tag icon
      */
-    jQuery('a.myTagRemover').live('click', function(e) {
+    jQuery('a.tagmanagerRemoveTag').live('click', function(e) {
         jQuery(jQuery(this).parent().data('tagmanager')).trigger('deleteTag', [ jQuery(this).parent() ]);
         return false;
     });
@@ -199,7 +199,7 @@ jQuery.fn.tagsManager = function(options) {
         var newTagRemoveId = 'tag_remover_' + tagId;
 
         var tagHtml = jQuery('<span></span>')
-            .addClass('myTag')
+            .addClass('tagmanagerTag')
             .attr('tag', tag)
             .attr('tagMarker', tagId)
             .attr('id', newTagId)
@@ -216,7 +216,7 @@ jQuery.fn.tagsManager = function(options) {
 
 
         var tagRemover = jQuery('<a></a>')
-            .addClass('myTagRemover')
+            .addClass('tagmanagerRemoveTag')
             .attr('title', 'Remove')
             .attr('href', '#')
             .html(jQuery(this).data('tagManagerOptions').tagCloseHtml)
