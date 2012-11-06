@@ -181,14 +181,14 @@ jQuery.fn.tagsManager = function(options) {
         var newTagId = 'tag_' + tagId;
         var newTagRemoveId = 'tag_remover_' + tagId;
 
-        var tagHtml = $('<span></span>')
+        var tagHtml = jQuery('<span></span>')
             .addClass('myTag')
             .attr('tag', tag)
             .attr('tagMarker', tagId)
             .attr('id', newTagId)
             .data('tagmanager', this)
             .text(tag);
-        var tagRemover = $('<a></a>')
+        var tagRemover = jQuery('<a></a>')
             .addClass('myTagRemover')
             .attr('title', 'Remove')
             .attr('href', '#')
@@ -270,7 +270,7 @@ jQuery.fn.tagsManager = function(options) {
     jQuery(this).data("tagList", hiddenTagsField);
 
     if (tagManagerOptions.typeahead) {
-        $(this).typeahead(tagManagerOptions.typeahead);
+        jQuery(this).typeahead(tagManagerOptions.typeahead);
     }
 
     /**
@@ -280,11 +280,11 @@ jQuery.fn.tagsManager = function(options) {
     if (tagManagerOptions.prefilled != null) {
         if (typeof (tagManagerOptions.prefilled) == "object") {
             jQuery.each(tagManagerOptions.prefilled, function (key, val) {
-                $(field).trigger('addTag', [ val ]);
+                jQuery(field).trigger('addTag', [ val ]);
             });
         } else if (typeof (tagManagerOptions.prefilled) == "string") {
             jQuery.each(tagManagerOptions.prefilled.split(','), function (key, val) {
-                $(field).trigger('addTag', [ val ]);
+                jQuery(field).trigger('addTag', [ val ]);
             });
         }
     }
