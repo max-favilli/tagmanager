@@ -52,12 +52,13 @@ jQuery.fn.tagsManager = function(options) {
     };
 
     jQuery.extend(tagManagerOptions, options);
+    jQuery(this).data('tagManagerOptions', tagManagerOptions);
 
     /**
      * Refresh the selected values tag list hidden field
      */
     jQuery(this).on('refreshTagList', function(e) {
-        if (tagManagerOptions.strategy == 'comma-delimited')
+        if (jQuery(this).data('tagManagerOptions').strategy == 'comma-delimited')
             jQuery(jQuery(this).data("tagList")).val(jQuery(this).data("tlis").join(",")).change();
     });
 
@@ -110,9 +111,9 @@ jQuery.fn.tagsManager = function(options) {
         var p = jQuery.inArray(parseInt(jQuery(tagHtml).attr("tagMarker")), tlid)
 
         if (p != -1) {
-            if (tagManagerOptions.ajaxDelete != null) {
+            if (jQuery(this).data('tagManagerOptions').ajaxDelete != null) {
                 jQuery.ajax({
-                    url: tagManagerOptions.ajaxDelete,
+                    url: jQuery(this).data('tagManagerOptions').ajaxDelete,
                     type: 'post',
                     data: {
                         tag: jQuery(tagHtml).attr('tag')
@@ -140,7 +141,7 @@ jQuery.fn.tagsManager = function(options) {
          var t = 0;
 
          for (var i = l - 1; i >= 0; i--) {
-            if (-1 == jQuery.inArray(txt.charCodeAt(i), tagManagerOptions.delimeters)) break;
+            if (-1 == jQuery.inArray(txt.charCodeAt(i), jQuery(this).data('tagManagerOptions').delimeters)) break;
             t++;
          }
 
@@ -150,7 +151,7 @@ jQuery.fn.tagsManager = function(options) {
 
          //remove from head
          for (var i = 0; i < l; i++) {
-            if (-1 == jQuery.inArray(txt.charCodeAt(i), tagManagerOptions.delimeters)) break;
+            if (-1 == jQuery.inArray(txt.charCodeAt(i), jQuery(this).data('tagManagerOptions').delimeters)) break;
             t++;
          }
 
@@ -159,18 +160,18 @@ jQuery.fn.tagsManager = function(options) {
 
          if (!tag || tag.length <= 0) return;
 
-         if (tagManagerOptions.capitalizeFirstLetter) {
+         if (jQuery(this).data('tagManagerOptions').capitalizeFirstLetter) {
             tag = tag.charAt(0).toUpperCase() + tag.slice(1).toLowerCase();
          }
 
-         if (tagManagerOptions.validator !== undefined) {
-           if ( tagManagerOptions.validator(tag) !== true ) return;
+         if (jQuery(this).data('tagManagerOptions').validator !== undefined) {
+           if ( jQuery(this).data('tagManagerOptions').validator(tag) !== true ) return;
          }
 
          var tlis = jQuery(this).data("tlis");
          var tlid = jQuery(this).data("tlid");
 
-         if ( tagManagerOptions.maxTags > 0 && tlis.length >= tagManagerOptions.maxTags ) return;
+         if ( jQuery(this).data('tagManagerOptions').maxTags > 0 && tlis.length >= jQuery(this).data('tagManagerOptions').maxTags ) return;
 
         if (jQuery.inArray(tag, tlis) != -1) {
             if (jQuery(this).duplicateHandler) jQuery(this).duplicateHandler(tlid[p]);
@@ -178,9 +179,9 @@ jQuery.fn.tagsManager = function(options) {
             return;
         }
 
-        if (tagManagerOptions.ajaxAdd != null && !skipAjax) {
+        if (jQuery(this).data('tagManagerOptions').ajaxAdd != null && !skipAjax) {
             jQuery.ajax({
-                url: tagManagerOptions.ajaxAdd,
+                url: jQuery(this).data('tagManagerOptions').ajaxAdd,
                 type: 'post',
                 data: {
                     tag: tag
@@ -205,10 +206,10 @@ jQuery.fn.tagsManager = function(options) {
             .data('tagmanager', this)
             .text(tag);
 
-        if (tagManagerOptions.strategy == 'array') {
+        if (jQuery(this).data('tagManagerOptions').strategy == 'array') {
             jQuery('<input></input>')
                 .attr('type', 'hidden')
-                .attr('name', tagManagerOptions.tagValuesFieldName)
+                .attr('name', jQuery(this).data('tagManagerOptions').tagValuesFieldName)
                 .val(tag)
                 .appendTo(tagHtml);
         }
@@ -218,18 +219,18 @@ jQuery.fn.tagsManager = function(options) {
             .addClass('myTagRemover')
             .attr('title', 'Remove')
             .attr('href', '#')
-            .html(tagManagerOptions.tagCloseHtml)
+            .html(jQuery(this).data('tagManagerOptions').tagCloseHtml)
             .appendTo(tagHtml);
 
-        if(tagManagerOptions.insertTagHandler != null) {
-            tagManagerOptions.insertTagHandler(tagHtml);
+        if(jQuery(this).data('tagManagerOptions').insertTagHandler != null) {
+            jQuery(this).data('tagManagerOptions').insertTagHandler(tagHtml);
         }else {
             jQuery(this).before(tagHtml);
         }
 
         jQuery(this).trigger('refreshTagList');
 
-        if (tagManagerOptions.maxTags > 0 && tlis.length >= tagManagerOptions.maxTags ) {
+        if (jQuery(this).data('tagManagerOptions').maxTags > 0 && tlis.length >= jQuery(this).data('tagManagerOptions').maxTags ) {
             jQuery(this).hide();
         }
 
@@ -259,7 +260,7 @@ jQuery.fn.tagsManager = function(options) {
      * Prevent submit on enter
      */
     jQuery(this).keypress(function(e) {
-        if (tagManagerOptions.preventSubmitOnEnter) {
+        if (jQuery(this).data('tagManagerOptions').preventSubmitOnEnter) {
             if (e.which == 13) {
                 e.stopPropagation();
                 e.preventDefault();
@@ -271,9 +272,9 @@ jQuery.fn.tagsManager = function(options) {
      * If backspace then delete latest tag
      */
     jQuery(this).keydown(function(e) {
-        if(!tagManagerOptions.deleteTagsOnBackspace) return;
+        if(!jQuery(this).data('tagManagerOptions').deleteTagsOnBackspace) return;
 
-        if (jQuery.inArray(e.which, tagManagerOptions.backspace) != -1) {
+        if (jQuery.inArray(e.which, jQuery(this).data('tagManagerOptions').backspace) != -1) {
             // backspace or equivalent
             if (!jQuery(this).val()) {
                 e.preventDefault();
@@ -286,7 +287,7 @@ jQuery.fn.tagsManager = function(options) {
      * If a delimiting key is pressed, add the current value
      */
     jQuery(this).keyup(function (e) {
-        if (jQuery.inArray(e.which, tagManagerOptions.delimeters) != -1) {
+        if (jQuery.inArray(e.which, jQuery(this).data('tagManagerOptions').delimeters) != -1) {
             e.preventDefault();
 
             // If the typeahead is selected use that value else use field value
@@ -305,14 +306,14 @@ jQuery.fn.tagsManager = function(options) {
     jQuery(this).data("tlid", new Array()); //list of ID of the string tags
 
 
-    switch (tagManagerOptions.strategy) {
+    switch (jQuery(this).data('tagManagerOptions').strategy) {
         case 'array':
             break;
 
         case 'comma-delimited':
         default:
             var hiddenTagsField = jQuery('<input></input')
-                .attr('name', tagManagerOptions.tagValuesFieldName)
+                .attr('name', jQuery(this).data('tagManagerOptions').tagValuesFieldName)
                 .attr('type', 'hidden')
                 .val('');
 
@@ -321,12 +322,12 @@ jQuery.fn.tagsManager = function(options) {
             break;
     }
 
-    if (tagManagerOptions.typeahead) {
-        jQuery(this).typeahead(tagManagerOptions.typeahead);
+    if (jQuery(this).data('tagManagerOptions').typeahead) {
+        jQuery(this).typeahead(jQuery(this).data('tagManagerOptions').typeahead);
     }
 
-    if (tagManagerOptions.prefilled) {
-        jQuery(this).trigger('importTags', [ tagManagerOptions.prefilled ]);
+    if (jQuery(this).data('tagManagerOptions').prefilled) {
+        jQuery(this).trigger('importTags', [ jQuery(this).data('tagManagerOptions').prefilled ]);
     }
 }
 
