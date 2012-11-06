@@ -61,6 +61,13 @@ jQuery.fn.tagsManager = function(options) {
     });
 
     /**
+     * Reset / prep the tag list
+     */
+    jQuery(this).on('reset', function(e) {
+
+    });
+
+    /**
      * Delete the last tag
      */
     jQuery(this).on('popTag', function (e) {
@@ -249,11 +256,13 @@ jQuery.fn.tagsManager = function(options) {
     jQuery(this).data("tlis", new Array()); //list of string tags
     jQuery(this).data("tlid", new Array()); //list of ID of the string tags
 
-    jQuery(this).after('<input name="' + tagManagerOptions.hiddenTagListName + '" type="hidden" value=""/>');
+    var hiddenTagsField = jQuery('<input></input')
+        .attr('name', tagManagerOptions.hiddenTagListName)
+        .attr('type', 'hidden')
+        .val('');
 
-    jQuery(this).data("tagList",
-        this.siblings("input[name='" + tagManagerOptions.hiddenTagListName + "']")[0]
-    );
+    jQuery(this).after(hiddenTagsField);
+    jQuery(this).data("tagList", hiddenTagsField);
 
     if (tagManagerOptions.typeahead) {
         $(this).typeahead(tagManagerOptions.typeahead);
