@@ -61,10 +61,15 @@ jQuery.fn.tagsManager = function(options) {
     });
 
     /**
-     * Reset / prep the tag list
+     * Empty the tag manager
      */
-    jQuery(this).on('reset', function(e) {
+    jQuery(this).on('emptyTags', function(e) {
+        jQuery(this).data("tlis", new Array());
+        jQuery(this).data("tlid", new Array());
 
+        jQuery('[id*="' + jQuery(this).attr('name') + '_"]').remove();
+
+        jQuery(this).data("tagList").val('');
     });
 
     /**
