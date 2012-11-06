@@ -146,6 +146,7 @@ jQuery.fn.tagsManager = function(options)
 
         if (!tag || tag.length <= 0) return;
 
+        // Caps first letter
         if (jQuery(this).data('tagManagerOptions').capitalizeFirstLetter) {
             tag = tag.charAt(0).toUpperCase() + tag.slice(1).toLowerCase();
         }
@@ -158,10 +159,17 @@ jQuery.fn.tagsManager = function(options)
         var tagStrings = jQuery(this).data("tagStrings");
         var tagIds = jQuery(this).data("tagIds");
 
+        // Check max tags
         if (jQuery(this).data('tagManagerOptions').maxTags > 0
-            && tagStrings.length >= jQuery(this).data('tagManagerOptions').maxTags)
-            return;
+            && tagStrings.length >= jQuery(this).data('tagManagerOptions').maxTags) {
+            jQuery(this).attr('originalPlaceholder', jQuery(this).attr('placeholder'));
+            jQuery(this).attr('placeholder', 'Maximum of ' + jQuery(this).data('tagManagerOptions').maxTags + ' tags');
+            jQuery(this).val('');
 
+            return;
+        }
+
+        // Check for duplicates and run handler
         if (jQuery.inArray(tag, tagStrings) != -1) {
             if (jQuery(this).duplicateHandler)
                 jQuery(this).duplicateHandler(tagIds[p]);
@@ -169,6 +177,7 @@ jQuery.fn.tagsManager = function(options)
             return;
         }
 
+        // Run ajax
         if (jQuery(this).data('tagManagerOptions').ajaxAdd != null && !skipAjax) {
             jQuery.ajax({
                 url: jQuery(this).data('tagManagerOptions').ajaxAdd,
@@ -180,10 +189,10 @@ jQuery.fn.tagsManager = function(options)
             });
         }
 
+        // Build new tag
         var tagId = +new Date(); // fetch ms
         tagStrings.push(tag);
         tagIds.push(tagId);
-
 
         var newTagId = 'tag_' + tagId;
         var newTagRemoveId = 'tag_remover_' + tagId;
@@ -196,6 +205,7 @@ jQuery.fn.tagsManager = function(options)
             .data('tagmanager', this)
             .text(tag);
 
+        // Handle array strategy
         if (jQuery(this).data('tagManagerOptions').strategy == 'array') {
             jQuery('<input></input>')
                 .attr('type', 'hidden')
@@ -204,7 +214,7 @@ jQuery.fn.tagsManager = function(options)
                 .appendTo(tagHtml);
         }
 
-
+        // Build remove link
         var tagRemover = jQuery('<a></a>')
             .addClass('tagmanagerRemoveTag')
             .attr('title', 'Remove')
@@ -212,6 +222,7 @@ jQuery.fn.tagsManager = function(options)
             .html(jQuery(this).data('tagManagerOptions').tagCloseHtml)
             .appendTo(tagHtml);
 
+        // Run custom insert tag handler
         if(jQuery(this).data('tagManagerOptions').insertTagHandler != null) {
             jQuery(this).data('tagManagerOptions').insertTagHandler(tagHtml);
         }else {
@@ -219,11 +230,6 @@ jQuery.fn.tagsManager = function(options)
         }
 
         jQuery(this).trigger('refreshTagList');
-
-        if (jQuery(this).data('tagManagerOptions').maxTags > 0
-            && tagStrings.length >= jQuery(this).data('tagManagerOptions').maxTags ) {
-            jQuery(this).hide();
-        }
 
         jQuery(this).data('typeahead').hide();
         jQuery(this).val('');
