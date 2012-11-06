@@ -13,7 +13,7 @@
 <script>
 $(function() {
 
-    $('.tagManager').tagsManager({
+    $('.tagManager1').tagsManager({
         prefilled: ['seven', 'eight'],
         CapitalizeFirstLetter: true,
         preventSubmitOnEnter: true,
@@ -32,8 +32,30 @@ $(function() {
         ajaxDelete: 'http://localhost/tag/delete'
     });
 
+    $('.tagManager2').tagsManager({
+        prefilled: ['abc', 'def'],
+        CapitalizeFirstLetter: true,
+        preventSubmitOnEnter: true,
+        typeahead: {
+            autoselect: true,
+            source: ['ghi', 'jkl', 'mno', 'pqr', 'stu', 'vwx'],
+            suppressKeyPressRepeat: true,
+            updater: function(tag) {
+                this.$element.trigger('addTag', [ tag ]);
+            }
+        },
+        delimeters: [44, 188, 13],
+        backspace: [8],
+        hiddenTagListName: 'hiddenTagListA',
+        ajaxAdd: 'http://localhost/tag/add',
+        ajaxDelete: 'http://localhost/tag/delete'
+    });
+
+
 });
 </script>
 
 
-<input type="text" name="tags" placeholder="Tags" class="tagManager"/>
+<input type="text" name="tags" placeholder="Tags" class="tagManager1"/>
+<br><br>
+<input type="text" name="tags" placeholder="Tags" class="tagManager2"/>
