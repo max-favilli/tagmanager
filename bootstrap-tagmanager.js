@@ -21,7 +21,8 @@ jQuery(function() {
 
 "use strict"; // jshint ;_;
 
-jQuery.fn.tagsManager = function(options) {
+jQuery.fn.tagsManager = function(options)
+{
     var tagManagerOptions = {
         prefilled: null,
         capitalizeFirstLetter: false,
@@ -57,7 +58,8 @@ jQuery.fn.tagsManager = function(options) {
     /**
      * Refresh the selected values tag list hidden field
      */
-    jQuery(this).on('refreshTagList', function(e) {
+    jQuery(this).on('refreshTagList', function(e)
+    {
         if (jQuery(this).data('tagManagerOptions').strategy == 'comma-delimited')
             jQuery(jQuery(this).data("tagList")).val(jQuery(this).data("tagStrings").join(",")).change();
     });
@@ -66,7 +68,8 @@ jQuery.fn.tagsManager = function(options) {
     /**
      * Bind remove tag icon
      */
-    jQuery('a.tagmanagerRemoveTag').live('click', function(e) {
+    jQuery('a.tagmanagerRemoveTag').live('click', function(e)
+    {
         jQuery(jQuery(this).parent().data('tagmanager')).trigger('deleteTag', [ jQuery(this).parent() ]);
         return false;
     });
@@ -74,7 +77,8 @@ jQuery.fn.tagsManager = function(options) {
     /**
      * Empty the tag manager
      */
-    jQuery(this).on('emptyTags', function(e) {
+    jQuery(this).on('emptyTags', function(e)
+    {
         jQuery(this).data("tagStrings", new Array());
         jQuery(this).data("tagIds", new Array());
 
@@ -91,7 +95,8 @@ jQuery.fn.tagsManager = function(options) {
     /**
      * Delete the last tag
      */
-    jQuery(this).on('popTag', function (e) {
+    jQuery(this).on('popTag', function (e)
+    {
         if (jQuery(this).data("tagIds").length > 0) {
             var tagIds = jQuery(this).data("tagIds");
             var id = 'tag_' + tagIds[tagIds.length - 1];
@@ -103,8 +108,8 @@ jQuery.fn.tagsManager = function(options) {
     /**
      * Delete a tag
      */
-    jQuery(this).on('deleteTag', function(e, tagHtml) {
-
+    jQuery(this).on('deleteTag', function(e, tagHtml)
+    {
         var tagStrings = jQuery(this).data("tagStrings");
         var tagIds = jQuery(this).data("tagIds");
 
@@ -132,31 +137,9 @@ jQuery.fn.tagsManager = function(options) {
     /**
      * Add a new tag
      */
-     jQuery(this).on('addTag', function (e, tag, skipAjax) {
-
-        // Trim tag
-         var txt = jQuery.trim(tag);
-
-         var l = txt.length;
-         var t = 0;
-
-         for (var i = l - 1; i >= 0; i--) {
-            if (-1 == jQuery.inArray(txt.charCodeAt(i), jQuery(this).data('tagManagerOptions').delimeters)) break;
-            t++;
-         }
-
-         txt = txt.substring(0, l - t);
-         l = txt.length;
-         t = 0;
-
-         //remove from head
-         for (var i = 0; i < l; i++) {
-            if (-1 == jQuery.inArray(txt.charCodeAt(i), jQuery(this).data('tagManagerOptions').delimeters)) break;
-            t++;
-         }
-
-         tag  = txt.substring(t, l);
-        // End trim
+     jQuery(this).on('addTag', function (e, tag, skipAjax)
+     {
+         var tag = jQuery.trim(tag);
 
          if (!tag || tag.length <= 0) return;
 
@@ -242,7 +225,8 @@ jQuery.fn.tagsManager = function(options) {
     /**
      * Import prefilled tags without triggering ajaxAdd
      */
-    jQuery(this).on('importTags', function (e, tags) {
+    jQuery(this).on('importTags', function (e, tags)
+    {
         var field = this;
 
         if (typeof (tags) == "object") {
@@ -259,7 +243,8 @@ jQuery.fn.tagsManager = function(options) {
     /**
      * Prevent submit on enter
      */
-    jQuery(this).keypress(function(e) {
+    jQuery(this).keypress(function(e)
+    {
         if (jQuery(this).data('tagManagerOptions').preventSubmitOnEnter) {
             if (e.which == 13) {
                 e.stopPropagation();
@@ -271,7 +256,8 @@ jQuery.fn.tagsManager = function(options) {
     /**
      * If backspace then delete latest tag
      */
-    jQuery(this).keydown(function(e) {
+    jQuery(this).keydown(function(e)
+    {
         if(!jQuery(this).data('tagManagerOptions').deleteTagsOnBackspace) return;
 
         if (jQuery.inArray(e.which, jQuery(this).data('tagManagerOptions').backspace) != -1) {
@@ -286,7 +272,8 @@ jQuery.fn.tagsManager = function(options) {
     /**
      * If a delimiting key is pressed, add the current value
      */
-    jQuery(this).keyup(function (e) {
+    jQuery(this).keyup(function (e)
+    {
         if (jQuery.inArray(e.which, jQuery(this).data('tagManagerOptions').delimeters) != -1) {
             e.preventDefault();
 
