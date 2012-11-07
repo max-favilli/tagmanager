@@ -154,7 +154,8 @@ jQuery.fn.tagsManager = function(options)
 
         // Validate Tag
         if (jQuery(this).data('tagManagerOptions').validatorHandler !== undefined) {
-            if ( jQuery(this).data('tagManagerOptions').validatorHandler(tag) !== true ) return;
+            tag = Query(this).data('tagManagerOptions').validatorHandler(tag);
+            if (!tag) return;
         }
 
         var tagStrings = jQuery(this).data("tagStrings");
