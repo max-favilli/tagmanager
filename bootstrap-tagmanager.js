@@ -36,10 +36,15 @@ jQuery.fn.tagManager = function(options)
         maxTags: 0,
         tagValuesFieldName: "hidden_" + this.attr('name'),
         deleteTagsOnBackspace: true,
-        duplicateHandler: null,
-        insertTagHandler: null,
-        validatorHandler: null,
         tagCloseHtml: 'x',
+
+        insertTagHandler: null,
+        duplicateHandler: function(tag) {
+            return tag;
+        },
+        validatorHandler: function(tag) {
+            return tag;
+        },
 
         /**
          * Strategy refers to how data is stored locally and posted when
@@ -153,8 +158,8 @@ jQuery.fn.tagManager = function(options)
         }
 
         // Validate Tag
-        if (jQuery(this).data('tagManagerOptions').validatorHandler !== undefined) {
-            tag = Query(this).data('tagManagerOptions').validatorHandler(tag);
+        if (jQuery(this).data('tagManagerOptions').validatorHandler) {
+            tag = jQuery(this).data('tagManagerOptions').validatorHandler(tag);
             if (!tag) return;
         }
 
@@ -172,11 +177,11 @@ jQuery.fn.tagManager = function(options)
         }
 
         // Check for duplicates and run handler
-        if (jQuery.inArray(tag, tagStrings) != -1) {
-            if (jQuery(this).duplicateHandler)
-                jQuery(this).duplicateHandler(tagIds[p]);
-            jQuery(this).focus();
-            return;
+        if (jQuery(this).data('tagManagerOptions').duplicateHandler)
+            var index = jQuery.inArray(tag, tagStrings);
+            if (index != -1) {
+                tag = jQuery(this).data('tagManagerOptions').duplicateHandler(tag);
+            if (!tag) return;
         }
 
         // Run ajax
