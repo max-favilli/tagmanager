@@ -22,7 +22,7 @@ jQuery(function() {
 
 "use strict"; // jshint ;_;
 
-jQuery.fn.tagsManager = function(options)
+jQuery.fn.tagManager = function(options)
 {
     var tagManagerOptions = {
         prefilled: null,
