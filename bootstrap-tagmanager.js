@@ -38,6 +38,7 @@ jQuery.fn.tagsManager = function(options)
         deleteTagsOnBackspace: true,
         duplicateHandler: null,
         insertTagHandler: null,
+        validatorHandler: null,
         tagCloseHtml:'x',
 
         /**
@@ -152,8 +153,8 @@ jQuery.fn.tagsManager = function(options)
         }
 
         // Validate Tag
-        if (jQuery(this).data('tagManagerOptions').validator !== undefined) {
-            if ( jQuery(this).data('tagManagerOptions').validator(tag) !== true ) return;
+        if (jQuery(this).data('tagManagerOptions').validatorHandler !== undefined) {
+            if ( jQuery(this).data('tagManagerOptions').validatorHandler(tag) !== true ) return;
         }
 
         var tagStrings = jQuery(this).data("tagStrings");
