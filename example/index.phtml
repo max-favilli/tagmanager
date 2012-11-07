@@ -28,8 +28,6 @@ $(function() {
         delimeters: [44, 188, 13],
         backspace: [8],
         tagValuesFieldName: 'hiddenTagListA',
-        ajaxAdd: 'http://localhost/tag/add',
-        ajaxDelete: 'http://localhost/tag/delete',
         strategy: 'csv'
     });
 
@@ -53,6 +51,24 @@ $(function() {
         tagValuesFieldName: 'tags[]'
     });
 
+    $('.tagManager3').tagManager({
+        prefilled: ['abc', 'def'],
+        capitalizeFirstLetter: true,
+        preventSubmitOnEnter: true,
+        typeahead: {
+            autoselect: false,
+            source: ['ghi', 'jkl', 'mno', 'pqr', 'stu', 'vwx'],
+            suppressKeyPressRepeat: true,
+            updater: function(tag) {
+                this.$element.trigger('addTag', [ tag ]);
+            }
+        },
+        delimeters: [44, 188, 13],
+        backspace: [8],
+        strategy: 'ajax',
+        ajaxAdd: 'http://localhost/tag/add',
+        ajaxDelete: 'http://localhost/tag/delete'
+    });
 
 });
 </script>
@@ -61,6 +77,8 @@ $(function() {
 <input type="text" name="tags1" placeholder="Tags" class="tagManager1"/>
 <br><br>
 <input type="text" name="tags2" placeholder="Tags" class="tagManager2"/>
+<br><br>
+<input type="text" name="tags3" placeholder="Tags" class="tagManager3"/>
 
 <input type="submit">
 </form>

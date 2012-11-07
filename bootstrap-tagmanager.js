@@ -29,8 +29,6 @@ jQuery.fn.tagManager = function(options)
         capitalizeFirstLetter: false,
         preventSubmitOnEnter: true,
         typeahead: null,
-        ajaxAdd: null,
-        ajaxDelete: null,
         delimeters: [44, 188, 13],
         backspace: [8],
         maxTags: 0,
@@ -47,10 +45,18 @@ jQuery.fn.tagManager = function(options)
         },
 
         /**
+         * Used for strategy: 'tags'
+         */
+        ajaxAdd: null,
+        ajaxDelete: null,
+
+        /**
          * Strategy refers to how data is stored locally and posted when
          * the form is submitted.
          *
          * csv: a hidden field will store all tags in a comma delimited list
+         *
+         * ajax: tags are added and removed over ajax with no local storage
          *
          * array: multiple hidden fields will each store one tag with a
          *        common hidden_field_name[] If you use this strategy you _must_ change
@@ -315,6 +321,9 @@ jQuery.fn.tagManager = function(options)
 
     switch (jQuery(this).data('tagManagerOptions').strategy) {
         case 'array':
+            break;
+
+        case 'ajax':
             break;
 
         case 'csv':
