@@ -18,11 +18,11 @@
  * ==========================================================
  */
 
-jQuery(function() {
+$(function() {
 
 "use strict"; // jshint ;_;
 
-jQuery.fn.tagManager = function(options)
+$.fn.tagManager = function(options)
 {
     var tagManagerOptions = {
         prefilled: null,
@@ -45,7 +45,7 @@ jQuery.fn.tagManager = function(options)
         },
 
         /**
-         * Used for strategy: 'tags'
+         * Used for strategy: 'ajax'
          */
         ajaxAdd: null,
         ajaxDelete: null,
@@ -65,78 +65,78 @@ jQuery.fn.tagManager = function(options)
         strategy: 'csv'
     };
 
-    jQuery.extend(tagManagerOptions, options);
-    jQuery(this).data('tagManagerOptions', tagManagerOptions);
+    $.extend(tagManagerOptions, options);
+    $(this).data('tagManagerOptions', tagManagerOptions);
 
     /**
      * Refresh the selected values tag list hidden field
      */
-    jQuery(this).on('refreshTagList', function(e)
+    $(this).on('refreshTagList', function(e)
     {
-        if (jQuery(this).data('tagManagerOptions').strategy == 'csv')
-            jQuery(jQuery(this).data("tagList")).val(
-                jQuery(this).data("tagStrings").join(",")).change();
+        if ($(this).data('tagManagerOptions').strategy == 'csv')
+            $($(this).data("tagList")).val(
+                $(this).data("tagStrings").join(",")).change();
     });
 
 
     /**
      * Bind remove tag icon
      */
-    jQuery('a.tagmanagerRemoveTag').live('click', function(e)
+    $('a.tagmanagerRemoveTag').live('click', function(e)
     {
-        jQuery(jQuery(this).parent().data('tagmanager')).trigger('deleteTag',
-            [ jQuery(this).parent() ]);
+        $($(this).parent().data('tagmanager')).trigger('deleteTag',
+            [ $(this).parent() ]);
         return false;
     });
 
     /**
      * Empty the tag manager
      */
-    jQuery(this).on('emptyTags', function(e)
+    $(this).on('emptyTags', function(e)
     {
-        jQuery(this).data("tagStrings", new Array());
-        jQuery(this).data("tagIds", new Array());
+        $(this).data("tagStrings", new Array());
+        $(this).data("tagIds", new Array());
 
         var field = this;
 
-        jQuery('[id*="tag_"]').each(function(index, node) {
-            if (jQuery(this).data('tagmanager') == field)
-                jQuery(this).remove();
+        $('[id*="tag_"]').each(function(index, node) {
+            if ($(this).data('tagmanager') == field)
+                $(this).remove();
         });
 
-        jQuery(this).trigger('refreshTagList');
+        $(this).trigger('refreshTagList');
     });
 
     /**
      * Delete the last tag
      */
-    jQuery(this).on('popTag', function (e)
+    $(this).on('popTag', function (e)
     {
-        if (jQuery(this).data("tagIds").length > 0) {
-            var tagIds = jQuery(this).data("tagIds");
+        if ($(this).data("tagIds").length > 0) {
+            var tagIds = $(this).data("tagIds");
             var id = 'tag_' + tagIds[tagIds.length - 1];
 
-            jQuery(this).trigger('deleteTag', [ jQuery('#' + id) ]);
+            $(this).trigger('deleteTag', [ $('#' + id) ]);
         }
     });
 
     /**
      * Delete a tag
      */
-    jQuery(this).on('deleteTag', function(e, tagHtml)
+    $(this).on('deleteTag', function(e, tagHtml)
     {
-        var tagStrings = jQuery(this).data("tagStrings");
-        var tagIds = jQuery(this).data("tagIds");
+        var tagStrings = $(this).data("tagStrings");
+        var tagIds = $(this).data("tagIds");
 
-        var p = jQuery.inArray(parseInt(jQuery(tagHtml).attr("tagMarker")), tagIds)
+        var p = $.inArray(parseInt($(tagHtml).attr("tagMarker")), tagIds)
 
         if (p != -1) {
-            if (jQuery(this).data('tagManagerOptions').ajaxDelete != null) {
-                jQuery.ajax({
-                    url: jQuery(this).data('tagManagerOptions').ajaxDelete,
+            if ($(this).data('tagManagerOptions').ajaxDelete != null) {
+                $.ajax({
+                    url: $(this).data('tagManagerOptions').ajaxDelete,
                     type: 'post',
                     data: {
-                        tag: jQuery(tagHtml).attr('tag')
+                        tag: $(tagHtml).attr('tag')
                     },
                     dataType: 'json'
                 });
@@ -144,56 +144,56 @@ jQuery.fn.tagManager = function(options)
 
             tagStrings.splice(p, 1);
             tagIds.splice(p, 1);
-            jQuery(tagHtml).remove();
-            jQuery(this).trigger('refreshTagList');
+            $(tagHtml).remove();
+            $(this).trigger('refreshTagList');
         }
     });
 
     /**
      * Add a new tag
      */
-     jQuery(this).on('addTag', function (e, tag, skipAjax)
+     $(this).on('addTag', function (e, tag, skipAjax)
      {
-        var tag = jQuery.trim(tag);
+        var tag = $.trim(tag);
 
         if (!tag || tag.length <= 0) return;
 
         // Caps first letter
-        if (jQuery(this).data('tagManagerOptions').capitalizeFirstLetter) {
+        if ($(this).data('tagManagerOptions').capitalizeFirstLetter) {
             tag = tag.charAt(0).toUpperCase() + tag.slice(1).toLowerCase();
         }
 
         // Validate Tag
-        if (jQuery(this).data('tagManagerOptions').validatorHandler) {
-            tag = jQuery(this).data('tagManagerOptions').validatorHandler(tag);
+        if ($(this).data('tagManagerOptions').validatorHandler) {
+            tag = $(this).data('tagManagerOptions').validatorHandler(tag);
             if (!tag) return;
         }
 
-        var tagStrings = jQuery(this).data("tagStrings");
-        var tagIds = jQuery(this).data("tagIds");
+        var tagStrings = $(this).data("tagStrings");
+        var tagIds = $(this).data("tagIds");
 
         // Check max tags
-        if (jQuery(this).data('tagManagerOptions').maxTags > 0
-            && tagStrings.length >= jQuery(this).data('tagManagerOptions').maxTags) {
-            jQuery(this).attr('originalPlaceholder', jQuery(this).attr('placeholder'));
-            jQuery(this).attr('placeholder', 'Maximum of ' + jQuery(this).data('tagManagerOptions').maxTags + ' tags');
-            jQuery(this).val('');
+        if ($(this).data('tagManagerOptions').maxTags > 0
+            && tagStrings.length >= $(this).data('tagManagerOptions').maxTags) {
+            $(this).attr('originalPlaceholder', $(this).attr('placeholder'));
+            $(this).attr('placeholder', 'Maximum of ' + $(this).data('tagManagerOptions').maxTags + ' tags');
+            $(this).val('');
 
             return;
         }
 
         // Check for duplicates and run handler
-        if (jQuery(this).data('tagManagerOptions').duplicateHandler)
-            var index = jQuery.inArray(tag, tagStrings);
+        if ($(this).data('tagManagerOptions').duplicateHandler)
+            var index = $.inArray(tag, tagStrings);
             if (index != -1) {
-                tag = jQuery(this).data('tagManagerOptions').duplicateHandler(tag);
+                tag = $(this).data('tagManagerOptions').duplicateHandler(tag);
             if (!tag) return;
         }
 
         // Run ajax
-        if (jQuery(this).data('tagManagerOptions').ajaxAdd != null && !skipAjax) {
-            jQuery.ajax({
-                url: jQuery(this).data('tagManagerOptions').ajaxAdd,
+        if ($(this).data('tagManagerOptions').ajaxAdd != null && !skipAjax) {
+            $.ajax({
+                url: $(this).data('tagManagerOptions').ajaxAdd,
                 type: 'post',
                 data: {
                     tag: tag
@@ -210,7 +210,7 @@ jQuery.fn.tagManager = function(options)
         var newTagId = 'tag_' + tagId;
         var newTagRemoveId = 'tag_remover_' + tagId;
 
-        var tagHtml = jQuery('<span></span>')
+        var tagHtml = $('<span></span>')
             .addClass('tagmanagerTag')
             .attr('tag', tag)
             .attr('tagMarker', tagId)
@@ -219,50 +219,50 @@ jQuery.fn.tagManager = function(options)
             .text(tag);
 
         // Handle array strategy
-        if (jQuery(this).data('tagManagerOptions').strategy == 'array') {
-            jQuery('<input></input>')
+        if ($(this).data('tagManagerOptions').strategy == 'array') {
+            $('<input></input>')
                 .attr('type', 'hidden')
-                .attr('name', jQuery(this).data('tagManagerOptions').tagValuesFieldName)
+                .attr('name', $(this).data('tagManagerOptions').tagValuesFieldName)
                 .val(tag)
                 .appendTo(tagHtml);
         }
 
         // Build remove link
-        var tagRemover = jQuery('<a></a>')
+        var tagRemover = $('<a></a>')
             .addClass('tagmanagerRemoveTag')
             .attr('title', 'Remove')
             .attr('href', '#')
-            .html(jQuery(this).data('tagManagerOptions').tagCloseHtml)
+            .html($(this).data('tagManagerOptions').tagCloseHtml)
             .appendTo(tagHtml);
 
         // Run custom insert tag handler
-        if(jQuery(this).data('tagManagerOptions').insertTagHandler != null) {
-            jQuery(this).data('tagManagerOptions').insertTagHandler(tagHtml);
+        if($(this).data('tagManagerOptions').insertTagHandler != null) {
+            $(this).data('tagManagerOptions').insertTagHandler(tagHtml);
         }else {
-            jQuery(this).before(tagHtml);
+            $(this).before(tagHtml);
         }
 
-        jQuery(this).trigger('refreshTagList');
+        $(this).trigger('refreshTagList');
 
-        jQuery(this).data('typeahead').hide();
-        jQuery(this).val('');
-        jQuery(this).focus();
+        $(this).data('typeahead').hide();
+        $(this).val('');
+        $(this).focus();
     });
 
     /**
      * Import prefilled tags without triggering ajaxAdd
      */
-    jQuery(this).on('importTags', function (e, tags)
+    $(this).on('importTags', function (e, tags)
     {
         var field = this;
 
         if (typeof (tags) == "object") {
-            jQuery.each(tags, function (key, val) {
-                jQuery(field).trigger('addTag', [ val, true ]);
+            $.each(tags, function (key, val) {
+                $(field).trigger('addTag', [ val, true ]);
             });
         } else if (typeof (tags) == "string") {
-            jQuery.each(tags.split(','), function (key, val) {
-                jQuery(field).trigger('addTag', [ val, true ]);
+            $.each(tags.split(','), function (key, val) {
+                $(field).trigger('addTag', [ val, true ]);
             });
         }
     });
@@ -270,9 +270,9 @@ jQuery.fn.tagManager = function(options)
     /**
      * Prevent submit on enter
      */
-    jQuery(this).keypress(function(e)
+    $(this).keypress(function(e)
     {
-        if (jQuery(this).data('tagManagerOptions').preventSubmitOnEnter) {
+        if ($(this).data('tagManagerOptions').preventSubmitOnEnter) {
             if (e.which == 13) {
                 e.stopPropagation();
                 e.preventDefault();
@@ -283,15 +283,15 @@ jQuery.fn.tagManager = function(options)
     /**
      * If backspace then delete latest tag
      */
-    jQuery(this).keydown(function(e)
+    $(this).keydown(function(e)
     {
-        if(!jQuery(this).data('tagManagerOptions').deleteTagsOnBackspace) return;
+        if(!$(this).data('tagManagerOptions').deleteTagsOnBackspace) return;
 
-        if (jQuery.inArray(e.which, jQuery(this).data('tagManagerOptions').backspace) != -1) {
+        if ($.inArray(e.which, $(this).data('tagManagerOptions').backspace) != -1) {
             // backspace or equivalent
-            if (!jQuery(this).val()) {
+            if (!$(this).val()) {
                 e.preventDefault();
-                jQuery(this).trigger('popTag');
+                $(this).trigger('popTag');
             }
         }
     });
@@ -299,27 +299,27 @@ jQuery.fn.tagManager = function(options)
     /**
      * If a delimiting key is pressed, add the current value
      */
-    jQuery(this).keyup(function (e)
+    $(this).keyup(function (e)
     {
-        if (jQuery.inArray(e.which, jQuery(this).data('tagManagerOptions').delimeters) != -1) {
+        if ($.inArray(e.which, $(this).data('tagManagerOptions').delimeters) != -1) {
             e.preventDefault();
 
             // If the typeahead is selected use that value else use field value
-            if (jQuery(this).data('typeahead').shown
-                && jQuery(this).data('typeahead').$menu.find('.active').length
+            if ($(this).data('typeahead').shown
+                && $(this).data('typeahead').$menu.find('.active').length
             ) {
-                jQuery(this).val(jQuery(this).data('typeahead').$menu.find('.active').attr('data-value'));
+                $(this).val($(this).data('typeahead').$menu.find('.active').attr('data-value'));
             }
 
-            jQuery(this).trigger('addTag', [ jQuery(this).val() ]);
+            $(this).trigger('addTag', [ $(this).val() ]);
         }
     });
 
     // Initialize the manager
-    jQuery(this).data("tagStrings", new Array());
-    jQuery(this).data("tagIds", new Array());
+    $(this).data("tagStrings", new Array());
+    $(this).data("tagIds", new Array());
 
-    switch (jQuery(this).data('tagManagerOptions').strategy) {
+    switch ($(this).data('tagManagerOptions').strategy) {
         case 'array':
             break;
 
@@ -328,25 +328,25 @@ jQuery.fn.tagManager = function(options)
 
         case 'csv':
         default:
-            var hiddenTagsField = jQuery('<input></input')
-                .attr('name', jQuery(this).data('tagManagerOptions').tagValuesFieldName)
+            var hiddenTagsField = $('<input></input')
+                .attr('name', $(this).data('tagManagerOptions').tagValuesFieldName)
                 .attr('type', 'hidden')
                 .val('');
 
-            jQuery(this).after(hiddenTagsField);
-            jQuery(this).data("tagList", hiddenTagsField);
+            $(this).after(hiddenTagsField);
+            $(this).data("tagList", hiddenTagsField);
             break;
     }
 
     // Init bootstrap typeahead
-    if (jQuery(this).data('tagManagerOptions').typeahead) {
-        jQuery(this).typeahead(jQuery(this).data('tagManagerOptions').typeahead);
+    if ($(this).data('tagManagerOptions').typeahead) {
+        $(this).typeahead($(this).data('tagManagerOptions').typeahead);
     }
 
     // Pre-populate values
-    if (jQuery(this).data('tagManagerOptions').prefilled) {
-        jQuery(this).trigger('importTags',
-            [ jQuery(this).data('tagManagerOptions').prefilled ]);
+    if ($(this).data('tagManagerOptions').prefilled) {
+        $(this).trigger('importTags',
+            [ $(this).data('tagManagerOptions').prefilled ]);
     }
 }
 
