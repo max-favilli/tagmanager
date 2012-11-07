@@ -39,7 +39,7 @@ jQuery.fn.tagsManager = function(options)
         duplicateHandler: null,
         insertTagHandler: null,
         validatorHandler: null,
-        tagCloseHtml:'x',
+        tagCloseHtml: 'x',
 
         /**
          * Strategy refers to how data is stored locally and posted when
