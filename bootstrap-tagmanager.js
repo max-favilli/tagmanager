@@ -75,7 +75,7 @@ $.fn.tagManager = function(options)
     {
         if ($(this).data('tagManagerOptions').strategy == 'csv')
             $($(this).data("tagList")).val(
-                $(this).data("tagStrings").join(",")).change();
+                $(this).data('tagStrings').join(",")).change();
     });
 
 
@@ -84,7 +84,7 @@ $.fn.tagManager = function(options)
      */
     $('a.tagmanagerRemoveTag').live('click', function(e)
     {
-        $(this).parent().data('tagmanager').trigger('deleteTag',
+        $($(this).parent().data('tagmanager')).trigger('deleteTag',
             [ $(this).parent() ]);
         return false;
     });
@@ -94,8 +94,8 @@ $.fn.tagManager = function(options)
      */
     $(this).on('emptyTags', function(e)
     {
-        $(this).data("tagStrings", new Array());
-        $(this).data("tagIds", new Array());
+        $(this).data('tagStrings', new Array());
+        $(this).data('tagIds', new Array());
 
         var field = this;
 
@@ -112,9 +112,8 @@ $.fn.tagManager = function(options)
      */
     $(this).on('popTag', function (e)
     {
-        if ($(this).data("tagIds").length > 0) {
-            var tagIds = $(this).data("tagIds");
-            var id = 'tag_' + tagIds[tagIds.length - 1];
+        if ($(this).data('tagIds').length > 0) {
+            var id = 'tag_' + $(this).data('tagIds')[$(this).data('tagIds').length - 1];
 
             $(this).trigger('deleteTag', [ $('#' + id) ]);
         }
@@ -125,10 +124,7 @@ $.fn.tagManager = function(options)
      */
     $(this).on('deleteTag', function(e, tagHtml)
     {
-        var tagStrings = $(this).data("tagStrings");
-        var tagIds = $(this).data("tagIds");
-
-        var p = $.inArray($(tagHtml).attr("tagMarker"), tagIds)
+        var p = $.inArray($(tagHtml).attr("tagMarker"), $(this).data('tagIds'));
 
         if (p != -1) {
             if ($(this).data('tagManagerOptions').ajaxDelete != null) {
@@ -142,8 +138,8 @@ $.fn.tagManager = function(options)
                 });
             }
 
-            tagStrings.splice(p, 1);
-            tagIds.splice(p, 1);
+            $(this).data('tagStrings').splice(p, 1);
+            $(this).data('tagIds').splice(p, 1);
             $(tagHtml).remove();
             $(this).trigger('refreshTagList');
         }
@@ -155,8 +151,7 @@ $.fn.tagManager = function(options)
      $(this).on('addTag', function (e, tag, skipAjax)
      {
         var tag = $.trim(tag);
-
-        if (!tag || tag.length <= 0) return;
+        if (!tag) return;
 
         // Caps first letter
         if ($(this).data('tagManagerOptions').capitalizeFirstLetter) {
@@ -169,12 +164,9 @@ $.fn.tagManager = function(options)
             if (!tag) return;
         }
 
-        var tagStrings = $(this).data("tagStrings");
-        var tagIds = $(this).data("tagIds");
-
         // Check max tags
         if ($(this).data('tagManagerOptions').maxTags > 0
-            && tagStrings.length >= $(this).data('tagManagerOptions').maxTags) {
+            && $(this).data('tagStrings').length >= $(this).data('tagManagerOptions').maxTags) {
             $(this).attr('originalPlaceholder', $(this).attr('placeholder'));
             $(this).attr('placeholder', 'Maximum of ' + $(this).data('tagManagerOptions').maxTags + ' tags');
             $(this).val('');
@@ -184,7 +176,7 @@ $.fn.tagManager = function(options)
 
         // Check for duplicates and run handler
         if ($(this).data('tagManagerOptions').duplicateHandler)
-            var index = $.inArray(tag, tagStrings);
+            var index = $.inArray(tag, $(this).data('tagStrings'));
             if (index != -1) {
                 tag = $(this).data('tagManagerOptions').duplicateHandler(tag);
             if (!tag) return;
@@ -211,8 +203,8 @@ $.fn.tagManager = function(options)
         };
 
         var tagId = randomString(32); // fetch ms
-        tagStrings.push(tag);
-        tagIds.push(tagId);
+        $(this).data('tagStrings').push(tag);
+        $(this).data('tagIds').push(tagId);
 
         var newTagId = 'tag_' + tagId;
         var newTagRemoveId = 'tag_remover_' + tagId;
@@ -323,8 +315,8 @@ $.fn.tagManager = function(options)
     });
 
     // Initialize the manager
-    $(this).data("tagStrings", new Array());
-    $(this).data("tagIds", new Array());
+    $(this).data('tagStrings', new Array());
+    $(this).data('tagIds', new Array());
 
     switch ($(this).data('tagManagerOptions').strategy) {
         case 'array':
