@@ -38,7 +38,7 @@ $.fn.tagManager = function(options)
 
         insertTagHandler: null,
         duplicateHandler: function(tag) {
-            return tag;
+            return false;
         },
         validatorHandler: function(tag) {
             return tag;
@@ -84,7 +84,7 @@ $.fn.tagManager = function(options)
      */
     $('a.tagmanagerRemoveTag').live('click', function(e)
     {
-        $($(this).parent().data('tagmanager')).trigger('deleteTag',
+        $(this).parent().data('tagmanager').trigger('deleteTag',
             [ $(this).parent() ]);
         return false;
     });
@@ -128,7 +128,7 @@ $.fn.tagManager = function(options)
         var tagStrings = $(this).data("tagStrings");
         var tagIds = $(this).data("tagIds");
 
-        var p = $.inArray(parseInt($(tagHtml).attr("tagMarker")), tagIds)
+        var p = $.inArray($(tagHtml).attr("tagMarker"), tagIds)
 
         if (p != -1) {
             if ($(this).data('tagManagerOptions').ajaxDelete != null) {
@@ -203,7 +203,14 @@ $.fn.tagManager = function(options)
         }
 
         // Build new tag
-        var tagId = +new Date(); // fetch ms
+        var randomString = function(length) {
+            var result = '';
+            var chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            for (var i = length; i > 0; --i) result += chars[Math.round(Math.random() * (chars.length - 1))];
+            return result;
+        };
+
+        var tagId = randomString(32); // fetch ms
         tagStrings.push(tag);
         tagIds.push(tagId);
 
