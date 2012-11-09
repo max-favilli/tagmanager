@@ -49,7 +49,7 @@
       }
       
       var obj = this;
-      var objName = obj.attr('name');
+      var objId = obj.attr('id');
       var lastTagId = 0;
       var queuedTag = "";
       var delimeters = tagManagerOptions.delimeters;
@@ -136,7 +136,7 @@
             var tagId = tlid.pop();
             tlis.pop();
             // console.log("TagIdToRemove: " + tagId);
-            jQuery("#"+objName+"_"+ tagId).remove();
+            jQuery("#"+objId+"_"+ tagId).remove();
             refreshHiddenTagList();
             // console.log(tlis);
          }
@@ -162,7 +162,7 @@
          // console.log("position: " + p);
 
          if (-1 != p) {
-            jQuery("#"+objName+"_"+ tagId).remove();
+            jQuery("#"+objId+"_"+ tagId).remove();
             tlis.splice(p, 1);
             tlid.splice(p, 1);
             refreshHiddenTagList();
@@ -201,7 +201,7 @@
 
          if (alreadyInList) {
             var pTagId = tlid[p];
-            jQuery("#"+objName+"_"+ pTagId).stop()
+            jQuery("#"+objId+"_"+ pTagId).stop()
                .animate({ backgroundColor: tagManagerOptions.blinkBGColor_1 }, 100)
                .animate({ backgroundColor: tagManagerOptions.blinkBGColor_2 }, 100)
                .animate({ backgroundColor: tagManagerOptions.blinkBGColor_1 }, 100)
@@ -219,8 +219,8 @@
 
             // console.log("tagList: " + tlis);
 
-            var newTagId = objName+'_'+tagId;
-            var newTagRemoveId = objName+'_Remover_'+ tagId;
+            var newTagId = objId+'_'+tagId;
+            var newTagRemoveId = objId+'_Remover_'+ tagId;
             var html = '';
             html += '<span class="myTag" id="'+newTagId+ '"><span>' + tag + '&nbsp;&nbsp;</span><a href="#" class="myTagRemover" id="'+newTagRemoveId+'" TagIdToRemove="'+tagId+'" title="Remove">'+tagManagerOptions.tagCloseIcon+'</a></span>';
         
