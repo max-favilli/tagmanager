@@ -27,13 +27,13 @@ $.fn.tagManager = function(options)
     var tagManagerOptions = {
         prefilled: null,
         capitalizeFirstLetter: false,
+        deleteTagsOnBackspace: true,
         preventSubmitOnEnter: true,
         typeahead: null,
         delimeters: [44, 188, 13],
         backspace: [8],
         maxTags: 0,
         tagValuesFieldName: "hidden_" + this.attr('name'),
-        deleteTagsOnBackspace: true,
         tagCloseHtml: 'x',
 
         insertTagHandler: null,
@@ -170,7 +170,6 @@ $.fn.tagManager = function(options)
             $(this).attr('originalPlaceholder', $(this).attr('placeholder'));
             $(this).attr('placeholder', 'Maximum of ' + $(this).data('tagManagerOptions').maxTags + ' tags');
             $(this).val('');
-
             return;
         }
 
@@ -202,7 +201,8 @@ $.fn.tagManager = function(options)
             return result;
         };
 
-        var tagId = randomString(32); // fetch ms
+        var tagId = randomString(32);
+
         $(this).data('tagStrings').push(tag);
         $(this).data('tagIds').push(tagId);
 
