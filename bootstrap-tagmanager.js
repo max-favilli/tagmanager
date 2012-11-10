@@ -49,7 +49,7 @@
       }
       
       var obj = this;
-      var objName = obj.attr('name');
+      var objName = obj.attr('name').replace(/[^\w]/g, '_');
       var lastTagId = 0;
       var queuedTag = "";
       var delimeters = tagManagerOptions.delimeters;
