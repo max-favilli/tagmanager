@@ -296,6 +296,8 @@ $.fn.tagManager = function(options)
      */
     $(this).keyup(function (e)
     {
+        alert(e.which);
+
         if ($.inArray(e.which, $(this).data('tagManagerOptions').delimeters) != -1) {
             e.preventDefault();
 
@@ -305,6 +307,10 @@ $.fn.tagManager = function(options)
             ) {
                 $(this).val($(this).data('typeahead').$menu.find('.active').attr('data-value'));
             }
+
+            // For non enter keystrokes trim last character from value
+            if (e.which != 13)
+                $(this).val($(this).val().substr(0, $(this).val().length -1));
 
             $(this).trigger('addTag', [ $(this).val() ]);
         }
