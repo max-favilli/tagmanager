@@ -113,7 +113,7 @@ $.fn.tagManager = function(options)
     $(this).on('popTag', function (e)
     {
         if ($(this).data('tagIds').length > 0) {
-            var id = 'tag_' + $(this).data('tagIds')[$(this).data('tagIds').length - 1];
+            var id = $(this).data('tagIds')[$(this).data('tagIds').length - 1];
 
             $(this).trigger('deleteTag', [ $('#' + id) ]);
         }
@@ -124,8 +124,7 @@ $.fn.tagManager = function(options)
      */
     $(this).on('deleteTag', function(e, tagHtml)
     {
-        var p = $.inArray($(tagHtml).attr("tagMarker"), $(this).data('tagIds'));
-
+        var p = $.inArray($(tagHtml).attr('id'), $(this).data('tagIds'));
         if (p != -1) {
             if ($(this).data('tagManagerOptions').ajaxDelete != null) {
                 $.ajax({
@@ -201,19 +200,16 @@ $.fn.tagManager = function(options)
             return result;
         };
 
-        var tagId = randomString(32);
+        var tagId = 'tag_' + randomString(32);
+        var newTagRemoveId = 'tag_remover_' + tagId;
 
         $(this).data('tagStrings').push(tag);
         $(this).data('tagIds').push(tagId);
 
-        var newTagId = 'tag_' + tagId;
-        var newTagRemoveId = 'tag_remover_' + tagId;
-
         var tagHtml = $('<span></span>')
             .addClass('tagmanagerTag')
             .attr('tag', tag)
-            .attr('tagMarker', tagId)
-            .attr('id', newTagId)
+            .attr('id', tagId)
             .data('tagmanager', this)
             .text(tag);
 
