@@ -296,8 +296,6 @@ $.fn.tagManager = function(options)
      */
     $(this).keyup(function (e)
     {
-        alert(e.which);
-
         if ($.inArray(e.which, $(this).data('tagManagerOptions').delimeters) != -1) {
             e.preventDefault();
 
