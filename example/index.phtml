@@ -224,6 +224,48 @@ $('a.source').live('click', function(event) {
             </tbody>
         </table>
     </div>
-
+	<div class="">
+		<h2>Methods</h2>
+		<table>
+            <caption>
+            </caption>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Parameters</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>empty</td>
+                    <td><i>none</i></td>
+                    <td>Clears all tags from the tag manager without running ajaxDelete</td>
+                </tr>
+                <tr>
+                    <td>pop</td>
+                    <td><i>none</i></td>
+                    <td>Pop the last tag.  Used when backspace is fired</td>
+                </tr>
+                <tr>
+                    <td>delete</td>
+                    <td>tagHtmlElement, fireAjax</td>
+                    <td>Removes a tag from the tag manager.  The first parameter is the jQuery handle of the tag span created from the tag manager.  The second parameter defaults to true and will not fire an ajaxDelete event if false.
+                    </td>
+                </tr>
+                <tr>
+                    <td>create</td>
+                    <td>tag, fireAjax</td>
+                    <td>Adds a tag to the tag manager.  The first parameter is the tag string.  The second parameter defaults to true and will not fire an ajaxCreate event if false.
+                    </td>
+                </tr>
+                <tr>
+                    <td>import</td>
+                    <td>tags</td>
+                    <td>Imports an array or array of objects as key => tag without firing the ajaxCreate event.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
