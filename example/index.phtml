@@ -1,0 +1,271 @@
+<style>
+    table caption {
+        text-align: left;
+        padding-bottom: 1em;
+    }
+</style>
+
+<div class="hero-unit">
+    <h1>Tag Manager</h1>
+
+    a jQuery plugin extensible with Bootstrap
+</div>
+
+
+
+<?= $this->headLink()->prependStylesheet($this->basePath() . '/js/bootstrap/docs/assets/css/bootstrap.css'); ?>
+<?= $this->headLink()->prependStylesheet($this->basePath() . '/js/bootstrap/docs/assets/css/bootstrap-responsive.css'); ?>
+<?= $this->headScript()->prependFile($this->basePath() . '/js/bootstrap/docs/assets/js/bootstrap.js', 'text/javascript'); ?>
+
+<?= $this->headLink()->prependStylesheet($this->basePath() . '/js/tagmanager/bootstrap-tagmanager.css'); ?>
+<?= $this->headScript()->prependFile($this->basePath() . '/js/tagmanager/bootstrap-tagmanager.js', 'text/javascript'); ?>
+
+<script>
+$(function() {
+    $('.tagManager1').tagManager({
+        capitalizeFirstLetter: true,
+        preventSubmitOnEnter: true,
+        typeahead: {
+            autoselect: true,
+            source: ['one', 'two', 'three', 'four', 'five', 'six'],
+            suppressKeyPressRepeat: true,
+            updater: function(tag) {
+                this.$element.trigger('addTag', [ tag ]);
+            }
+        },
+        delimeters: [44, 188, 13],
+        backspace: [8],
+        tagValuesFieldName: 'tags1[]',
+        strategy: 'array'
+    });
+
+$('a.source').live('click', function(event) {
+    $('#' + $(this).attr('target')).toggle();
+    return false;
+});
+
+});
+</script>
+
+<form>
+<input type="text" name="tags1" placeholder="Enter Some Tags" class="tagManager1"/>
+<a href="#" class="source" target="tags1_source">view source</a>
+</form>
+
+<div id="tags1_source" style="display: none;">
+    <h3>First Example Source Code</h3>
+    <pre>
+    $('.tagManager1').tagManager({
+        capitalizeFirstLetter: true,
+        preventSubmitOnEnter: true,
+        typeahead: {
+            autoselect: true,
+            source: ['one', 'two', 'three', 'four', 'five', 'six'],
+            suppressKeyPressRepeat: true,
+            updater: function(tag) {
+                this.$element.trigger('addTag', [ tag ]);
+            }
+        },
+        delimeters: [44, 188, 13],
+        backspace: [8],
+        tagValuesFieldName: 'tags1[]',
+        strategy: 'array'
+    });
+    </pre>
+</div>
+
+
+<div>
+	<div class="">
+	    <h2>Why another tag manager?</h2>
+	    <p>My research for the best tag manager led to 
+                <a href="http://welldonethings.com/tags/manager">Tags Manager (a jQuery plugin)</a>.  This is an well done tool and summarizes other tag managers at the bottom of the article.
+               I needed to extend Tags Manager to support ajax and Bootstrap
+               typeahead without defaulting a selection and in doing so I 
+               rewrote nearly all the code to Tags Manager, so I have released
+               my re-written project here as "Tag Manager".
+		Tag Manager is my best practices implementation of the 
+                business logic defined in Tags Manager.
+	 </p>
+	</div>
+
+	<div class="">
+		<h2>Strategy</h2>
+		<table>
+            <caption>
+                Two strategies are supported for working with tags.  <strong>array</strong> strategy is default and creates a new input field for each tag added to the tag manager.  The field name is defined with option tagValueFieldName and must be an array such as "tags[]".  The second strategy is <strong>ajax</strong> which requires ajaxCreate and ajaxDelete options with URLs to post a tag to when added or deleted.
+            </caption>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Datatype</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                </tr>
+            </tbody>
+			<tbody>
+                <tr>
+                    <td>strategy</td>
+                    <td>string</td>
+                    <td>array</td>
+                    <td>Either <strong>array</strong> or <strong>ajax</strong></td>
+                </tr>
+                <tr>
+                    <td>tagValueFieldName</td>
+                    <td>string</td>
+                    <td>tags[]</td>
+                    <td>When using the <strong>array</strong> strategy this option is required.  This is the input field name for each tag to be sent back to your server as part of a form submission.</td>
+                </tr>
+                <tr>
+                    <td>ajaxCreate</td>
+                    <td>string</td>
+                    <td><i>empty</i></td>
+                    <td>A URL to post an ajax request to when a tag is added.  e.g. http://localhost/tag/create?id=5</td>
+                </tr>
+                <tr>
+                    <td>ajaxDelete</td>
+                    <td>string</td>
+                    <td><i>empty</i></td>
+                    <td>A URL to post an ajax request to when a tag is deleted.  e.g. http://localhost/tag/delete?id=5</td>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+
+	<div class="">
+		<h2>Options</h2>
+		<table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Datatype</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                </tr>
+            </tbody>
+			<tbody>
+			    <tr>
+			    	<td>values</td>
+                    <td>array</td>
+                    <td>[ ]</td>
+                    <td>An array of values to initially populate tags</td>
+                </tr>
+                <tr>
+                    <td>proper</td>
+                    <td>boolean</td>
+                    <td>true</td>
+                    <td>Proper case the first word of each tag?</td>
+                </tr>
+                <tr>
+                    <td>backspaceChars</td>
+                    <td>array</td>
+                    <td>[ 8 ]</td>
+                    <td>An array of character key codes to accept as "backspace" used in combination with deleteOnBackspace</td>
+                </tr>
+                <tr>
+                    <td>deleteOnBackspace</td>
+                    <td>boolean</td>
+                    <td>false</td>
+                    <td>When the input field is empty and a backspace character is entered should the last tag be deleted?</td>
+                </tr>
+                <tr>
+                    <td>delimiterChars</td>
+                    <td>array</td>
+                    <td>[ 13, 44, 188 ]</td>
+                    <td>An array of character key codes to delimit a tag.  If char code 13, Enter Key, is in the list the default form submission mechanism is overridden to allow the enter key to act as a delimiter.
+                    </td>
+                </tr>
+                <tr>
+                    <td>maxTags</td>
+                    <td>integer</td>
+                    <td>&infi;</td>
+                    <td>If specified a limit of maxTags will be applied when users are entering tags.</td>
+                </tr>
+                <tr>
+                    <td>deleteTagHtml</td>
+                    <td>string</td>
+                    <td>x</td>
+                    <td>HTML for the link to delete a tag from the tag manager</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+	<div class="">
+		<h2>Handlers</h2>
+		<table>
+            <caption>
+                A handler is a closure to handle specific tag events.
+            </caption>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Parameters</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>insertTagHandler</td>
+                    <td>tagHtml</td>
+                    <td>When a tag is added to the manager this function will take the HTML genereated as a parameter so it can be placed anywhere on the page</td>
+                </tr>
+                <tr>
+                    <td>duplicateHandler</td>
+                    <td>tag</td>
+                    <td>If a duplicate tag name is entered then the tag will be passed to the duplicate handler.  If the duplicate handler returns false the tag will not be added.  If the duplicate handler returns any other value that value will be created instead of the original value.</td>
+                </tr>
+                <tr>
+                    <td>validatorHandler</td>
+                    <td>tag</td>
+                    <td>The tag will be passed to the validator handler after the duplicate handler may have fired.  If the validator handler returns false the tag will not be added.  If the validator handler returns any other value that value will be created instead of the original value.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+	<div class="">
+		<h2>Methods</h2>
+		<table>
+            <caption>
+            </caption>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Parameters</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>empty</td>
+                    <td><i>none</i></td>
+                    <td>Clears all tags from the tag manager without running ajaxDelete</td>
+                </tr>
+                <tr>
+                    <td>pop</td>
+                    <td><i>none</i></td>
+                    <td>Pop the last tag.  Used when backspace is fired</td>
+                </tr>
+                <tr>
+                    <td>delete</td>
+                    <td>tagHtmlElement, fireAjax</td>
+                    <td>Removes a tag from the tag manager.  The first parameter is the jQuery handle of the tag span created from the tag manager.  The second parameter defaults to true and will not fire an ajaxDelete event if false.
+                    </td>
+                </tr>
+                <tr>
+                    <td>create</td>
+                    <td>tag, fireAjax</td>
+                    <td>Adds a tag to the tag manager.  The first parameter is the tag string.  The second parameter defaults to true and will not fire an ajaxCreate event if false.
+                    </td>
+                </tr>
+                <tr>
+                    <td>import</td>
+                    <td>tags</td>
+                    <td>Imports an array or array of objects as key => tag without firing the ajaxCreate event.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
