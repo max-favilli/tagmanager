@@ -1,5 +1,5 @@
 /* ===================================================
- * bootstrap-tagmanager.js v2.0
+ * bootstrap-tagmanager.js v2.2
  * http://welldonethings.com/tags/manager
  * ===================================================
  * Copyright 2012 Max Favilli
@@ -23,7 +23,7 @@
     console.log = function () { };
   }
 
-  jQuery.fn.tagsManager = function (options) {
+  jQuery.fn.tagsManager = function (options,tagToManipulate) {
     var tagManagerOptions = {
       prefilled: null,
       CapitalizeFirstLetter: false,
@@ -49,8 +49,7 @@
     }
 
     var obj = this;
-	var objName = obj.attr('name').replace(/[^\w]/g, '_');
-    var lastTagId = 0;
+    var objName = obj.attr('name').replace(/[^\w]/g, '_');
     var queuedTag = "";
     var delimeters = tagManagerOptions.delimeters;
     var backspace = tagManagerOptions.backspace;
@@ -128,6 +127,20 @@
       return txt;
     };
 
+    //$(this).on('popTag', function (e){
+    //  var tlis = obj.data("tlis");
+    //  var tlid = obj.data("tlid");
+
+    //  if (tlid.length > 0) {
+    //    var tagId = tlid.pop();
+    //    tlis.pop();
+    //    // console.log("TagIdToRemove: " + tagId);
+    //    jQuery("#" + objName + "_" + tagId).remove();
+    //    refreshHiddenTagList();
+    //    // console.log(tlis);
+    //  }
+    //});
+
     var popTag = function () {
       var tlis = obj.data("tlis");
       var tlid = obj.data("tlid");
@@ -140,7 +153,7 @@
         refreshHiddenTagList();
         // console.log(tlis);
       }
-    }
+    };
 
     var refreshHiddenTagList = function () {
       var tlis = obj.data("tlis");
@@ -172,7 +185,7 @@
       if (tagManagerOptions.maxTags > 0 && tlis.length < tagManagerOptions.maxTags) {
         obj.show();
       }
-    }
+    };
 
     var pushTag = function (tag) {
       if (!tag || tag.length <= 0) return;
@@ -209,7 +222,10 @@
            .animate({ backgroundColor: tagManagerOptions.blinkBGColor_1 }, 100)
            .animate({ backgroundColor: tagManagerOptions.blinkBGColor_2 }, 100);
       } else {
-        var tagId = lastTagId++;
+        var max = Math.max.apply(null, tlid);
+        max = max == -Infinity ? 0 : max;
+
+        var tagId = ++max;
         tlis.push(tag);
         tlid.push(tagId);
 
@@ -246,6 +262,19 @@
     };
 
     return this.each(function () {
+
+      if (typeof options == 'string') {
+        alert("call " + options);
+        switch (options) {
+          case "popTag":
+            popTag();
+            break;
+          case "pushTag":
+            pushTag(tagToManipulate);
+            break;
+        }
+        return;
+      }
 
       //let's store some instance specific data directly into the DOM object
       var tlis = new Array();
