@@ -155,6 +155,20 @@
       }
     };
 
+    var empty = function () {
+      var tlis = obj.data("tlis");
+      var tlid = obj.data("tlid");
+
+      while (tlid.length > 0) {
+        var tagId = tlid.pop();
+        tlis.pop();
+        // console.log("TagIdToRemove: " + tagId);
+        jQuery("#" + objName + "_" + tagId).remove();
+        refreshHiddenTagList();
+        // console.log(tlis);
+      }
+    };
+
     var refreshHiddenTagList = function () {
       var tlis = obj.data("tlis");
       var lhiddenTagList = obj.data("lhiddenTagList");
@@ -264,8 +278,10 @@
     return this.each(function () {
 
       if (typeof options == 'string') {
-        alert("call " + options);
         switch (options) {
+          case "empty":
+            empty();
+            break;
           case "popTag":
             popTag();
             break;
