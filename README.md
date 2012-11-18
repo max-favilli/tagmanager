@@ -53,5 +53,5 @@ Copyright and license
 
 Copyright 2012 MaxFavilli.com
 
-Licensed under the Mozilla Public LLicense, Version 2.0
+Licensed under the Mozilla Public LLicense, Version 2.2
 You may not use this work except in compliance with the License.
