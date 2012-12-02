@@ -38,7 +38,6 @@
       maxTags: 0,
       hiddenTagListName: null,
       hiddenTagListId: null,
-      hiddenTagExists: true,
       deleteTagsOnBackspace: true,
       tagsContainer: null,
       tagCloseIcon: 'x'
@@ -177,7 +176,6 @@
 
       if (lhiddenTagList == undefined)
         return;
-      // TODO 
       jQuery(lhiddenTagList).val(tlis.join(",")).change();
     };
 
@@ -299,8 +297,8 @@
       var tlid = new Array();
       obj.data("tlis", tlis); //list of string tags
       obj.data("tlid", tlid); //list of ID of the string tags
-      // TODO
-      if (tagManagerOptions.hiddenTagListId == null) {
+
+      if (tagManagerOptions.hiddenTagListId == null) { /* if hidden input not given default activity */
         var html = "";
         html += "<input name='" + tagManagerOptions.hiddenTagListName + "' type='hidden' value=''/>";
         obj.after(html);
@@ -310,7 +308,7 @@
       } else {
         obj.data("lhiddenTagList", jQuery('#' + tagManagerOptions.hiddenTagListId))
       }
-      // TODO
+
       if (tagManagerOptions.typeahead) {
         setupTypeahead();
         //obj.typeahead({ source: SourceArray })
