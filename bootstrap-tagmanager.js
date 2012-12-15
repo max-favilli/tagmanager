@@ -39,7 +39,8 @@
       hiddenTagListName: null,
       deleteTagsOnBackspace: true,
       tagsContainer: null,
-      tagCloseIcon: 'x'
+      tagCloseIcon: 'x',
+      tagClass: ''
     };
 
     jQuery.extend(tagManagerOptions, options);
@@ -252,7 +253,8 @@
         var newTagId = objName + '_' + tagId;
         var newTagRemoveId = objName + '_Remover_' + tagId;
         var html = '';
-        html += '<span class="myTag" id="' + newTagId + '"><span>' + tag + '&nbsp;&nbsp;</span><a href="#" class="myTagRemover" id="' + newTagRemoveId + '" TagIdToRemove="' + tagId + '" title="Remove">' + tagManagerOptions.tagCloseIcon + '</a></span>';
+        var cl = tagManagerOptions.tagClass ? ' '+tagManagerOptions.tagClass : '';
+        html += '<span class="myTag'+cl+'" id="' + newTagId + '"><span>' + tag + '&nbsp;&nbsp;</span><a href="#" class="myTagRemover" id="' + newTagRemoveId + '" TagIdToRemove="' + tagId + '" title="Remove">' + tagManagerOptions.tagCloseIcon + '</a></span> ';
 
         if (tagManagerOptions.tagsContainer != null) {
           jQuery(tagManagerOptions.tagsContainer).append(html)
