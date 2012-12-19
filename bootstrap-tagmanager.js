@@ -222,7 +222,7 @@
 
       var alreadyInList = false;
       var tlisLowerCase = tlis.map(function(elem) { return elem.toLowerCase(); }); 
-      var p = jQuery.inArray(tag, tlisLowerCase);
+      var p = jQuery.inArray(tag.toLowerCase(), tlisLowerCase);
       if (-1 != p) {
         // console.log("tag:" + tag + " !!already in list!!");
         alreadyInList = true;
