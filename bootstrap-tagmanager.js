@@ -337,7 +337,7 @@
         // console.log("keyup: " + e.keyCode);
       });
 
-      obj.on("keyup", obj, function (e) {
+      obj.on("keydown", obj, function (e) {
         var p = jQuery.inArray(e.which, delimeters);
         if (-1 != p) {
           //user just entered a valid delimeter
@@ -348,10 +348,7 @@
         }
 
         // console.log("keyup: " + e.which);
-      });
-
-      if (tagManagerOptions.deleteTagsOnBackspace) {
-        obj.on("keydown", obj, function (e) {
+        if (tagManagerOptions.deleteTagsOnBackspace) {
           var p = jQuery.inArray(e.which, backspace);
           if (-1 != p) {
             //user just entered backspace or equivalent
@@ -363,8 +360,8 @@
               popTag();
             }
           }
-        });
-      }
+        }
+      });
 
       obj.change(function (e) {
         e.cancelBubble = true;
