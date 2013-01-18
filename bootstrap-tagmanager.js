@@ -340,10 +340,26 @@
       obj.on("keyup", obj, function (e) {
         var p = jQuery.inArray(e.which, delimeters);
         if (-1 != p) {
-          //user just entered a valid delimeter
-          var user_input = jQuery(this).val(); //user_input = jQuery().inArray(delimeters[p]);
-          user_input = trimTag(user_input);
-          pushTag(user_input, e.data);
+                // Sometimes other character return 188 but it's not comma, in other language.
+                if(e.which == 188)
+                {
+                    var uipt = jQuery(this).val();// user input
+                    var lastChar = uipt.substr(uipt.length - 1);
+                    var real_comma;
+                    if(lastChar == ','){real_comma = true;} else{real_comma = false;}
+                }
+                else
+                {
+                    real_comma = true;
+                }
+               //user just entered a valid delimeter
+               if(real_comma)
+               {
+                  //user just entered a valid delimeter
+                  var user_input = jQuery(this).val(); //user_input = jQuery().inArray(delimeters[p]);
+                  user_input = trimTag(user_input);
+                  pushTag(user_input, e.data);
+               }
           // console.log("pushTag: keyup");
         }
 
