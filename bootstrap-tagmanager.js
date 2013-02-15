@@ -28,6 +28,7 @@
       prefilled: null,
       CapitalizeFirstLetter: false,
       preventSubmitOnEnter: true,
+      preventNavigationOnTab: true,
       typeahead: false,
       typeaheadAjaxSource: null,
       typeaheadAjaxPolling: false,
@@ -365,7 +366,14 @@
           }
         });
       }
-
+      if (tagManagerOptions.preventNavigationOnTab){
+        obj.on("keydown", obj, function(e){
+            if (e.which == 9 && obj.val()){
+              obj.trigger('blur');
+              e.preventDefault();
+            }
+        });
+      }
       obj.change(function (e) {
         e.cancelBubble = true;
         e.returnValue = false;
