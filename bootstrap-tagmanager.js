@@ -325,6 +325,7 @@
           jQuery(this).popover("hide");
           //jQuery(this).popover = null;
         }
+
         if (tagManagerOptions.preventSubmitOnEnter) {
           if (e.which == 13) {
             e.cancelBubble = true;
@@ -334,20 +335,18 @@
             //e.keyCode = 9;
           }
         }
-        // console.log("keyup: " + e.keyCode);
-      });
 
-      obj.on("keyup", obj, function (e) {
         var p = jQuery.inArray(e.which, delimeters);
         if (-1 != p) {
           //user just entered a valid delimeter
           var user_input = jQuery(this).val(); //user_input = jQuery().inArray(delimeters[p]);
           user_input = trimTag(user_input);
           pushTag(user_input, e.data);
-          // console.log("pushTag: keyup");
+          e.preventDefault();
+          // console.log("pushTag: keypress");
         }
 
-        // console.log("keyup: " + e.which);
+        // console.log("keypress: " + e.which);
       });
 
       if (tagManagerOptions.deleteTagsOnBackspace) {
