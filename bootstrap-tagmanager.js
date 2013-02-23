@@ -49,6 +49,7 @@
       backspace: [8],
       maxTags: 0,
       hiddenTagListName: null,
+      hiddenTagListId: null,
       deleteTagsOnBackspace: true,
       tagsContainer: null,
       tagCloseIcon: 'x',
@@ -198,7 +199,6 @@
 
       if (lhiddenTagList == undefined)
         return;
-
       jQuery(lhiddenTagList).val(tlis.join(",")).change();
     };
 
@@ -323,12 +323,16 @@
       obj.data("tlis", tlis); //list of string tags
       obj.data("tlid", tlid); //list of ID of the string tags
 
-      var html = "";
-      html += "<input name='" + tagManagerOptions.hiddenTagListName + "' type='hidden' value=''/>";
-      obj.after(html);
-      obj.data("lhiddenTagList",
-         obj.siblings("input[name='" + tagManagerOptions.hiddenTagListName + "']")[0]
-      );
+      if (tagManagerOptions.hiddenTagListId == null) { /* if hidden input not given default activity */
+        var html = "";
+        html += "<input name='" + tagManagerOptions.hiddenTagListName + "' type='hidden' value=''/>";
+        obj.after(html);
+        obj.data("lhiddenTagList", 
+           obj.siblings("input[name='" + tagManagerOptions.hiddenTagListName + "']")[0]
+        );
+      } else {
+        obj.data("lhiddenTagList", jQuery('#' + tagManagerOptions.hiddenTagListId))
+      }
 
       if (tagManagerOptions.typeahead) {
         setupTypeahead();
