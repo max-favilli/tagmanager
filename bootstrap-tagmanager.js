@@ -53,8 +53,14 @@
       deleteTagsOnBackspace: true,
       tagsContainer: null,
       tagCloseIcon: 'x',
-      tagClass: ''
+      tagClass: '',
+      validator: null
     };
+
+    // exit when no matched elements
+    if (!(0 in this)) {
+      return this;
+    }
 
     jQuery.extend(tagManagerOptions, options);
 
@@ -67,8 +73,6 @@
     var queuedTag = "";
     var delimeters = tagManagerOptions.delimeters;
     var backspace = tagManagerOptions.backspace;
-    var tagIsValid = false;
-    var isSelectedFromList = false;
 
     var setupTypeahead = function () {
       if (!obj.typeahead) return;
@@ -77,25 +81,22 @@
         obj.typeahead({ source: tagManagerOptions.typeaheadSource });
       } else if (tagManagerOptions.typeaheadSource != null) {
         obj.typeahead();
-        obj.data('active', true);
-        obj.data('typeahead').source = tagManagerOptions.typeaheadSource;
-        obj.data('active', false);
+        setTypeaheadSource(tagManagerOptions.typeaheadSource);
       } else if (tagManagerOptions.typeaheadAjaxSource != null) {
         if (!tagManagerOptions.typeaheadAjaxPolling) {
           obj.typeahead();
-          jQuery.getJSON(tagManagerOptions.typeaheadAjaxSource, function (data) {
-            var sourceAjaxArray = [];
-            if (data != undefined && data.tags != undefined) {
-              sourceAjaxArray.length = 0;
-              jQuery.each(data.tags, function (key, val) {
-                var a = 1;
-                sourceAjaxArray.push(val.tag);
-                obj.data('active', true);
-                obj.data('typeahead').source = sourceAjaxArray;
-                obj.data('active', false);
-              });
-            }
-          });
+
+          if (typeof (tagManagerOptions.typeaheadAjaxSource) == "string") {
+            jQuery.ajax({
+              cache: false,
+              type: "POST",
+              contentType: "application/json",
+              dataType: "json",
+              url: tagManagerOptions.typeaheadAjaxSource,
+              data: JSON.stringify({ typeahead: "" }),
+              success: function (data) { onTypeaheadAjaxSuccess(data, true); }
+            });
+          }
         } else if (tagManagerOptions.typeaheadAjaxPolling) {
           obj.typeahead({ source: ajaxPolling });
         }
@@ -107,23 +108,51 @@
       if (data) {
         // set the overrided handler
         data.select = jQuery.proxy(tagManagerOptions.typeaheadOverrides.select,
-                                   data,
+                                   obj.data('typeahead'),
                                    tagManagerOptions.typeaheadOverrides);
       }
     };
 
-    var ajaxPolling = function (query, process) {
-      jQuery.getJSON(tagManagerOptions.typeaheadAjaxSource, function (data) {
+    var onTypeaheadAjaxSuccess = function(data, isSetTypeaheadSource, process) {
+      // format data if it is an asp.net 3.5 response
+      if ("d" in data) {
+        data = data.d;
+      }
+
+      if (data && data.tags) {
         var sourceAjaxArray = [];
-        if (data != undefined && data.tags != undefined) {
-          sourceAjaxArray.length = 0;
-          jQuery.each(data.tags, function (key, val) {
-            var a = 1;
-            sourceAjaxArray.push(val.tag);
-          });
+        sourceAjaxArray.length = 0;
+        jQuery.each(data.tags, function (key, val) {
+          sourceAjaxArray.push(val.tag);
+          if (isSetTypeaheadSource) {
+            setTypeaheadSource(sourceAjaxArray);
+          }
+        });
+
+        if (jQuery.isFunction(process)) {
           process(sourceAjaxArray);
         }
-      });
+      }
+    };
+
+    var setTypeaheadSource = function (source) {
+      obj.data('active', true);
+      obj.data('typeahead').source = source;
+      obj.data('active', false);
+    };
+
+    var ajaxPolling = function (query, process) {
+      if (typeof (tagManagerOptions.typeaheadAjaxSource) == "string") {
+        jQuery.ajax({
+          cache: false,
+          type: "POST",
+          contentType: "application/json",
+          dataType: "json",
+          url: tagManagerOptions.typeaheadAjaxSource,
+          data: JSON.stringify({ typeahead: query }),
+          success: function (data) { onTypeaheadAjaxSuccess(data, false, process); }
+        });
+      }
     };
 
     var trimTag = function (tag) {
@@ -199,6 +228,7 @@
 
       if (lhiddenTagList == undefined)
         return;
+
       jQuery(lhiddenTagList).val(tlis.join(",")).change();
     };
 
@@ -224,16 +254,16 @@
       }
     };
 
-    var pushTag = function (tag) {
-      if (!tag || (!tagIsValid) || tag.length <= 0) return;
+    var pushTag = function (tag, objToPush, isValid) {
+      if (!tag || (!isValid) || tag.length <= 0) return;
 
       if (tagManagerOptions.CapitalizeFirstLetter && tag.length > 1) {
         tag = tag.charAt(0).toUpperCase() + tag.slice(1).toLowerCase();
       }
 
       // call the validator (if any) and do not let the tag pass if invalid
-      if (tagManagerOptions.validator !== undefined) {
-        if (tagManagerOptions.validator(tag) !== true) return;
+      if (jQuery.isFunction(tagManagerOptions.validator)) {
+        if (!tagManagerOptions.validator(tag)) return;
       }
 
       var tlis = obj.data("tlis");
@@ -302,6 +332,9 @@
 
     return this.each(function () {
 
+      var tagIsValid = false;
+      var isSelectedFromList = false;
+
       if (typeof options == 'string') {
         switch (options) {
           case "empty":
@@ -311,7 +344,7 @@
             popTag();
             break;
           case "pushTag":
-            pushTag(tagToManipulate);
+            pushTag(tagToManipulate, null, true);
             break;
         }
         return;
@@ -324,10 +357,15 @@
       obj.data("tlid", tlid); //list of ID of the string tags
 
       if (tagManagerOptions.hiddenTagListId == null) { /* if hidden input not given default activity */
+        var hiddenTag = $("input[name=" + tagManagerOptions.hiddenTagListName + "]");
+        if (hiddenTag.length > 0) {
+          hiddenTag.remove();
+        }
+
         var html = "";
         html += "<input name='" + tagManagerOptions.hiddenTagListName + "' type='hidden' value=''/>";
         obj.after(html);
-        obj.data("lhiddenTagList", 
+        obj.data("lhiddenTagList",
            obj.siblings("input[name='" + tagManagerOptions.hiddenTagListName + "']")[0]
         );
       } else {
@@ -348,15 +386,15 @@
 
       // clear input field on Esc
       if (tagManagerOptions.isClearInputOnEsc) {
-          obj.on("keyup", function (e) {
-              if (e.which == 27) {
-                  obj.val("");
-                  e.cancelBubble = true;
-                  e.returnValue = false;
-                  e.stopPropagation();
-                  e.preventDefault();
-              }
-          });
+        obj.on("keyup", function (e) {
+          if (e.which == 27) {
+            jQuery(this).val("");
+            e.cancelBubble = true;
+            e.returnValue = false;
+            e.stopPropagation();
+            e.preventDefault();
+          }
+        });
       }
 
       // disable submit on enter for this input field
@@ -382,7 +420,7 @@
           tagIsValid = true;
           var user_input = jQuery(this).val(); //user_input = jQuery().inArray(delimeters[p]);
           user_input = trimTag(user_input);
-          pushTag(user_input, e.data);
+          pushTag(user_input, e.data, tagIsValid);
           e.preventDefault();
           // console.log("pushTag: keypress");
         }
@@ -421,7 +459,10 @@
         // check the typeahead list selection
         var data = $(this).data('typeahead');
         if (data) { 
-          isSelectedFromList = $(this).data('typeahead').$menu.find(listItemSelector).hasClass();
+          isSelectedFromList = $(this).data('typeahead').$menu.find("*")
+            .filter(listItemSelector)
+            .hasClass(selectedItemClass);
+
           if (isSelectedFromList) {
             tagIsValid = true;
           }
@@ -451,26 +492,26 @@
             // if user selected from list
             var user_input = $(this).data('typeahead').$menu.find(listItemSelector).attr('data-value');
             user_input = trimTag(user_input);
-            if (queuedTag == obj.val() && queuedTag == user_input) {
-                isClear = true;
+            if (queuedTag == jQuery(this).val() && queuedTag == user_input) {
+              isClear = true;
             } else {
-                pushTag(user_input);
-                queuedTag = user_input;
-                // console.log('Handler for .change() called, typeahead value pushed:' + queuedTag);
+              pushTag(user_input, null, true);
+              queuedTag = user_input;
+              // console.log('Handler for .change() called, typeahead value pushed:' + queuedTag);
             }
             isSelectedFromList = false;
             $(this).data('typeahead').$menu.find(listItemSelector).removeClass(selectedItemClass);
           }
 
           if (isClear) {
-              queuedTag = "";
-              obj.val(queuedTag);
+            queuedTag = "";
+            jQuery(this).val(queuedTag);
           }
         } else {
           // console.log('change: typeaheadIsVisible is NOT visible');
           var user_input = jQuery(this).val(); //user_input = jQuery().inArray(delimeters[p]);
           user_input = trimTag(user_input);
-          pushTag(user_input);
+          pushTag(user_input, null, true);
           // console.log("pushTag: change ");
         }
 
@@ -501,33 +542,28 @@
             // console.log('lost focus');
             var user_input = jQuery(this).val(); //user_input = jQuery().inArray(delimeters[p]);
             user_input = trimTag(user_input);
-            pushTag(user_input);
+            pushTag(user_input, null, tagIsValid);
             // console.log("pushTag: blur");
           }
         });
       }
 
       if (tagManagerOptions.prefilled != null) {
-        var prev_tagIsValid = tagIsValid;
-        tagIsValid = true;
-
         if (typeof (tagManagerOptions.prefilled) == "object") {
           var pta = tagManagerOptions.prefilled;
           jQuery.each(pta, function (key, val) {
             var a = 1;
-            pushTag(val, obj);
+            pushTag(val, obj, true);
           });
         } else if (typeof (tagManagerOptions.prefilled) == "string") {
           var pta = tagManagerOptions.prefilled.split(',');
 
           jQuery.each(pta, function (key, val) {
             var a = 1;
-            pushTag(val, obj);
+            pushTag(val, obj, true);
           });
 
         }
-
-        tagIsValid = prev_tagIsValid;
       }
     });
 
