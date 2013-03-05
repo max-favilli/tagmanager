@@ -32,17 +32,7 @@
       typeahead: false,
       typeaheadAjaxSource: null,
       typeaheadAjaxPolling: false,
-      typeaheadOverrides: {
-        instanceSelectHandler: jQuery.fn.typeahead.Constructor.prototype.select,
-        selectedClass: "selected",
-        select: function (overrides) {
-          // settings for the tagmanager instance
-          this.$menu.find(".active").addClass(overrides.selectedClass);
-
-          // call the original handler
-          overrides.instanceSelectHandler.apply(this, arguments);
-        }
-      },
+      typeaheadOverrides: null,
       typeaheadSource: null,
       AjaxPush: null,
       delimeters: [44, 188, 13, 9],
@@ -57,10 +47,28 @@
       validator: null
     };
 
+    var TypeaheadOverrides = (function () {
+      function TypeaheadOverrides() {
+        this.instanceSelectHandler = null;
+        this.selectedClass = "selected";
+        this.select = null;
+        if ("typeahead" in jQuery.fn) {
+          this.instanceSelectHandler = jQuery.fn.typeahead.Constructor.prototype.select;
+          this.select = function (overrides) {
+            this.$menu.find(".active").addClass(overrides.selectedClass);
+            overrides.instanceSelectHandler.apply(this, arguments);
+          };
+        }
+      }
+      return TypeaheadOverrides;
+    })();
+
     // exit when no matched elements
     if (!(0 in this)) {
       return this;
     }
+
+    tagManagerOptions.typeaheadOverrides = new TypeaheadOverrides();
 
     jQuery.extend(tagManagerOptions, options);
 
