@@ -16,6 +16,12 @@ Quick start
 Clone the repo, `git clone git@github.com:max-favilli/tagmanager.git`, or [download the latest release](https://github.com/max-favilli/tagmanager/zipball/master).
 
 
+NUGET 
+-----------
+
+PM> Install-Package Bootstrap-tagmanager
+
+
 Bug tracker
 -----------
 

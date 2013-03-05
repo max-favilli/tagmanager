@@ -1,7 +1,7 @@
 {
-    "name": "jQuery.TagsManager",
-    "version": "1.0.1",
-    "title": "jQuery.TagsManager",
+    "name": "bootstrap.TagManager",
+    "version": "2.3.0",
+    "title": "bootstrap.TagManager",
     "author": {
         "name": "Max Favilli",
         "url": "http://maxfavilli.com"
