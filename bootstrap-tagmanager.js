@@ -365,7 +365,7 @@
       obj.data("tlid", tlid); //list of ID of the string tags
 
       if (tagManagerOptions.hiddenTagListId == null) { /* if hidden input not given default activity */
-        var hiddenTag = $("input[name=" + tagManagerOptions.hiddenTagListName + "]");
+        var hiddenTag = $("input[name='" + tagManagerOptions.hiddenTagListName + "']");
         if (hiddenTag.length > 0) {
           hiddenTag.remove();
         }
