@@ -237,6 +237,7 @@
       if (lhiddenTagList == undefined)
         return;
 
+      obj.trigger('tags:refresh', tlis.join(","));
       jQuery(lhiddenTagList).val(tlis.join(",")).change();
     };
 
@@ -281,7 +282,7 @@
       if (tagManagerOptions.maxTags > 0 && tlis.length >= tagManagerOptions.maxTags) return;
 
       var alreadyInList = false;
-      var tlisLowerCase = tlis.map(function(elem) { return elem.toLowerCase(); }); 
+      var tlisLowerCase = tlis.map(function(elem) { return elem.toLowerCase(); });
       var p = jQuery.inArray(tag.toLowerCase(), tlisLowerCase);
       if (-1 != p) {
         // console.log("tag:" + tag + " !!already in list!!");
@@ -466,7 +467,7 @@
 
         // check the typeahead list selection
         var data = $(this).data('typeahead');
-        if (data) { 
+        if (data) {
           isSelectedFromList = $(this).data('typeahead').$menu.find("*")
             .filter(listItemSelector)
             .hasClass(selectedItemClass);
