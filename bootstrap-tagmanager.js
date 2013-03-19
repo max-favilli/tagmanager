@@ -234,10 +234,10 @@
       var tlis = obj.data("tlis");
       var lhiddenTagList = obj.data("lhiddenTagList");
 
-      if (lhiddenTagList == undefined)
-        return;
-
-      jQuery(lhiddenTagList).val(tlis.join(",")).change();
+      if (lhiddenTagList) {
+        obj.trigger('tags:refresh', tlis.join(","));
+        jQuery(lhiddenTagList).val(tlis.join(",")).change();
+      }
     };
 
     var spliceTag = function (tagId) {
