@@ -335,12 +335,12 @@
 
     var initialize = function () {
       if (tagManagerOptions.AjaxPushAllTags) {
-        obj.on('tags:refresh', this.pushAllTags);
+        obj.on('tags:refresh', pushAllTags);
       }
     };
 
-    if (!this.isInitialized) {
-      this.initialize();
+    if (!isInitialized) {
+      initialize();
     }
 
     return this.each(function () {
