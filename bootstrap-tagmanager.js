@@ -401,6 +401,7 @@
             e.returnValue = false;
             e.stopPropagation();
             e.preventDefault();
+            return false;
           }
         });
       }
@@ -418,12 +419,14 @@
             e.returnValue = false;
             e.stopPropagation();
             e.preventDefault();
-            //e.keyCode = 9;
+              //e.keyCode = 9;
+            return false;
           }
         }
 
         var p = jQuery.inArray(e.which, delimeters);
-        if (-1 != p) {
+        var isKeyInList = '0' in jQuery(".typeahead:visible");
+        if (!isKeyInList && (- 1 != p)) {
           //user just entered a valid delimeter
           tagIsValid = true;
           var user_input = jQuery(this).val(); //user_input = jQuery().inArray(delimeters[p]);
@@ -477,7 +480,7 @@
         }
 
         if (!tagIsValid) {
-          return;
+          return false;
         }
 
         var is_chrome = navigator.userAgent.indexOf('Chrome') > -1;
@@ -524,6 +527,8 @@
         }
 
         tagIsValid = false;
+
+        return false; //cancel bubble
       });
 
       if (1 == 1 || !tagManagerOptions.typeahead) {
@@ -553,6 +558,8 @@
             pushTag(user_input, null, tagIsValid);
             // console.log("pushTag: blur");
           }
+
+          return false;
         });
       }
 
