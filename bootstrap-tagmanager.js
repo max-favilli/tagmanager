@@ -35,6 +35,7 @@
       typeaheadOverrides: null,
       typeaheadSource: null,
       AjaxPush: null,
+      AjaxPushAllTags: null,
       delimeters: [44, 188, 13, 9],
       backspace: [8],
       maxTags: 0,
@@ -188,20 +189,6 @@
       return txt;
     };
 
-    //$(this).on('popTag', function (e){
-    //  var tlis = obj.data("tlis");
-    //  var tlid = obj.data("tlid");
-
-    //  if (tlid.length > 0) {
-    //    var tagId = tlid.pop();
-    //    tlis.pop();
-    //    // console.log("TagIdToRemove: " + tagId);
-    //    jQuery("#" + objName + "_" + tagId).remove();
-    //    refreshHiddenTagList();
-    //    // console.log(tlis);
-    //  }
-    //});
-
     var popTag = function () {
       var tlis = obj.data("tlis");
       var tlid = obj.data("tlid");
@@ -234,8 +221,9 @@
       var tlis = obj.data("tlis");
       var lhiddenTagList = obj.data("lhiddenTagList");
 
+      obj.trigger('tags:refresh', tlis.join(","));
+
       if (lhiddenTagList) {
-        obj.trigger('tags:refresh', tlis.join(","));
         jQuery(lhiddenTagList).val(tlis.join(",")).change();
       }
     };
@@ -260,6 +248,12 @@
       if (tagManagerOptions.maxTags > 0 && tlis.length < tagManagerOptions.maxTags) {
         obj.show();
       }
+    };
+
+    var pushAllTags = function (e, tagstring) {
+        if (tagManagerOptions.AjaxPushAllTags) {
+            jQuery.post(tagManagerOptions.AjaxPushAllTags, { tags: tagstring });
+        }
     };
 
     var pushTag = function (tag, objToPush, isValid) {
@@ -337,6 +331,14 @@
       }
       obj.val("");
     };
+
+    var initialize = function () {
+        if (tagManagerOptions.AjaxPushAllTags) {
+            obj.on('tags:refresh', this.pushAllTags);
+        }
+    };
+
+    this.initialize();
 
     return this.each(function () {
 
