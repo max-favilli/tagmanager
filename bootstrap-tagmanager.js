@@ -82,6 +82,7 @@
     var queuedTag = "";
     var delimeters = tagManagerOptions.delimeters;
     var backspace = tagManagerOptions.backspace;
+    var isInitialized = false;
 
     var setupTypeahead = function () {
       if (!obj.typeahead) return;
@@ -251,9 +252,9 @@
     };
 
     var pushAllTags = function (e, tagstring) {
-        if (tagManagerOptions.AjaxPushAllTags) {
-            jQuery.post(tagManagerOptions.AjaxPushAllTags, { tags: tagstring });
-        }
+      if (tagManagerOptions.AjaxPushAllTags) {
+        jQuery.post(tagManagerOptions.AjaxPushAllTags, { tags: tagstring });
+      }
     };
 
     var pushTag = function (tag, objToPush, isValid) {
@@ -333,12 +334,14 @@
     };
 
     var initialize = function () {
-        if (tagManagerOptions.AjaxPushAllTags) {
-            obj.on('tags:refresh', this.pushAllTags);
-        }
+      if (tagManagerOptions.AjaxPushAllTags) {
+        obj.on('tags:refresh', this.pushAllTags);
+      }
     };
 
-    this.initialize();
+    if (!this.isInitialized) {
+      this.initialize();
+    }
 
     return this.each(function () {
 
@@ -359,7 +362,7 @@
         }
         return;
       }
-
+      
       //let's store some instance specific data directly into the DOM object
       var tlis = new Array();
       var tlid = new Array();
