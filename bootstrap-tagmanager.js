@@ -45,7 +45,8 @@
       tagsContainer: null,
       tagCloseIcon: 'x',
       tagClass: '',
-      validator: null
+      validator: null,
+      onlyTagList: false
     };
 
     var TypeaheadOverrides = (function () {
@@ -259,6 +260,14 @@
 
     var pushTag = function (tag, objToPush, isValid) {
       if (!tag || (!isValid) || tag.length <= 0) return;
+
+      if(tagManagerOptions.onlyTagList){
+        if (tagManagerOptions.typeaheadSource != null) {
+          if((jQuery.inArray(tag, tagManagerOptions.typeaheadSource)) == -1){
+            return;
+          }
+        }
+      }
 
       if (tagManagerOptions.CapitalizeFirstLetter && tag.length > 1) {
         tag = tag.charAt(0).toUpperCase() + tag.slice(1).toLowerCase();
