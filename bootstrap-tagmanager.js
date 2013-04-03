@@ -229,6 +229,17 @@
         jQuery(lhiddenTagList).val(tlis.join(",")).change();
       }
     };
+  
+	var prefillExistTag = function() {
+		var lhiddenTagList = obj.data("lhiddenTagList");
+		if (lhiddenTagList.val() != "") {
+			var tags = lhiddenTagList.val().split(',');
+			for (var i in tags) {
+				var tag = trimTag(tags[i]);
+				pushTag(tag, null, true);
+			}
+		}
+	}
 
     var spliceTag = function (tagId) {
       var tlis = obj.data("tlis");
@@ -378,21 +389,22 @@
       obj.data("tlis", tlis); //list of string tags
       obj.data("tlid", tlid); //list of ID of the string tags
 
-      if (tagManagerOptions.hiddenTagListId == null) { /* if hidden input not given default activity */
-        var hiddenTag = $("input[name='" + tagManagerOptions.hiddenTagListName + "']");
-        if (hiddenTag.length > 0) {
-          hiddenTag.remove();
-        }
+      var hiddenObj = null;
 
-        var html = "";
-        html += "<input name='" + tagManagerOptions.hiddenTagListName + "' type='hidden' value=''/>";
-        obj.after(html);
-        obj.data("lhiddenTagList",
-           obj.siblings("input[name='" + tagManagerOptions.hiddenTagListName + "']")[0]
-        );
+      if (tagManagerOptions.hiddenTagListId == null) { /* if hidden input not given default activity */
+        var hiddenObj = jQuery("input[name='" + tagManagerOptions.hiddenTagListName + "']");
+  	if (!hiddenObj.length) {
+			hiddenObj = jQuery('<input>')
+				.attr('name', tagManagerOptions.hiddenTagListName)
+				.attr('type', 'hidden');
+			obj.after(hiddenObj);
+        }
       } else {
-        obj.data("lhiddenTagList", jQuery('#' + tagManagerOptions.hiddenTagListId))
+		  hiddenObj = jQuery('#' + tagManagerOptions.hiddenTagListId);
       }
+	  
+	  obj.data("lhiddenTagList", hiddenObj);
+	  prefillExistTag();
 
       if (tagManagerOptions.typeahead) {
         setupTypeahead();
