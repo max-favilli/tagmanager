@@ -378,6 +378,10 @@
         return;
       }
       
+      // prevent double-initialization of TagManager
+      if ($(this).data('tagManager')){ return false; }
+      $(this).data('tagManager', true);
+
       //let's store some instance specific data directly into the DOM object
       var tlis = new Array();
       var tlid = new Array();
