@@ -528,8 +528,7 @@
               pushTag(user_input, null, true);
               queuedTag = user_input;
               // console.log('Handler for .change() called, typeahead value pushed:' + queuedTag);
-            }
-            
+            }            
             isSelectedFromList = false;
             $(this).data('typeahead').$menu.find(listItemSelector).removeClass(selectedItemClass);
           }
@@ -604,4 +603,3 @@
 
   }
 })(jQuery);
-
