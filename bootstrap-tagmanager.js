@@ -34,6 +34,7 @@
       typeaheadAjaxPolling: false,
       typeaheadOverrides: null,
       typeaheadSource: null,
+      typeaheadUpdater: null,
       AjaxPush: null,
       AjaxPushAllTags: null,
       delimeters: [44, 188, 13, 9],
@@ -89,7 +90,7 @@
       if (!obj.typeahead) return;
 
       if (tagManagerOptions.typeaheadSource != null && jQuery.isFunction(tagManagerOptions.typeaheadSource)) {
-        obj.typeahead({ source: tagManagerOptions.typeaheadSource });
+        obj.typeahead({ source: tagManagerOptions.typeaheadSource, updater:tagManagerOptions.typeaheadUpdater  });
       } else if (tagManagerOptions.typeaheadSource != null) {
         obj.typeahead();
         setTypeaheadSource(tagManagerOptions.typeaheadSource);
@@ -278,6 +279,10 @@
         if (!tagManagerOptions.validator(tag)) return;
       }
 
+      if (tagManagerOptions.typeaheadUpdater != null) {
+    	  tag = tagManagerOptions.typeaheadUpdater(tag);
+      }
+      
       var tlis = obj.data("tlis");
       var tlid = obj.data("tlid");
 
@@ -524,6 +529,7 @@
               queuedTag = user_input;
               // console.log('Handler for .change() called, typeahead value pushed:' + queuedTag);
             }
+            
             isSelectedFromList = false;
             $(this).data('typeahead').$menu.find(listItemSelector).removeClass(selectedItemClass);
           }
@@ -598,3 +604,4 @@
 
   }
 })(jQuery);
+
