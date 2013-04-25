@@ -27,7 +27,7 @@
     var tagManagerOptions = {
       prefilled: null,
       CapitalizeFirstLetter: false,
-      preventSubmitOnEnter: true,
+      disableEnterToAddTags: true,
       isClearInputOnEsc: true,
       typeahead: false,
       typeaheadAjaxSource: null,
@@ -427,7 +427,7 @@
           //jQuery(this).popover = null;
         }
 
-        if (tagManagerOptions.preventSubmitOnEnter) {
+        if (tagManagerOptions.disableEnterToAddTags) {
           if (e.which == 13) {
             e.cancelBubble = true;
             e.returnValue = false;
