@@ -229,6 +229,10 @@
       if (lhiddenTagList) {
         jQuery(lhiddenTagList).val(tlis.join(",")).change();
       }
+      
+      if (jQuery.isFunction(tagManagerOptions.afterUpdate)) {
+        tagManagerOptions.afterUpdate(tlis);
+      }
     };
 
     var spliceTag = function (tagId) {
@@ -339,10 +343,6 @@
         if (tagManagerOptions.maxTags > 0 && tlis.length >= tagManagerOptions.maxTags) {
           obj.hide();
         }
-      }
-      
-      if (jQuery.isFunction(tagManagerOptions.afterUpdate)) {
-        tagManagerOptions.afterUpdate(tag, tlis);
       }
         
       obj.val("");
