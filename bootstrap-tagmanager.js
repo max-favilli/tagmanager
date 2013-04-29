@@ -135,10 +135,10 @@
                     $self.before(html);
                 }
 
-                $("#" + newTagRemoveId).on("click", function(e) {
+                $("#" + newTagRemoveId).on("click", $self, function(e) {
                     e.preventDefault();
                     var TagIdToRemove = parseInt($(this).attr("TagIdToRemove"));
-                    spliceTag(TagIdToRemove, e.data);
+                    privateMethods.spliceTag.call($self,TagIdToRemove, e.data);
                 });
 
                 privateMethods.refreshHiddenTagList.call($self);
@@ -167,7 +167,7 @@
             var $self = this,
             objName = $self.attr('name').replace(/[^\w]/g, '_'),
             tlis = $self.data("tlis"),
-            tlid = $self.data("tlid").
+            tlid = $self.data("tlid"),
             tagId;
 
             while (tlid.length > 0) {
@@ -544,4 +544,4 @@
             return false;
         }
     };
-})(jQuery);
+}(jQuery));
