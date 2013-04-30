@@ -145,6 +145,8 @@
                 if ($self.data('opts').maxTags > 0 && tlis.length >= $self.data('opts').maxTags) {
                     $self.hide();
                 }
+
+                $self.trigger('tags:add');
             }
             $self.val("");
         },
@@ -160,6 +162,7 @@
                 tlis.pop();
                 $("#" + objName + "_" + tagId).remove();
                 privateMethods.refreshHiddenTagList.call($self);
+                $self.trigger('tags:remove');
             }
         },
         empty : function () {
@@ -418,11 +421,12 @@
                 $("#" + objName + "_" + tagId).remove();
                 tlis.splice(p, 1);
                 tlid.splice(p, 1);
+                $self.trigger('tags:remove');
                 privateMethods.refreshHiddenTagList.call($self);
             }
 
             if ($self.data('opts').maxTags > 0 && tlis.length < $self.data('opts').maxTags) {
-                  $self.show();
+                $self.show();
             }
         },
         refreshHiddenTagList : function () {
