@@ -62,23 +62,24 @@
         return TypeaheadOverrides;
     }()),
     publicMethods = {
-        pushTag : function (tag, objToPush, isValid) {
+        pushTag : function (tag, isValid) {
+            isValid = (typeof isValid === 'boolean') ? isValid : true;
+
             var $self = this,
             objName = $self.attr('name').replace(/[^\w]/g, '_'),
             tlis = $self.data("tlis"),
             tlid = $self.data("tlid"),
-            alreadyInList = false,
             tlisLowerCase = tlis.map(function(elem) {
                 return elem.toLowerCase();
             }),
-            p = -1,
-            max,
+            tagIdx = -1,
+            max = Math.max.apply(null, tlid),
             tagId,
             newTagId,
             newTagRemoveId,
-            html;
+            html = '';
 
-            if (!tag || (!isValid) || tag.length <= 0) return;
+            if (!tag || !isValid || tag.length <= 0) return;
 
             if ($self.data('opts').onlyTagList) {
                 if ($self.data('opts').typeaheadSource != null) {
@@ -100,11 +101,10 @@
             // dont accept new tags beyond the defined maximum
             if ($self.data('opts').maxTags > 0 && tlis.length >= $self.data('opts').maxTags) return;
 
-            p = $.inArray(tag.toLowerCase(), tlisLowerCase);
-            alreadyInList = (-1 != p) ? true : false;
+            tagIdx = $.inArray(tag.toLowerCase(), tlisLowerCase);
 
-            if (alreadyInList) {
-                $("#" + objName + "_" + tlid[p]).stop()
+            if (-1 != tagIdx) {
+                $("#" + objName + "_" + tlid[tagIdx]).stop()
                     .animate({backgroundColor: $self.data('opts').blinkBGColor_1}, 100)
                     .animate({backgroundColor: $self.data('opts').blinkBGColor_2}, 100)
                     .animate({backgroundColor: $self.data('opts').blinkBGColor_1}, 100)
@@ -112,7 +112,7 @@
                     .animate({backgroundColor: $self.data('opts').blinkBGColor_1}, 100)
                     .animate({backgroundColor: $self.data('opts').blinkBGColor_2}, 100);
             } else {
-                max = (Math.max.apply(null, tlid) == -Infinity) ? 0 : max;
+                max = (max == -Infinity) ? 0 : max;
 
                 tagId = ++max;
                 tlis.push(tag);
@@ -124,7 +124,6 @@
 
                 newTagId = objName + '_' + tagId;
                 newTagRemoveId = objName + '_Remover_' + tagId;
-                html = '';
                 html += '<span class="myTag' + ($self.data('opts').tagClass ? ' ' + $self.data('opts').tagClass : '') + '" '+
                     'id="' + newTagId + '"><span>' + tag + '&nbsp;&nbsp;</span><a href="#" class="myTagRemover" '+
                     'id="'+newTagRemoveId + '" TagIdToRemove="' + tagId + '" title="Remove">' + $self.data('opts').tagCloseIcon + '</a></span>';
@@ -135,7 +134,7 @@
                     $self.before(html);
                 }
 
-                $("#" + newTagRemoveId).on("click", $self, function(e) {
+                $("#" + newTagRemoveId).on("click", function(e) {
                     e.preventDefault();
                     var TagIdToRemove = parseInt($(this).attr("TagIdToRemove"));
                     privateMethods.spliceTag.call($self,TagIdToRemove, e.data);
@@ -191,9 +190,6 @@
             this.each(function() {
                 var $self = $(this),
                 queuedTag = "",
-                delimeters = opts.delimeters,
-                backspace = opts.backspace,
-                isInitialized = false,
                 tagIsValid = false,
                 isSelectedFromList = false,
                 hiddenTag = $('input[name="' + opts.hiddenTagListName + '"]'),
@@ -246,10 +242,6 @@
 
                 // disable submit on enter for this input field
                 $self.on('keypress', function (e) {
-                    var p = $.inArray(e.which, delimeters),
-                    isKeyInList = '0' in $('.typeahead:visible'),
-                    user_input;
-
                     if ($self.popover) {
                         $self.popover('hide');
                     }
@@ -264,11 +256,10 @@
                         }
                     }
 
-                    if (!isKeyInList && (- 1 != p)) {
+                    if (!('0' in $('.typeahead:visible')) && (-1 != $.inArray(e.which, opts.delimeters))) {
                         //user just entered a valid delimeter
                         tagIsValid = true;
-                        user_input = privateMethods.trimTag($(this).val(), delimeters);
-                        publicMethods.pushTag.call($self, user_input, e.data, tagIsValid);
+                        publicMethods.pushTag.call($self, privateMethods.trimTag($(this).val(), opts.delimeters), e.data, tagIsValid);
                         e.preventDefault();
                     } else {
                         tagIsValid = false;
@@ -278,7 +269,7 @@
 
                 if (opts.deleteTagsOnBackspace) {
                     $self.on("keydown", function (e) {
-                        var p = $.inArray(e.which, backspace), user_input, i;
+                        var p = $.inArray(e.which, opts.backspace), user_input, i;
                         if (-1 != p) {
                             //user just entered backspace or equivalent
                             user_input = $(this).val();
@@ -298,7 +289,6 @@
 
                     var selectedItemClass = opts.typeaheadOverrides.selectedClass,
                     listItemSelector = '.' + selectedItemClass,
-                    data = $self.data('typeahead'),
                     is_chrome = navigator.userAgent.indexOf('Chrome') > -1,
                     is_explorer = navigator.userAgent.indexOf('MSIE') > -1,
                     is_firefox = navigator.userAgent.indexOf('Firefox') > -1,
@@ -306,7 +296,7 @@
                     isClear = false,
                     user_input;
 
-                    if (data) {
+                    if ($self.data('typeahead')) {
                         isSelectedFromList = $self.data('typeahead').$menu.find("*")
                             .filter(listItemSelector)
                             .hasClass(selectedItemClass);
@@ -331,11 +321,11 @@
 
                         if (isSelectedFromList) {
                             user_input = $self.data('typeahead').$menu.find(listItemSelector).attr('data-value');
-                            user_input = privateMethods.trimTag(user_input,delimeters);
+                            user_input = privateMethods.trimTag(user_input, opts.delimeters);
                             if (queuedTag == $(this).val() && queuedTag == user_input) {
                                 isClear = true;
                             } else {
-                                publicMethods.pushTag.call($self, user_input, null, true);
+                                publicMethods.pushTag.call($self, user_input, true);
                                 queuedTag = user_input;
                             }
                             isSelectedFromList = false;
@@ -348,8 +338,8 @@
                         }
                     } else {
                         user_input = $self.val();
-                        user_input = privateMethods.trimTag(user_input,delimeters);
-                        publicMethods.pushTag.call($self, user_input, null, true);
+                        user_input = privateMethods.trimTag(user_input, opts.delimeters);
+                        publicMethods.pushTag.call($self, user_input, true);
                     }
 
                     tagIsValid = false;
@@ -373,8 +363,8 @@
 
                         if (push) {
                             user_input = $self.val();
-                            user_input = privateMethods.trimTag(user_input, delimeters);
-                            publicMethods.pushTag.call($self, user_input, null, tagIsValid);
+                            user_input = privateMethods.trimTag(user_input, opts.delimeters);
+                            publicMethods.pushTag.call($self, user_input, tagIsValid);
                         }
 
                         return false;
@@ -389,7 +379,7 @@
                     }
 
                     $.each(prefilled, function (key, val) {
-                        publicMethods.pushTag.call($self, val, $self, true);
+                        publicMethods.pushTag.call($self, val, true);
                     });
                 }
             });
@@ -535,10 +525,11 @@
     };
 
     $.fn.tagsManager = function(method) {
+        var $self = $(this);
         if ( publicMethods[method] ) {
-            return publicMethods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+            return publicMethods[method].apply($self, Array.prototype.slice.call(arguments, 1));
         } else if ( typeof method === 'object' || ! method ) {
-            return privateMethods.init.apply( this, arguments );
+            return privateMethods.init.apply(this, arguments );
         } else {
             $.error( 'Method ' +  method + ' does not exist.' );
             return false;
