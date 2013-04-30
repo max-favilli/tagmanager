@@ -1,8 +1,8 @@
 /* ===================================================
- * bootstrap-tagmanager.js v2.3
+ * bootstrap-tagmanager.js v3.0
  * http://welldonethings.com/tags/manager
  * ===================================================
- * Copyright 2012 Max Favilli
+ * Copyright 2012 Max Favilli modified by David Meyers
  *
  * Licensed under the Mozilla Public License, Version 2.0 You may not use this work except in compliance with the License.
  *
@@ -15,12 +15,9 @@
  * limitations under the License.
  * ========================================================== */
 
-"use strict";
-
 (function($) {
-    console = (typeof console === "undefined" || typeof console.log === "undefined")
-        ? console = {log : $.noop}
-        : console;
+
+    "use strict";
 
     var defaults = {
         prefilled: null,
@@ -66,7 +63,6 @@
             isValid = (typeof isValid === 'boolean') ? isValid : true;
 
             var $self = this,
-            objName = $self.attr('name').replace(/[^\w]/g, '_'),
             tlis = $self.data("tlis"),
             tlid = $self.data("tlid"),
             tlisLowerCase = tlis.map(function(elem) {
@@ -79,7 +75,7 @@
             newTagRemoveId,
             html = '';
 
-            if (!tag || !isValid || tag.length <= 0) return;
+            if (!tag || !isValid || tag.length <= 0) { return; }
 
             if ($self.data('opts').onlyTagList) {
                 if ($self.data('opts').typeaheadSource != null) {
@@ -104,7 +100,7 @@
             tagIdx = $.inArray(tag.toLowerCase(), tlisLowerCase);
 
             if (-1 != tagIdx) {
-                $("#" + objName + "_" + tlid[tagIdx]).stop()
+                $("#" + $self.data('tag_prefix') + "_" + tlid[tagIdx]).stop()
                     .animate({backgroundColor: $self.data('opts').blinkBGColor_1}, 100)
                     .animate({backgroundColor: $self.data('opts').blinkBGColor_2}, 100)
                     .animate({backgroundColor: $self.data('opts').blinkBGColor_1}, 100)
@@ -113,7 +109,6 @@
                     .animate({backgroundColor: $self.data('opts').blinkBGColor_2}, 100);
             } else {
                 max = (max == -Infinity) ? 0 : max;
-
                 tagId = ++max;
                 tlis.push(tag);
                 tlid.push(tagId);
@@ -122,8 +117,8 @@
                     $.post($self.data('opts').AjaxPush, {tag: tag});
                 }
 
-                newTagId = objName + '_' + tagId;
-                newTagRemoveId = objName + '_Remover_' + tagId;
+                newTagId = $self.data('tag_prefix') + '_' + tagId;
+                newTagRemoveId = $self.data('tag_prefix') + '_Remover_' + tagId;
                 html += '<span class="myTag' + ($self.data('opts').tagClass ? ' ' + $self.data('opts').tagClass : '') + '" '+
                     'id="' + newTagId + '"><span>' + tag + '&nbsp;&nbsp;</span><a href="#" class="myTagRemover" '+
                     'id="'+newTagRemoveId + '" TagIdToRemove="' + tagId + '" title="Remove">' + $self.data('opts').tagCloseIcon + '</a></span>';
@@ -151,32 +146,15 @@
             $self.val("");
         },
         popTag : function () {
-            var $self = this,
-            objName = $self.attr('name').replace(/[^\w]/g, '_'),
-            tlis = $self.data("tlis"),
-            tlid = $self.data("tlid"),
-            tagId;
-
-            if (tlid.length > 0) {
-                tagId = tlid.pop();
-                tlis.pop();
-                $("#" + objName + "_" + tagId).remove();
-                privateMethods.refreshHiddenTagList.call($self);
-                $self.trigger('tags:remove');
+            var $self = this;
+            if ($self.data("tlid").length > 0) {
+                privateMethods.spliceTag.call($self,$self.data("tlid")[0]);
             }
         },
         empty : function () {
-            var $self = this,
-            objName = $self.attr('name').replace(/[^\w]/g, '_'),
-            tlis = $self.data("tlis"),
-            tlid = $self.data("tlid"),
-            tagId;
-
-            while (tlid.length > 0) {
-                tagId = tlid.pop();
-                tlis.pop();
-                $("#" + objName + "_" + tagId).remove();
-                privateMethods.refreshHiddenTagList.call($self);
+            var $self = this;
+            while ($self.data("tlid").length > 0) {
+                privateMethods.spliceTag.call($self,$self.data("tlid")[0]);
             }
         }
     },
@@ -201,11 +179,13 @@
 
                 if (opts.AjaxPushAllTags) {
                     $self.on('tags:refresh', function(e,taglist) {
-                        privateMethods.pushAllTags.call($self,e,taglist);
+                        privateMethods.postTags.call($self,e,taglist);
                     });
                 }
 
-                $self.data('opts',opts).data('tlis', []).data('tlid', []);
+                $self.data('opts',opts)
+                    .data('tag_prefix', $self.attr('name').replace(/[^\w]/g, '_'))
+                    .data('tlis', []).data('tlid', []);
 
                 if (opts.hiddenTagListId == null) {
                     if (hiddenTag.length > 0) {
@@ -412,17 +392,16 @@
         },
         spliceTag : function (tagId) {
             var $self = this,
-            objName = $self.attr('name').replace(/[^\w]/g, '_'),
             tlis = $self.data("tlis"),
             tlid = $self.data("tlid"),
-            p = $.inArray(tagId, tlid);
+            idx = $.inArray(tagId, tlid);
 
-            if (-1 != p) {
-                $("#" + objName + "_" + tagId).remove();
-                tlis.splice(p, 1);
-                tlid.splice(p, 1);
-                $self.trigger('tags:remove');
+            if (-1 != idx) {
+                $("#" + $self.data('tag_prefix') + "_" + tagId).remove();
+                tlis.splice(idx, 1);
+                tlid.splice(idx, 1);
                 privateMethods.refreshHiddenTagList.call($self);
+                $self.trigger('tags:remove');
             }
 
             if ($self.data('opts').maxTags > 0 && tlis.length < $self.data('opts').maxTags) {
@@ -440,7 +419,7 @@
                 $(lhiddenTagList).val(tlis.join(",")).change();
             }
         },
-        pushAllTags : function(e, tagstring) {
+        postTags : function(e, tagstring) {
             var $self = this;
             if ($self.data('opts').AjaxPushAllTags) {
                 $.post($self.data('opts').AjaxPushAllTags, {tags: tagstring});
@@ -497,12 +476,13 @@
                 $self.typeahead($self.data('opts').typeaheadDelegate);
             }
 
-            var data = $self.data('typeahead');
-            if (data) {
-              // set the overrided handler
-              data.select = $.proxy($self.data('opts').typeaheadOverrides.select,
-                $self.data('typeahead'),
-                $self.data('opts').typeaheadOverrides);
+            if ($self.data('typeahead')) {
+                // set the overrided handler
+                $self.data('typeahead').select = $.proxy(
+                    $self.data('opts').typeaheadOverrides.select,
+                    $self.data('typeahead'),
+                    $self.data('opts').typeaheadOverrides
+                );
             }
         },
         onTypeaheadAjaxSuccess : function(data, isSetTypeaheadSource, process) {
@@ -524,6 +504,11 @@
                 if ($.isFunction(process)) {
                     process(sourceAjaxArray);
                 }
+            }
+        },
+        log : function (variable) {
+            if (typeof console != 'undefined') {
+                console.log(variable);
             }
         }
     };
