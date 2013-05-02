@@ -148,7 +148,7 @@
         popTag : function () {
             var $self = this;
             if ($self.data("tlid").length > 0) {
-                privateMethods.spliceTag.call($self,$self.data("tlid")[0]);
+                privateMethods.spliceTag.call($self,$self.data("tlid")[$self.data("tlid").length - 1]);
             }
         },
         empty : function () {
