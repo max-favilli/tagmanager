@@ -521,6 +521,8 @@
           prefill(tagManagerOptions.prefilled);
         } else if (typeof (tagManagerOptions.prefilled) == "string") {
           prefill(tagManagerOptions.prefilled.split(','));
+        } else if (typeof (tagManagerOptions.prefilled) == "function") {
+          prefill(tagManagerOptions.prefilled());
         }
       } else if (tagManagerOptions.hiddenTagListId != null) {
         prefill($('#' + tagManagerOptions.hiddenTagListId).val().split(','));
