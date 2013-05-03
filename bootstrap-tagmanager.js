@@ -580,6 +580,7 @@
       if (tagManagerOptions.prefilled != null) {
         if (typeof (tagManagerOptions.prefilled) == "object") {
           var pta = tagManagerOptions.prefilled;
+
           jQuery.each(pta, function (key, val) {
             var a = 1;
             pushTag(val, obj, true);
@@ -591,7 +592,13 @@
             var a = 1;
             pushTag(val, obj, true);
           });
+        } else if (typeof (tagManagerOptions.prefilled) == "function") {
+          var pta = tagManagerOptions.prefilled().split(',');
 
+          jQuery.each(pta, function (key, val) {
+            var a = 1;
+            pushTag(val, obj, true);
+          });
         }
       }
     });
