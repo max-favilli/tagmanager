@@ -317,17 +317,16 @@
 
         var newTagId = objName + '_' + tagId;
         var newTagRemoveId = objName + '_Remover_' + tagId;
-        var html = '';
         var cl = tagManagerOptions.tagClass ? ' '+tagManagerOptions.tagClass : '';
-        html += '<span class="myTag'+cl+'" id="' + newTagId + '"><span>' + tag + '&nbsp;&nbsp;</span><a href="#" class="myTagRemover" id="' + newTagRemoveId + '" TagIdToRemove="' + tagId + '" title="Remove">' + tagManagerOptions.tagCloseIcon + '</a></span> ';
+        var $el = jQuery('<span class="myTag'+cl+'" id="' + newTagId + '"><span>' + tag + '&nbsp;&nbsp;</span><a href="#" class="myTagRemover" id="' + newTagRemoveId + '" TagIdToRemove="' + tagId + '" title="Remove">' + tagManagerOptions.tagCloseIcon + '</a></span> ');
 
         if (tagManagerOptions.tagsContainer != null) {
-            jQuery(tagManagerOptions.tagsContainer).append(html);
+            jQuery(tagManagerOptions.tagsContainer).append($el);
         } else {
-          obj.before(html);
+          obj.before($el);
         }
 
-        jQuery("#" + newTagRemoveId).on("click", obj, function (e) {
+        $el.find("#" + newTagRemoveId).on("click", obj, function (e) {
           e.preventDefault();
           var TagIdToRemove = parseInt(jQuery(this).attr("TagIdToRemove"));
           spliceTag(TagIdToRemove, e.data);
