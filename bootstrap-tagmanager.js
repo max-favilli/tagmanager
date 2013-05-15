@@ -342,14 +342,15 @@
         html += '<span>' + tag + '</span>';
         html += '<a href="#" class="tm-tag-remove" id="' + newTagRemoveId + '" TagIdToRemove="' + tagId + '">';
         html += tagManagerOptions.tagCloseIcon + '</a></span> ';
+        var $el = jQuery(html);
 
         if (tagManagerOptions.tagsContainer != null) {
-            jQuery(tagManagerOptions.tagsContainer).append(html);
+          jQuery(tagManagerOptions.tagsContainer).append($el);
         } else {
-          obj.before(html);
+          obj.before($el);
         }
 
-        jQuery("#" + newTagRemoveId).on("click", obj, function (e) {
+        $el.find("#" + newTagRemoveId).on("click", obj, function (e) {
           e.preventDefault();
           var TagIdToRemove = parseInt(jQuery(this).attr("TagIdToRemove"));
           spliceTag(TagIdToRemove, e.data);
