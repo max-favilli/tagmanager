@@ -81,7 +81,6 @@
 
     var obj = this;
     var objName = obj.attr('name').replace(/[^\w]/g, '_');
-    var queuedTag = "";
     var delimiters = tagManagerOptions.delimeters || tagManagerOptions.delimiters; // 'delimeter' is deprecated
     var backspace = tagManagerOptions.backspace;
     var isInitialized = false;
@@ -153,6 +152,16 @@
       obj.data('active', true);
       obj.data('typeahead').source = source;
       obj.data('active', false);
+    };
+
+    var typeaheadSelectedItem = function () {
+      var listItemSelector = '.' + tagManagerOptions.typeaheadOverrides.selectedClass;
+      var typeahead_data = obj.data('typeahead');
+      return typeahead_data ? typeahead_data.$menu.find(listItemSelector) : undefined;
+    };
+
+    var typeaheadVisible = function () {
+      return jQuery('.typeahead:visible')[0];
     };
 
     var ajaxPolling = function (query, process) {
@@ -261,16 +270,8 @@
       }
     };
 
-    var pushTag = function (tag, objToPush, isValid) {
-      if (!tag || (!isValid) || tag.length <= 0) return;
-
-      if(tagManagerOptions.onlyTagList){
-        if (tagManagerOptions.typeaheadSource != null) {
-          if((jQuery.inArray(tag, tagManagerOptions.typeaheadSource)) == -1){
-            return;
-          }
-        }
-      }
+    var pushTag = function (tag) {
+      if (!tag || tag.length <= 0) return;
 
       if (tagManagerOptions.CapitalizeFirstLetter && tag.length > 1) {
         tag = tag.charAt(0).toUpperCase() + tag.slice(1).toLowerCase();
@@ -347,7 +348,7 @@
 
     var prefill = function (pta) {
       jQuery.each(pta, function (key, val) {
-        pushTag(val, obj, true);
+        pushTag(val);
       });
     };
 
@@ -361,10 +362,18 @@
       initialize();
     }
 
-    return this.each(function () {
+    var killEvent = function (e) {
+      e.cancelBubble = true;
+      e.returnValue = false;
+      e.stopPropagation();
+      e.preventDefault();
+    };
 
-      var tagIsValid = false;
-      var isSelectedFromList = false;
+    var keyInArray = function (e, ary) {
+      return jQuery.inArray(e.which, ary) != -1
+    };
+
+    return this.each(function () {
 
       if (typeof options == 'string') {
         switch (options) {
@@ -375,17 +384,17 @@
             popTag();
             break;
           case "pushTag":
-            pushTag(tagToManipulate, null, true);
+            pushTag(tagToManipulate);
             break;
         }
         return;
       }
-      
+
       // prevent double-initialization of TagManager
       if ($(this).data('tagManager')){ return false; }
       $(this).data('tagManager', true);
 
-      //let's store some instance specific data directly into the DOM object
+      // store instance-specific data in the DOM object
       var tlis = new Array();
       var tlid = new Array();
       obj.data("tlis", tlis); //list of string tags
@@ -409,186 +418,83 @@
 
       if (tagManagerOptions.typeahead) {
         setupTypeahead();
-        //obj.typeahead({ source: SourceArray })
       }
 
-      obj.on("focus", function (e) {
+      // hide popovers on focus and keypress events
+      obj.on('focus keypress', function (e) {
         if (jQuery(this).popover) {
-          jQuery(this).popover("hide");
-          //jQuery(this).popover = null;
+          jQuery(this).popover('hide');
         }
       });
 
-      // clear input field on Esc
+      // handle ESC (keyup used for browser compatibility)
       if (tagManagerOptions.isClearInputOnEsc) {
-        obj.on("keyup", function (e) {
+        obj.on('keyup', function (e) {
           if (e.which == 27) {
-            jQuery(this).val("");
-            e.cancelBubble = true;
-            e.returnValue = false;
-            e.stopPropagation();
-            e.preventDefault();
-            return false;
+            // console.log('esc detected');
+            jQuery(this).val('');
+            killEvent(e);
           }
         });
       }
 
-      // disable submit on enter for this input field
-      obj.on("keypress", function (e) {
-        if (jQuery(this).popover) {
-          jQuery(this).popover("hide");
-          //jQuery(this).popover = null;
-        }
-
-        if (tagManagerOptions.preventSubmitOnEnter) {
-          if (e.which == 13) {
-            e.cancelBubble = true;
-            e.returnValue = false;
-            e.stopPropagation();
-            e.preventDefault();
-              //e.keyCode = 9;
-            return false;
+      obj.on('keypress', function (e) {
+        // disable ENTER
+        if (e.which == 13) {
+          if (tagManagerOptions.preventSubmitOnEnter) {
+            killEvent(e);
           }
         }
 
-        var p = jQuery.inArray(e.which, delimiters);
-        var isKeyInList = '0' in jQuery(".typeahead:visible");
-        if (!isKeyInList && (- 1 != p)) {
-          //user just entered a valid delimiter
-          tagIsValid = true;
-          var user_input = jQuery(this).val(); //user_input = jQuery().inArray(delimiters[p]);
-          user_input = trimTag(user_input);
-          pushTag(user_input, e.data, tagIsValid);
+        // push delimiters (includes <enter> by default)
+        if (keyInArray(e, delimiters)) {
+          var taItem = typeaheadSelectedItem();
+          var taVisible = typeaheadVisible();
+          // ignore ENTER when Typeahead is open
+          if (!(e.which==13 && taItem && taVisible)) {
+            var tag = trimTag(jQuery(this).val());
+            pushTag(tag);
+            // console.log('keypress: pushTagDelimiter ' + tag);
+          }
           e.preventDefault();
-          // console.log("pushTag: keypress");
         }
-        else {
-          tagIsValid = false;
-        }
-
-        // console.log("keypress: " + e.which);
       });
 
+      // BACKSPACE (keydown used for browser compatibility)
       if (tagManagerOptions.deleteTagsOnBackspace) {
-        obj.on("keydown", obj, function (e) {
-          var p = jQuery.inArray(e.which, backspace);
-          if (-1 != p) {
-            //user just entered backspace or equivalent
-            var user_input = jQuery(this).val(); //user_input = jQuery().inArray(delimiters[p]);
-            var i = user_input.length;
-            if (i <= 0) {
-              // console.log("backspace detected");
-              e.preventDefault();
+        obj.on('keydown', function (e) {
+          if (keyInArray(e, backspace)) {
+            // console.log("backspace detected");
+            if (jQuery(this).val().length <= 0) {
               popTag();
+              killEvent(e);
             }
           }
         });
       }
 
       obj.change(function (e) {
-        e.cancelBubble = true;
-        e.returnValue = false;
-        e.stopPropagation();
-        e.preventDefault();
 
-        var selectedItemClass = tagManagerOptions.typeaheadOverrides.selectedClass;
-        var listItemSelector = '.' + selectedItemClass;
+        if (!jQuery.browser.webkit) { jQuery(this).focus(); } // why?
 
-        // check the typeahead list selection
-        var data = $(this).data('typeahead');
-        if (data) { 
-          isSelectedFromList = $(this).data('typeahead').$menu.find("*")
-            .filter(listItemSelector)
-            .hasClass(selectedItemClass);
+        var tag;
+        var taItem = typeaheadSelectedItem();
+        var taVisible = typeaheadVisible();
 
-          if (isSelectedFromList) {
-            tagIsValid = true;
-          }
+        if (taItem && taVisible) {
+          tag = trimTag(taItem.attr('data-value'));
+          taItem.removeClass(tagManagerOptions.typeaheadOverrides.selectedClass);
+          pushTag(tag);
+          // console.log('change: pushTypeAheadTag ' + tag);
         }
-
-        if (!tagIsValid) {
-          return false;
-        }
-
-        var is_chrome = navigator.userAgent.indexOf('Chrome') > -1;
-        var is_explorer = navigator.userAgent.indexOf('MSIE') > -1;
-        var is_firefox = navigator.userAgent.indexOf('Firefox') > -1;
-        var is_safari = navigator.userAgent.indexOf("Safari") > -1;
-
-        if (!is_chrome && !is_safari)
-          jQuery(this).focus();
-
-        // console.log('Handler for .change() called, value selected:' + obj.val());
-        var ao = jQuery(".typeahead:visible");
-        if (ao[0] != undefined) {
-          // console.log('change: typeaheadIsVisible is visible');
-          //when the user click with the mouse on the typeahead li element we get the change event fired twice, once when the input field loose focus and later with the input field value is replaced with li value
-
-          var isClear = !isSelectedFromList;
-
-          if (isSelectedFromList) {
-            // if user selected from list
-            var user_input = $(this).data('typeahead').$menu.find(listItemSelector).attr('data-value');
-            user_input = trimTag(user_input);
-            if (queuedTag == jQuery(this).val() && queuedTag == user_input) {
-              isClear = true;
-            } else {
-              pushTag(user_input, null, true);
-              queuedTag = user_input;
-              // console.log('Handler for .change() called, typeahead value pushed:' + queuedTag);
-            }
-            isSelectedFromList = false;
-            $(this).data('typeahead').$menu.find(listItemSelector).removeClass(selectedItemClass);
-          }
-
-          if (isClear) {
-            queuedTag = "";
-            jQuery(this).val(queuedTag);
-          }
-        } else {
-          // console.log('change: typeaheadIsVisible is NOT visible');
-          var user_input = jQuery(this).val(); //user_input = jQuery().inArray(delimiters[p]);
-          user_input = trimTag(user_input);
-          pushTag(user_input, null, true);
-          // console.log("pushTag: change ");
-        }
-
-        tagIsValid = false;
-
-        return false; //cancel bubble
+        /* unimplemented mode to push tag on blur
+         else if (tagManagerOptions.pushTagOnBlur) {
+         tag = trimTag(jQuery(this).val());
+         console.log('change: pushTagOnBlur ' + tag);
+         pushTag(tag);
+         } */
+        killEvent(e);
       });
-
-      if (1 == 1 || !tagManagerOptions.typeahead) {
-        obj.on("blur", function (e) {
-          //lost focus
-          e.cancelBubble = true;
-          e.returnValue = false;
-          e.stopPropagation();
-          e.preventDefault();
-
-          var push = true;
-          if (tagManagerOptions.typeahead) {
-            var ao = jQuery(".typeahead:visible");
-            if (ao[0] != undefined) {
-              // console.log('blur: typeaheadIsVisible is visible');
-              push = false;
-            } else {
-              // console.log('blur: typeaheadIsVisible is NOT visible');
-              push = true;
-            }
-          }
-
-          if (push) {
-            // console.log('lost focus');
-            var user_input = jQuery(this).val(); //user_input = jQuery().inArray(delimiters[p]);
-            user_input = trimTag(user_input);
-            pushTag(user_input, null, tagIsValid);
-            // console.log("pushTag: blur");
-          }
-
-          return false;
-        });
-      }
 
       if (tagManagerOptions.prefilled != null) {
         if (typeof (tagManagerOptions.prefilled) == "object") {
@@ -600,6 +506,5 @@
         prefill($('#' + tagManagerOptions.hiddenTagListId).val().split(','));
       }
     });
-
   }
 })(jQuery);
