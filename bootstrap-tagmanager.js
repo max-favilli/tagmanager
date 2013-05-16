@@ -36,7 +36,7 @@
       typeaheadSource: null,
       AjaxPush: null,
       AjaxPushAllTags: null,
-      delimeters: [44, 188, 13, 9],
+      delimiters: [44, 188, 13, 9],
       backspace: [8],
       maxTags: 0,
       hiddenTagListName: null,
@@ -81,7 +81,7 @@
     var obj = this;
     var objName = obj.attr('name').replace(/[^\w]/g, '_');
     var queuedTag = "";
-    var delimeters = tagManagerOptions.delimeters;
+    var delimiters = tagManagerOptions.delimeters || tagManagerOptions.delimiters; // 'delimeter' is deprecated
     var backspace = tagManagerOptions.backspace;
     var isInitialized = false;
     var tagBaseClass = 'tm-tag';
@@ -189,7 +189,7 @@
       var t = 0;
 
       for (var i = l - 1; i >= 0; i--) {
-        if (-1 == jQuery.inArray(txt.charCodeAt(i), delimeters)) break;
+        if (-1 == jQuery.inArray(txt.charCodeAt(i), delimiters)) break;
         t++;
       }
 
@@ -199,7 +199,7 @@
 
       //remove from head
       for (var i = 0; i < l; i++) {
-        if (-1 == jQuery.inArray(txt.charCodeAt(i), delimeters)) break;
+        if (-1 == jQuery.inArray(txt.charCodeAt(i), delimiters)) break;
         t++;
       }
 
@@ -466,12 +466,12 @@
           }
         }
 
-        var p = jQuery.inArray(e.which, delimeters);
+        var p = jQuery.inArray(e.which, delimiters);
         var isKeyInList = '0' in jQuery(".typeahead:visible");
         if (!isKeyInList && (- 1 != p)) {
-          //user just entered a valid delimeter
+          //user just entered a valid delimiter
           tagIsValid = true;
-          var user_input = jQuery(this).val(); //user_input = jQuery().inArray(delimeters[p]);
+          var user_input = jQuery(this).val(); //user_input = jQuery().inArray(delimiters[p]);
           user_input = trimTag(user_input);
           pushTag(user_input, e.data, tagIsValid);
           e.preventDefault();
@@ -489,7 +489,7 @@
           var p = jQuery.inArray(e.which, backspace);
           if (-1 != p) {
             //user just entered backspace or equivalent
-            var user_input = jQuery(this).val(); //user_input = jQuery().inArray(delimeters[p]);
+            var user_input = jQuery(this).val(); //user_input = jQuery().inArray(delimiters[p]);
             var i = user_input.length;
             if (i <= 0) {
               // console.log("backspace detected");
@@ -562,7 +562,7 @@
           }
         } else {
           // console.log('change: typeaheadIsVisible is NOT visible');
-          var user_input = jQuery(this).val(); //user_input = jQuery().inArray(delimeters[p]);
+          var user_input = jQuery(this).val(); //user_input = jQuery().inArray(delimiters[p]);
           user_input = trimTag(user_input);
           pushTag(user_input, null, true);
           // console.log("pushTag: change ");
@@ -595,7 +595,7 @@
 
           if (push) {
             // console.log('lost focus');
-            var user_input = jQuery(this).val(); //user_input = jQuery().inArray(delimeters[p]);
+            var user_input = jQuery(this).val(); //user_input = jQuery().inArray(delimiters[p]);
             user_input = trimTag(user_input);
             pushTag(user_input, null, tagIsValid);
             // console.log("pushTag: blur");
