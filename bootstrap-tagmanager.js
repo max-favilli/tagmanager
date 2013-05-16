@@ -33,6 +33,7 @@
       typeaheadAjaxSource: null,
       typeaheadAjaxPolling: false,
       typeaheadOverrides: null,
+      typeaheadDelegate: {},
       typeaheadSource: null,
       AjaxPush: null,
       AjaxPushAllTags: null,
@@ -90,14 +91,17 @@
     var setupTypeahead = function () {
       if (!obj.typeahead) return;
 
+      var taOpts = tagManagerOptions.typeaheadDelegate;
+
       if (tagManagerOptions.typeaheadSource != null && jQuery.isFunction(tagManagerOptions.typeaheadSource)) {
-        obj.typeahead({ source: tagManagerOptions.typeaheadSource });
+        jQuery.extend(taOpts, { source: tagManagerOptions.typeaheadSource });
+        obj.typeahead(taOpts);
       } else if (tagManagerOptions.typeaheadSource != null) {
-        obj.typeahead();
+        obj.typeahead(taOpts);
         setTypeaheadSource(tagManagerOptions.typeaheadSource);
       } else if (tagManagerOptions.typeaheadAjaxSource != null) {
         if (!tagManagerOptions.typeaheadAjaxPolling) {
-          obj.typeahead();
+          obj.typeahead(taOpts);
 
           if (typeof (tagManagerOptions.typeaheadAjaxSource) == "string") {
             jQuery.ajax({
@@ -111,10 +115,9 @@
             });
           }
         } else if (tagManagerOptions.typeaheadAjaxPolling) {
-          obj.typeahead({ source: ajaxPolling });
+          jQuery.extend(taOpts, { source: ajaxPolling });
+          obj.typeahead(taOpts);
         }
-      } else if (tagManagerOptions.typeaheadDelegate) {
-        obj.typeahead(tagManagerOptions.typeaheadDelegate);
       }
 
       var data = obj.data('typeahead');
