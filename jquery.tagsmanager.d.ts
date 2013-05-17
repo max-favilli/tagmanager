@@ -18,7 +18,7 @@ interface ITagsManagerOptions {
     typeaheadSource?: any;
     AjaxPush?: string; //url
     AjaxPushAllTags?: string; //url
-    delimeters?: number[];
+    delimiters?: number[];
     backspace?: number[];
     maxTags?: number;
     blinkBGColor_1?: string;
@@ -30,6 +30,7 @@ interface ITagsManagerOptions {
     tagCloseIcon?: string;
     tagClass?: string;
     validator: Function;
+    onlyTagList?: bool;
 }
 
 interface ITypeaheadOverrides {
