@@ -84,6 +84,8 @@
     var delimeters = tagManagerOptions.delimeters;
     var backspace = tagManagerOptions.backspace;
     var isInitialized = false;
+    var tagBaseClass = 'tm-tag';
+    var inputBaseClass = 'tm-input';
 
     var setupTypeahead = function () {
       if (!obj.typeahead) return;
@@ -164,6 +166,20 @@
           success: function (data) { onTypeaheadAjaxSuccess(data, false, process); }
         });
       }
+    };
+
+    var tagClasses = function () {
+      // 1) default class (tm-tag)
+      var cl = tagBaseClass;
+      // 2) interpolate from input class: tm-input-xxx --> tm-tag-xxx
+      $.each(obj.attr('class').split(' '), function(index, value) {
+        if (value.indexOf(inputBaseClass+'-') != -1){
+          cl += ' ' + tagBaseClass + value.substring(inputBaseClass.length);
+        }
+      });
+      // 3) tags from tagClass option
+      cl += (tagManagerOptions.tagClass ? ' ' + tagManagerOptions.tagClass : '');
+      return cl;
     };
 
     var trimTag = function (tag) {
@@ -317,9 +333,8 @@
 
         var newTagId = objName + '_' + tagId;
         var newTagRemoveId = objName + '_Remover_' + tagId;
-        var cl = 'tm-tag' + (tagManagerOptions.tagClass ? ' ' + tagManagerOptions.tagClass : '');
 
-        var html = '<span class="' + cl + '" id="' + newTagId + '">';
+        var html = '<span class="' + tagClasses() + '" id="' + newTagId + '">';
         html += '<span>' + tag + '</span>';
         html += '<a href="#" class="tm-tag-remove" id="' + newTagRemoveId + '" TagIdToRemove="' + tagId + '">';
         html += tagManagerOptions.tagCloseIcon + '</a></span> ';
