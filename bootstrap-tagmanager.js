@@ -43,7 +43,7 @@
       hiddenTagListId: null,
       deleteTagsOnBackspace: true,
       tagsContainer: null,
-      tagCloseIcon: 'x',
+      tagCloseIcon: '×',
       tagClass: '',
       validator: null,
       onlyTagList: false
@@ -317,9 +317,12 @@
 
         var newTagId = objName + '_' + tagId;
         var newTagRemoveId = objName + '_Remover_' + tagId;
-        var html = '';
-        var cl = tagManagerOptions.tagClass ? ' '+tagManagerOptions.tagClass : '';
-        html += '<span class="myTag'+cl+'" id="' + newTagId + '"><span>' + tag + '&nbsp;&nbsp;</span><a href="#" class="myTagRemover" id="' + newTagRemoveId + '" TagIdToRemove="' + tagId + '" title="Remove">' + tagManagerOptions.tagCloseIcon + '</a></span> ';
+        var cl = 'tm-tag' + (tagManagerOptions.tagClass ? ' ' + tagManagerOptions.tagClass : '');
+
+        var html = '<span class="' + cl + '" id="' + newTagId + '">';
+        html += '<span>' + tag + '</span>';
+        html += '<a href="#" class="tm-tag-remove" id="' + newTagRemoveId + '" TagIdToRemove="' + tagId + '">';
+        html += tagManagerOptions.tagCloseIcon + '</a></span> ';
 
         if (tagManagerOptions.tagsContainer != null) {
             jQuery(tagManagerOptions.tagsContainer).append(html);
