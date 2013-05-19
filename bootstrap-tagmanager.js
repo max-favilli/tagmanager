@@ -46,7 +46,8 @@
       tagCloseIcon: 'x',
       tagClass: '',
       validator: null,
-      onlyTagList: false
+      onlyTagList: false,
+      method: "POST"
     };
 
     var TypeaheadOverrides = (function () {
@@ -100,7 +101,7 @@
           if (typeof (tagManagerOptions.typeaheadAjaxSource) == "string") {
             jQuery.ajax({
               cache: false,
-              type: "POST",
+              type: tagManagerOptions.method,
               contentType: "application/json",
               dataType: "json",
               url: tagManagerOptions.typeaheadAjaxSource,
