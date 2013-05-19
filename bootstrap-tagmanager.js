@@ -30,6 +30,7 @@
       preventSubmitOnEnter: true,
       isClearInputOnEsc: true,
       typeahead: false,
+      typeaheadAjaxMethod: "POST",
       typeaheadAjaxSource: null,
       typeaheadAjaxPolling: false,
       typeaheadOverrides: null,
@@ -105,7 +106,7 @@
           if (typeof (tagManagerOptions.typeaheadAjaxSource) == "string") {
             jQuery.ajax({
               cache: false,
-              type: "POST",
+              type: tagManagerOptions.typeaheadAjaxMethod,
               contentType: "application/json",
               dataType: "json",
               url: tagManagerOptions.typeaheadAjaxSource,
