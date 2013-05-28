@@ -34,6 +34,8 @@
       typeaheadAjaxPolling: false,
       typeaheadOverrides: null,
       typeaheadSource: null,
+      typeaheadJs: false,
+      typeaheadJsOptions: {},
       AjaxPush: null,
       AjaxPushAllTags: null,
       delimeters: [44, 188, 13, 9],
@@ -54,7 +56,7 @@
         this.instanceSelectHandler = null;
         this.selectedClass = "selected";
         this.select = null;
-        if ("typeahead" in jQuery.fn) {
+        if (tagManagerOptions.typeahead && "typeahead" in jQuery.fn) {
           this.instanceSelectHandler = jQuery.fn.typeahead.Constructor.prototype.select;
           this.select = function (overrides) {
             this.$menu.find(".active").addClass(overrides.selectedClass);
@@ -87,7 +89,6 @@
 
     var setupTypeahead = function () {
       if (!obj.typeahead) return;
-
       if (tagManagerOptions.typeaheadSource != null && jQuery.isFunction(tagManagerOptions.typeaheadSource)) {
         obj.typeahead({ source: tagManagerOptions.typeaheadSource });
       } else if (tagManagerOptions.typeaheadSource != null) {
@@ -164,6 +165,15 @@
           success: function (data) { onTypeaheadAjaxSuccess(data, false, process); }
         });
       }
+    };
+    
+    var setupTypeaheadJs = function () {
+      if (!obj.typeahead) return;
+
+      obj.typeahead(tagManagerOptions.typeaheadJsOptions);
+      obj.on('typeahead:selected', function(ev, item) {
+          pushTag(item.value, null, true);
+      });
     };
 
     var trimTag = function (tag) {
@@ -262,7 +272,7 @@
       if (!tag || (!isValid) || tag.length <= 0) return;
 
       if(tagManagerOptions.onlyTagList){
-        if (tagManagerOptions.typeaheadSource != null) {
+        if (tagManagerOptions.typeahead && tagManagerOptions.typeaheadSource != null) {
           if((jQuery.inArray(tag, tagManagerOptions.typeaheadSource)) == -1){
             return;
           }
@@ -323,6 +333,8 @@
 
         if (tagManagerOptions.tagsContainer != null) {
             jQuery(tagManagerOptions.tagsContainer).append(html);
+        } else if (tagManagerOptions.typeaheadJs) {
+          obj.parent().before(html);
         } else {
           obj.before(html);
         }
@@ -401,6 +413,10 @@
       if (tagManagerOptions.typeahead) {
         setupTypeahead();
         //obj.typeahead({ source: SourceArray })
+      }
+
+      if (tagManagerOptions.typeaheadJs) {
+        setupTypeaheadJs();
       }
 
       obj.on("focus", function (e) {
