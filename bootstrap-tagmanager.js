@@ -342,6 +342,12 @@
       obj.val("");
     };
 
+    var prefill = function (pta) {
+      jQuery.each(pta, function (key, val) {
+        pushTag(val, obj, true);
+      });
+    };
+
     var initialize = function () {
       if (tagManagerOptions.AjaxPushAllTags) {
         obj.on('tags:refresh', pushAllTags);
@@ -583,20 +589,12 @@
 
       if (tagManagerOptions.prefilled != null) {
         if (typeof (tagManagerOptions.prefilled) == "object") {
-          var pta = tagManagerOptions.prefilled;
-          jQuery.each(pta, function (key, val) {
-            var a = 1;
-            pushTag(val, obj, true);
-          });
+          prefill(tagManagerOptions.prefilled);
         } else if (typeof (tagManagerOptions.prefilled) == "string") {
-          var pta = tagManagerOptions.prefilled.split(',');
-
-          jQuery.each(pta, function (key, val) {
-            var a = 1;
-            pushTag(val, obj, true);
-          });
-
+          prefill(tagManagerOptions.prefilled.split(','));
         }
+      } else if (tagManagerOptions.hiddenTagListId != null) {
+        prefill($('#' + tagManagerOptions.hiddenTagListId).val().split(','));
       }
     });
 
