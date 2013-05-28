@@ -43,7 +43,7 @@
       hiddenTagListId: null,
       deleteTagsOnBackspace: true,
       tagsContainer: null,
-      tagCloseIcon: 'x',
+      tagCloseIcon: '×',
       tagClass: '',
       validator: null,
       onlyTagList: false
@@ -84,6 +84,8 @@
     var delimeters = tagManagerOptions.delimeters;
     var backspace = tagManagerOptions.backspace;
     var isInitialized = false;
+    var tagBaseClass = 'tm-tag';
+    var inputBaseClass = 'tm-input';
 
     var setupTypeahead = function () {
       if (!obj.typeahead) return;
@@ -164,6 +166,20 @@
           success: function (data) { onTypeaheadAjaxSuccess(data, false, process); }
         });
       }
+    };
+
+    var tagClasses = function () {
+      // 1) default class (tm-tag)
+      var cl = tagBaseClass;
+      // 2) interpolate from input class: tm-input-xxx --> tm-tag-xxx
+      $.each(obj.attr('class').split(' '), function(index, value) {
+        if (value.indexOf(inputBaseClass+'-') != -1){
+          cl += ' ' + tagBaseClass + value.substring(inputBaseClass.length);
+        }
+      });
+      // 3) tags from tagClass option
+      cl += (tagManagerOptions.tagClass ? ' ' + tagManagerOptions.tagClass : '');
+      return cl;
     };
 
     var trimTag = function (tag) {
@@ -317,9 +333,11 @@
 
         var newTagId = objName + '_' + tagId;
         var newTagRemoveId = objName + '_Remover_' + tagId;
-        var html = '';
-        var cl = tagManagerOptions.tagClass ? ' '+tagManagerOptions.tagClass : '';
-        html += '<span class="myTag'+cl+'" id="' + newTagId + '"><span>' + tag + '&nbsp;&nbsp;</span><a href="#" class="myTagRemover" id="' + newTagRemoveId + '" TagIdToRemove="' + tagId + '" title="Remove">' + tagManagerOptions.tagCloseIcon + '</a></span> ';
+
+        var html = '<span class="' + tagClasses() + '" id="' + newTagId + '">';
+        html += '<span>' + tag + '</span>';
+        html += '<a href="#" class="tm-tag-remove" id="' + newTagRemoveId + '" TagIdToRemove="' + tagId + '">';
+        html += tagManagerOptions.tagCloseIcon + '</a></span> ';
 
         if (tagManagerOptions.tagsContainer != null) {
             jQuery(tagManagerOptions.tagsContainer).append(html);
