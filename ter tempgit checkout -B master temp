@@ -1,0 +1,101 @@
+* [33mf8a8317 ([1;32mmaster[m[33m)[m Added DOCS
+[31m|[m *   [33m3f2dff6 ([1;36mHEAD[m[33m, [1;31morigin/master[m[33m, [1;31morigin/HEAD[m[33m, [1;32mtemp[m[33m)[m Merge pull request #56 from rishijain/master
+[31m|[m [32m|[m[33m\[m  
+[31m|[m [32m|[m * [33m73dcad2[m modifed tagmanager.js
+[31m|[m [32m|[m[32m/[m  
+[31m|[m * [33mfb248ef[m fixed for jQuery context
+[31m|[m * [33m6b34825[m TypeScript definition.
+[31m|[m * [33ma241cb7[m Register custom event only first time.
+[31m|[m * [33mac82de6[m #53 register custom event when AjaxPushAllTags not empty, added AjaxPushAllTags property to the options.
+[31m|[m * [33m91f0133[m #54 update with custom event calling
+[31m|[m * [33mc638dba[m #11 fixed seelction from typeahead list in Firefox.
+[31m|[m * [33m1a02cdd[m Fixed name selector (#51).
+[31m|[m[31m/[m  
+* [33m231a677[m added new package.json
+*   [33mcf66c8a[m Merge branch 'master' of https://github.com/max-favilli/tagmanager
+[34m|[m[35m\[m  
+[34m|[m * [33mea3b613 ([1;33mtag: 2.3.0[m[33m)[m removed old manifest version
+[34m|[m * [33mc85de21[m fixed jquery plugin manifest
+[34m|[m * [33mb7db06f[m fixed jquery plugin manfiest
+[34m|[m * [33mef0b38c[m updated version number
+[34m|[m * [33m8c16bfa[m changed version number
+[34m|[m * [33m23da2ec[m NUGET support
+* [35m|[m [33m16f7c3a[m Fixed typeahead overrides when typeahed not used (#49,#50).
+[35m|[m[35m/[m  
+* [33m4803bc6[m Various improvements - fixed #40 and syncronized with TypeScript release.
+*   [33me010f91[m Merge pull request #37 from ajeliuc/master
+[36m|[m[1;31m\[m  
+[36m|[m * [33me54bfe9[m Cleaned a little
+[36m|[m *   [33m0f0f79a[m Merge branch 'master' of https://github.com/ajeliuc/tagmanager
+[36m|[m [1;32m|[m[1;33m\[m  
+[36m|[m [1;32m|[m * [33m40fe49f[m Ability to work with existing hidden field.
+[36m|[m * [1;33m|[m [33m7d8402d[m Ability to work with existing hidden field.
+[36m|[m [1;33m|[m[1;33m/[m  
+* [1;33m|[m [33m24cb065[m fix to #43
+* [1;33m|[m   [33m97b820a[m Merge pull request #39 from DoppioJP/master
+[1;34m|[m[1;35m\[m [1;33m\[m  
+[1;34m|[m * [1;33m|[m [33mddaca6a[m The tag we are looking for needs to be in lowercase.
+[1;34m|[m * [1;33m|[m [33ma060c20[m Ignore case when checking if alreadyInList.
+* [1;35m|[m [1;33m|[m   [33ma94aa79[m Merge pull request #35 from troex/trigger-delimiters-on-keypress
+[1;35m|[m[31m\[m [1;35m\[m [1;33m\[m  
+[1;35m|[m [31m|[m[1;35m/[m [1;33m/[m  
+[1;35m|[m[1;35m/[m[31m|[m [1;33m|[m   
+[1;35m|[m * [1;33m|[m [33m88dd7eb[m use keypress event instead of keyup to catch pushTag action
+[1;35m|[m [1;33m|[m[1;33m/[m  
+* [1;33m|[m   [33m4def012[m Merge pull request #38 from Yohn/patch-1
+[1;33m|[m[33m\[m [1;33m\[m  
+[1;33m|[m [33m|[m[1;33m/[m  
+[1;33m|[m[1;33m/[m[33m|[m   
+[1;33m|[m * [33mf97f2f7[m added tagClass to options
+[1;33m|[m[1;33m/[m  
+* [33m55c0a26[m updated release
+* [33m5b1e61d[m fixed bug, added method "empty"
+* [33m51030eb[m Added methods to "pop" and "push" tags.
+* [33mfc7363c[m Merged pull request #30
+* [33m2cd8cf7[m fixed issue #12
+*   [33m6294c32[m Merge pull request #22 from auxbuss/master
+[34m|[m[35m\[m  
+[34m|[m * [33m9f07d5b[m delegate ajax polling to typeahead
+* [35m|[m [33m8442c99[m Fixed Issue #23 - Blinking
+* [35m|[m [33mb498411[m added pull #22
+[35m|[m[35m/[m  
+* [33m7b10551[m extended typeaheas
+* [33m56c677b[m fixed issue #21
+* [33m407e2f1[m replace not existent @wellBackground
+* [33m8dc1527[m fixed inglorius bug issue #17
+* [33m4037971[m Fixed license reference
+* [33mfb2e7da[m Manifest added
+* [33m4a69da8[m Code polished and merged with pull 16
+* [33m8201043[m added preventDefault when tag is removed
+* [33mdb5699a[m Added change event to the hidden field
+* [33m4540051[m Personalized name for hidden tags list field
+* [33m9879424[m Revert "commit all"
+*   [33m389f299[m Merge pull request #14 from Dric/master
+[36m|[m[1;31m\[m  
+[36m|[m * [33m5f5c520[m Added LESS file for Bootstrap
+[36m|[m * [33m925ff36[m Added LESS bootstrap file
+[36m|[m[36m/[m  
+*   [33m3af069e[m Merge pull request #8 from intuxicated/master
+[1;32m|[m[1;33m\[m  
+[1;32m|[m * [33m457620a[m commit all
+[1;32m|[m[1;32m/[m  
+*   [33m6e0e699[m Merge pull request #5 from OrganisedMinds/feature/max-tags
+[1;34m|[m[1;35m\[m  
+[1;34m|[m * [33m46212a6[m provide maxTags option
+* [1;35m|[m   [33md0de2d0[m Merge pull request #4 from OrganisedMinds/feature/validations
+[1;35m|[m[31m\[m [1;35m\[m  
+[1;35m|[m [31m|[m[1;35m/[m  
+[1;35m|[m[1;35m/[m[31m|[m   
+[1;35m|[m * [33m819ebff[m provide a validator option
+[1;35m|[m[1;35m/[m  
+* [33mdd2de39[m Fixed bug.
+* [33m3c64a2d[m Code polishing...
+* [33m6d7b1de[m Fixed stupid bug in IE for missing console.log
+* [33mcea8cf6[m Added package.json file
+* [33m92897fb[m Modified a readme.md file
+* [33m8cba860[m Added a readme.md file
+* [33mb30fa98[m Added a license, Mozilla open source v2.0
+*   [33m5efff2f[m Merge branch 'master' of github.com:max-favilli/tagmanager
+[32m|[m[33m\[m  
+[32m|[m * [33m68827e9[m initial commit
+* [33me5a5707[m First release as jQuery stand alone plugin

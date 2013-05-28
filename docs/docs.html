@@ -1,0 +1,244 @@
+﻿          <div class="sspace-nicely">
+            <p><a href=""><h1>Tags Manager (a jQuery plugin)</h1></a></p>
+            <p>I built this simple plugin while working on an <a target="_blank" href="https://logmymoney.com">online personal finance tool</a>, I wanted a simple solution to manage tags for each expense users were entering, <a target="_blank" href="https://www.google.com/search?q=tags+like+stackoverflow">like in stackoverflow</a> and many other sites.</p>
+            <p>Best way to understand what it does is to try it, so jump to the demo below:</p>
+          </div>
+
+          <div class="space-nicely">
+            <h2>Tags Manager Demo</h2>
+            <form class="form-inline">
+                <input type="text" autocomplete="off" data-items="6" data-provide="typeahead" name="tags" placeholder="Tags" style="width:9em;" class="input-medium tagManager" data-original-title=""/>
+            </form>
+            <p class="help-block">Type some <a target="_blank" href="http://en.wikipedia.org/wiki/Tag_(metadata)">tags</a> in the input field, separate them with comma (or tab).</p>
+
+            <h3>And you can turn a simple input field into a tags manager with a line of code:</h3>
+            <br />
+            <p>HTML markup</p>
+            <pre class="prettyprint linenums">
+  &lt;input type="text" name="tags" placeholder="Tags" class="tagManager"/&gt;</pre>
+            <p>Javascript</p>
+            <pre class="prettyprint linenums">
+  jQuery(".tagManager").tagsManager();</pre>
+          </div>
+
+          <div class="space-nicely">
+            <h2>Can have multiple instance on the same page</h2>
+            <form class="form-inline">
+                <input type="text" autocomplete="off" data-items="6" data-provide="typeahead" name="tagsk" placeholder="Tags" style="width:9em;" class="input-medium tagManager" data-original-title=""/>
+                <p class="help-block">Type some <a target="_blank" href="http://en.wikipedia.org/wiki/Tag_(metadata)">tags</a> in the input field (if the Ajax source is slow you may have to wait a couple of seconds to have the typeahead list show up), separate them with comma (or tab).</p>
+            </form>
+
+            <p>Just play with it.</p>
+          </div>
+
+          <div class="space-nicely">
+            <h2>How to retrieve tags on &lt;form&gt; submit</h2>
+            <p>Tags manager does try to be very humble, if you place an input field in a form, and turn it into a tag manger with the code above, a hidden input field will be added to the form and filled with a comma separated list of the tags the user entered.</p>
+            <p>When processing the user input on form submit, server side, all you have to do is manage an additional hidden field with <code>name="hiddenTagList"</code>.</p>
+            <p>If you have firebug installed or if you check the source code above in chrome developer tool or explorer developer tool you will see <code>&lt;input type="hidden" value="Pisa,Rome" name="hiddenTagList"&gt;</code></p>
+          </div>
+
+          <div class="space-nicely">
+            <h2>Example of Typeahead ajax source</h2>
+            <form class="form-inline">
+                <input type="text" autocomplete="off" data-items="6" data-provide="typeahead" name="tagsjax" placeholder="Tags" style="width:9em;" class="input-medium tagManager" data-original-title=""/>
+            </form>
+            <p class="help-block">Type some <a target="_blank" href="http://en.wikipedia.org/wiki/Tag_(metadata)">tags</a> in the input field, separate them with comma (or tab).</p>
+          <p>The code below show how to use an ajax source, and an ajax destination for any added tag:</p>
+          <pre class="prettyprint linenums">
+  jQuery(".tagManager").tagsManager({
+        typeahead: true,
+        typeaheadAjaxSource: '/ajax/countries',
+        typeaheadAjaxPolling: true,
+        AjaxPush: '/ajax/countries/push',
+  });</pre>
+          </div>
+
+          <div class="space-nicely">
+            <h2>Example of Typeahead function() source</h2>
+            <form class="form-inline">
+                <input type="text" autocomplete="off" data-items="6" data-provide="typeahead" name="tagsfun" placeholder="Tags" style="width:9em;" class="input-medium tagManager" data-original-title=""/>
+            </form>
+            <p class="help-block">Type some <a target="_blank" href="http://en.wikipedia.org/wiki/Tag_(metadata)">tags</a> in the input field, separate them with comma (or tab).</p>
+          <p>The code below show how to use an ajax source, and an ajax destination for any added tag:</p>
+          <pre class="prettyprint linenums">
+  jQuery(".tagManager").tagsManager({
+        preventSubmitOnEnter: true,
+        typeahead: true,
+        typeaheadSource: your_function_here(),
+        blinkBGColor_1: '#FFFF9C',
+        blinkBGColor_2: '#CDE69C',
+  });</pre>
+          </div>
+
+          <div class="space-nicely">
+          <h2>Tags Manager is configurable</h2>
+          <p>The code below show all the configurable options available (so far):</p>
+          <pre class="prettyprint linenums">
+  jQuery(".tagManager").tagsManager({
+    prefilled: ["Pisa", "Rome"],
+    CapitalizeFirstLetter: true,
+    preventSubmitOnEnter: true,
+    typeahead: true,
+    typeaheadAjaxSource: null,
+    typeaheadSource: ["Pisa", "Rome", "Milan", "Florence", "New York", "Paris", "Berlin", "London", "Madrid"],
+    delimeters: [44, 188, 13],
+    backspace: [8]
+    blinkBGColor_1: '#FFFF9C',
+    blinkBGColor_2: '#CDE69C',
+    hiddenTagListName: 'hiddenTagListA'
+  });</pre>
+
+  <table class="table">
+  <tr>
+  <td><b>prefilled</b></td>
+  <td>Either a string of comma separate values or an array, the plugin will render these values as pre-selected tags.</td>
+  </tr>
+  <tr>
+  <td><b>CapitalizeFirstLetter</b></td>
+  <td>If true all tags the user enter will be converted to lowercase but displaied capitalized.</td>
+  </tr>
+  <tr>
+  <td><b>preventSubmitOnEnter</b></td>
+  <td>If true when the user hit enter inside the input field (and the input field is part of a <code>&lt;form&gt;</code>), nothing happen (the form is not submitted to the server).</td>
+  </tr>
+  <tr>
+  <td><b>typeahead</b></td>
+  <td>If true a <a target="_blank" href="http://twitter.github.com/bootstrap/">bootstrap</a> typeahead is setup, <a target="_blank" href="http://twitter.github.com/bootstrap/javascript.html#typeahead">typeahead</a> is a nice plugin for bootstrap, when the user start typing something a popup below the input field show possible values matching the typed text.<br />Currently this features is available only if you also include bootstrap, if you are not using it tags manager typeahead won't work. Should be relatively easy to replace typeahead with <a target="_blank" href="http://jqueryui.com/demos/autocomplete/">jQuery UI autocomplete</a> for the ones not using bootstrap, but I didn't. If anyone is really interested I can consider including that in a next releas that.<br />If you choose to use typeahead please check the typeahead specific paramenters in the bootstrap documentation.<br />And in case you don't want browsers autocomplete to mess with your own autocomplete learn to add <code>autocomplete="off"</code> on every Tags Manager input field.</td>
+  </tr>
+  <tr>
+  <td><b>typeaheadAjaxSource</b></td>
+  <td>If you are a fan of <a target="_blank" href="http://twitter.github.com/bootstrap/javascript.html#typeahead">bootstrap typeahead plugin</a> you may love this, is a JSON AJAX source for the list of possible values to display in the typeahead popup. The JSON returned by your serverside code should look like this: <code>{"tags":[{"tag":"Pisa"},{"tag":"Rome"},{"tag":"Milan"},{"tag":"Florence"},{"tag":"New York"},{"tag":"Paris"},{"tag":"Berlin"},{"tag":"London"},{"tag":"Madrid"}]}</code></td>
+  </tr>
+  <tr>
+  <td><b>typeaheadSource</b></td>
+  <td>This is passed to standard Bootstrap <a target="_blank" href="http://twitter.github.com/bootstrap/javascript.html#typeahead">typeahead</a> <i>source</i> initialization option, so if you don't need an AJAX dynamically generated list you can provide a static one, or you can pass a function(), see typeahead docs for details. Of course in your very function() you can do ajax or whatever you want.</code></td>
+  </tr>
+  <tr>
+  <td><b>typeaheadAjaxPolling</b></td>
+  <td>With Bootstrap v2.0 typeahead can request the list of entries to show to an ajax source everytime the user type something in the input field, provide "true" to this option to activate it. Otherwise the ajax source will be queried only at initialization.</code></td>
+  </tr>
+  <tr>
+  <td><b>AjaxPush</b></td>
+  <td>Well, since we pull from an ajax source we can also push, don't we? So provide a url as AjaxPush and the added tag will be POSTed.</code></td>
+  </tr>
+  <tr>
+  <td><b>delimeters</b></td>
+  <td>If you are not happy with comma separating your tags you can provide your list of delimeters, must be an array of char codes, the ones returned by javascript keyup/keydow/etc... See this <a target="_blank" href="http://www.javascripter.net/faq/keycodes.htm">table</a>.</td>
+  </tr>
+  <tr>
+  <td><b>backspace</b></td>
+  <td>When the input field is empty, and some tags are rendered on the left of the input field, and the user hit the <a target="_blank" href="http://en.wikipedia.org/wiki/Backspace">backspace</a> the plugin remove the rightest tag (which is the last the user entered).<br />With this option you can provide an array of char codes (like the delimeters above) you want the system to use in place of the backspace (char code 8), or provide an empty array if you don't want this feature at all.</td>
+  </tr>
+  <tr>
+  <td><b>blinkBGColor_1<br />blinkBGColor_2</b></td>
+  <td>When a duplicate tag is entered the user is notified with a blinking of the corresponding (duplicate) tag, here you can configure the colors.</td>
+  </tr>
+  <tr>
+  <td><b>hiddenTagListName</b></td>
+  <td>You can define your own personalized name for the hidden tags list field.
+    <br /><span class="badge badge-important">PLEASE NOTE</span> if you have multiple instance of tagmanager in a form you SHOULD give a different name to head hidden tags list field!
+  </td>
+  </tr>
+  <tr>
+  <td><b>maxTags</b></td>
+  <td>Define the maximum number of tags accepted, default is 0 which mean there's no limit and users can add as many tags as they want.
+  </td>
+  </tr>
+  <tr>
+  <td><b>validator</b></td>
+  <td>Provide a callback to validate the user input, only input field is the entered tag, the callback must return true or false.
+  </td>
+  </tr>
+  </table>
+          </div>
+          
+          <div class="space-nicely">
+          <h2>You can use the following methods:</h2>
+          <p>You can pop the last added tag (the rightmost being show)</p>
+          <pre class="prettyprint linenums">
+  .tagsManager('popTag');</pre>
+          <p>You can push a new tag </p>
+          <pre class="prettyprint linenums">
+  .tagsManager('pushTag','I_am_a_new_tag');</pre>
+          <p>You can remove all tags </p>
+          <pre class="prettyprint linenums">
+  .tagsManager('empty');</pre>
+          </div>
+
+          <div class="space-nicely">
+          <h2>You can style Tags Manager the way you want</h2>
+          <p>Just override the styles defined in the .css file.</p>
+          <p><span class="badge badge-important">PLEASE NOTE</span>, if you are not using bootstrap .css you may find out things doesn't look as nice as expected, that's just because you have to adapt the styles to your stylesheets, change the styles!</p>
+          </div>
+
+          <div class="space-nicely">
+          <h2>Alternatives to my Tags Manager</h2>
+          <p>Before to develop my own tags manager I spent quite a lot of time investigating what other solutions where available, so I think I can spare you some time listing them here and explaining why I developed my own.</p>
+          <ul>
+          <li><a target="_blank" href="http://levycarneiro.com/projects/tag-it/example.html">Tag it! by Levy Carneiro Jr</a>, one of the very first one as far as I know, which inspired all the others.
+          </li>
+          <li><a target="_blank" href="http://ioncache.github.com/Tag-Handler/">Tag Handler by ioncache</a>, in my opinion is probably the best general purpose tags manager around.
+          </li>
+          <li><a target="_blank" href="http://xoxco.com/projects/code/tagsinput/">JQUERY TAGS INPUT PLUGIN</a>, it's really very cute.
+          </li>
+          <li><a target="_blank" href="http://stackapps.com/questions/2062/stack-overflow-tag-manager">Stack Overflow Tag Manager</a>, if you want to mimic stackoverflow behavior.
+          </li>
+          </ul>
+          <p>The four above are the best around in my opinion, but... I developed Tags Manager. I wanted it to be very simple, I didn't need a pencil mouse pointer when the user hover it. I didn't need inplace edit of the tag, I think it's confusing for the user. I didn't want the tag manager to generate a lot of html in the form.</p>
+          <p>And I wanted it to be fully integrated with bootstrap and its typeahead.</p>
+          </div>
+
+          <div class="space-nicely">
+          <h2>Further reading</h2>
+          <p>If you have choosen to go this way and implement a tags system in one of your application you have probably already thought about a couple of things, like the database structure required to store tags.</p>
+          <p>But just in case... You can find some thoughts about that <a target="_blank" href="http://stackoverflow.com/questions/3731756/like-stackoverflow-questions-tags-how-to-design-it-in-databases">here</a>.</p>
+          </div>
+
+    <script>
+      jQuery(document).ready(function () {
+        prettyPrint();
+      });
+
+      jQuery(".tagManager:eq(0)").tagsManager({
+        prefilled: ["Pisa", "Rome"],
+        preventSubmitOnEnter: true,
+        typeahead: true,
+        typeaheadAjaxSource: null,
+        typeaheadSource: ["Pisa", "Rome", "Milan", "Florence", "New York", "Paris", "Berlin", "London", "Madrid"],
+        blinkBGColor_1: '#FFFF9C',
+        blinkBGColor_2: '#CDE69C',
+        hiddenTagListName: 'hiddenTagListA'
+      });
+      jQuery(".tagManager:eq(1)").tagsManager({
+        prefilled: ["Angola", "Laos", "Nepal"],
+        preventSubmitOnEnter: true,
+        typeahead: true,
+        typeaheadAjaxSource: null,
+        typeaheadSource: ["Angola", "Belgium", "Canada", "Denmark", "Estonia", "Germany", "Italy", "Laos", "Mauritania", "Nepal", "Oman"],
+        blinkBGColor_1: '#FFFF9C',
+        blinkBGColor_2: '#CDE69C',
+        hiddenTagListName: 'hiddenTagListB'
+      });
+      jQuery(".tagManager:eq(2)").tagsManager({
+        preventSubmitOnEnter: true,
+        typeahead: true,
+        typeaheadAjaxSource: '/ajax/countries',
+        typeaheadAjaxPolling: true,
+        AjaxPush: '/ajax/countries/push',
+        blinkBGColor_1: '#FFFF9C',
+        blinkBGColor_2: '#CDE69C',
+      });
+      jQuery(".tagManager:eq(3)").tagsManager({
+        preventSubmitOnEnter: true,
+        typeahead: true,
+        typeaheadSource: funSource,
+        blinkBGColor_1: '#FFFF9C',
+        blinkBGColor_2: '#CDE69C',
+      });
+
+      function funSource() {
+        var ret = ["Manchester", "Astonvilla", "Real Madrid", "Barcelona", "Milan AC", "Internazionale", "Roma AC", "Chelsea"];
+        return ret;
+      }
+    </script>
