@@ -123,8 +123,8 @@
       if (data) {
         // set the overrided handler
         data.select = jQuery.proxy(tagManagerOptions.typeaheadOverrides.select,
-                                   obj.data('typeahead'),
-                                   tagManagerOptions.typeaheadOverrides);
+          obj.data('typeahead'),
+          tagManagerOptions.typeaheadOverrides);
       }
     };
 
@@ -305,7 +305,7 @@
       if (tagManagerOptions.maxTags > 0 && tlis.length >= tagManagerOptions.maxTags) return;
 
       var alreadyInList = false;
-      var tlisLowerCase = tlis.map(function(elem) { return elem.toLowerCase(); }); 
+      var tlisLowerCase = tlis.map(function(elem) { return elem.toLowerCase(); });
       var p = jQuery.inArray(tag.toLowerCase(), tlisLowerCase);
       if (-1 != p) {
         // console.log("tag:" + tag + " !!already in list!!");
@@ -315,12 +315,12 @@
       if (alreadyInList) {
         var pTagId = tlid[p];
         jQuery("#" + objName + "_" + pTagId).stop()
-           .animate({ backgroundColor: tagManagerOptions.blinkBGColor_1 }, 100)
-           .animate({ backgroundColor: tagManagerOptions.blinkBGColor_2 }, 100)
-           .animate({ backgroundColor: tagManagerOptions.blinkBGColor_1 }, 100)
-           .animate({ backgroundColor: tagManagerOptions.blinkBGColor_2 }, 100)
-           .animate({ backgroundColor: tagManagerOptions.blinkBGColor_1 }, 100)
-           .animate({ backgroundColor: tagManagerOptions.blinkBGColor_2 }, 100);
+          .animate({ backgroundColor: tagManagerOptions.blinkBGColor_1 }, 100)
+          .animate({ backgroundColor: tagManagerOptions.blinkBGColor_2 }, 100)
+          .animate({ backgroundColor: tagManagerOptions.blinkBGColor_1 }, 100)
+          .animate({ backgroundColor: tagManagerOptions.blinkBGColor_2 }, 100)
+          .animate({ backgroundColor: tagManagerOptions.blinkBGColor_1 }, 100)
+          .animate({ backgroundColor: tagManagerOptions.blinkBGColor_2 }, 100);
       } else {
         var max = Math.max.apply(null, tlid);
         max = max == -Infinity ? 0 : max;
@@ -429,7 +429,7 @@
         html += "<input name='" + tagManagerOptions.hiddenTagListName + "' type='hidden' value=''/>";
         obj.after(html);
         obj.data("lhiddenTagList",
-           obj.siblings("input[name='" + tagManagerOptions.hiddenTagListName + "']")[0]
+          obj.siblings("input[name='" + tagManagerOptions.hiddenTagListName + "']")[0]
         );
       } else {
         obj.data("lhiddenTagList", jQuery('#' + tagManagerOptions.hiddenTagListId))
