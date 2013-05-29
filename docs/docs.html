@@ -51,6 +51,7 @@
         typeaheadAjaxSource: '/ajax/countries',
         typeaheadAjaxPolling: true,
         AjaxPush: '/ajax/countries/push',
+        AjaxPushParameters: { 'itemId': 2 }
   });</pre>
           </div>
 
@@ -121,6 +122,10 @@
   <tr>
   <td><b>AjaxPush</b></td>
   <td>Well, since we pull from an ajax source we can also push, don't we? So provide a url as AjaxPush and the added tag will be POSTed.</code></td>
+  </tr>
+  <tr>
+  <td><b>AjaxPushParameters</b></td>
+  <td>Sometimes you need to push more parameters with your current tag (f.e. id of the items that you add the tag to). You can set it in AjaxPushParameters object which co
   </tr>
   <tr>
   <td><b>delimeters</b></td>
