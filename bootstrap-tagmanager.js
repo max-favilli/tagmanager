@@ -38,6 +38,7 @@
       typeaheadSource: null,
       AjaxPush: null,
       AjaxPushAllTags: null,
+      AjaxPushParameters: null,
       delimiters: [44], // ASCII: 'comma'
       delimiterKeys: [13, 9], // Physical Keys: 'enter' and 'tab'
       backspace: [8],
@@ -332,7 +333,7 @@
         tlid.push(tagId);
 
         if (tagManagerOptions.AjaxPush != null) {
-          jQuery.post(tagManagerOptions.AjaxPush, { tag: tag });
+          jQuery.post(tagManagerOptions.AjaxPush, jQuery.extend({ tag: tag }, tagManagerOptions.AjaxPushParameters));
         }
 
         // console.log("tagList: " + tlis);
