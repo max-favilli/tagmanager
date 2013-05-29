@@ -18,6 +18,7 @@ interface ITagsManagerOptions {
     typeaheadSource?: any;
     AjaxPush?: string; //url
     AjaxPushAllTags?: string; //url
+    AjaxPushParameters: {},
     delimiters?: number[];
     backspace?: number[];
     maxTags?: number;
