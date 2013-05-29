@@ -1,5 +1,5 @@
 /* ===================================================
- * bootstrap-tagmanager.js v2.4.0
+ * bootstrap-tagmanager.js v2.3
  * http://welldonethings.com/tags/manager
  * ===================================================
  * Copyright 2012 Max Favilli
@@ -30,22 +30,21 @@
       preventSubmitOnEnter: true,
       isClearInputOnEsc: true,
       typeahead: false,
-      typeaheadAjaxMethod: "POST",
       typeaheadAjaxSource: null,
       typeaheadAjaxPolling: false,
       typeaheadOverrides: null,
-      typeaheadDelegate: {},
       typeaheadSource: null,
       AjaxPush: null,
       AjaxPushAllTags: null,
-      delimiters: [44, 188, 13, 9],
+      AjaxPushParameters: {},
+      delimeters: [44, 188, 13, 9],
       backspace: [8],
       maxTags: 0,
       hiddenTagListName: null,
       hiddenTagListId: null,
       deleteTagsOnBackspace: true,
       tagsContainer: null,
-      tagCloseIcon: '×',
+      tagCloseIcon: 'x',
       tagClass: '',
       validator: null,
       onlyTagList: false
@@ -82,31 +81,27 @@
 
     var obj = this;
     var objName = obj.attr('name').replace(/[^\w]/g, '_');
-    var delimiters = tagManagerOptions.delimeters || tagManagerOptions.delimiters; // 'delimeter' is deprecated
+    var queuedTag = "";
+    var delimeters = tagManagerOptions.delimeters;
     var backspace = tagManagerOptions.backspace;
     var isInitialized = false;
-    var tagBaseClass = 'tm-tag';
-    var inputBaseClass = 'tm-input';
 
     var setupTypeahead = function () {
       if (!obj.typeahead) return;
 
-      var taOpts = tagManagerOptions.typeaheadDelegate;
-
       if (tagManagerOptions.typeaheadSource != null && jQuery.isFunction(tagManagerOptions.typeaheadSource)) {
-        jQuery.extend(taOpts, { source: tagManagerOptions.typeaheadSource });
-        obj.typeahead(taOpts);
+        obj.typeahead({ source: tagManagerOptions.typeaheadSource });
       } else if (tagManagerOptions.typeaheadSource != null) {
-        obj.typeahead(taOpts);
+        obj.typeahead();
         setTypeaheadSource(tagManagerOptions.typeaheadSource);
       } else if (tagManagerOptions.typeaheadAjaxSource != null) {
         if (!tagManagerOptions.typeaheadAjaxPolling) {
-          obj.typeahead(taOpts);
+          obj.typeahead();
 
           if (typeof (tagManagerOptions.typeaheadAjaxSource) == "string") {
             jQuery.ajax({
               cache: false,
-              type: tagManagerOptions.typeaheadAjaxMethod,
+              type: "POST",
               contentType: "application/json",
               dataType: "json",
               url: tagManagerOptions.typeaheadAjaxSource,
@@ -115,9 +110,10 @@
             });
           }
         } else if (tagManagerOptions.typeaheadAjaxPolling) {
-          jQuery.extend(taOpts, { source: ajaxPolling });
-          obj.typeahead(taOpts);
+          obj.typeahead({ source: ajaxPolling });
         }
+      } else if (tagManagerOptions.typeaheadDelegate) {
+        obj.typeahead(tagManagerOptions.typeaheadDelegate);
       }
 
       var data = obj.data('typeahead');
@@ -157,16 +153,6 @@
       obj.data('active', false);
     };
 
-    var typeaheadSelectedItem = function () {
-      var listItemSelector = '.' + tagManagerOptions.typeaheadOverrides.selectedClass;
-      var typeahead_data = obj.data('typeahead');
-      return typeahead_data ? typeahead_data.$menu.find(listItemSelector) : undefined;
-    };
-
-    var typeaheadVisible = function () {
-      return jQuery('.typeahead:visible')[0];
-    };
-
     var ajaxPolling = function (query, process) {
       if (typeof (tagManagerOptions.typeaheadAjaxSource) == "string") {
         jQuery.ajax({
@@ -181,20 +167,6 @@
       }
     };
 
-    var tagClasses = function () {
-      // 1) default class (tm-tag)
-      var cl = tagBaseClass;
-      // 2) interpolate from input class: tm-input-xxx --> tm-tag-xxx
-      $.each(obj.attr('class').split(' '), function(index, value) {
-        if (value.indexOf(inputBaseClass+'-') != -1){
-          cl += ' ' + tagBaseClass + value.substring(inputBaseClass.length);
-        }
-      });
-      // 3) tags from tagClass option
-      cl += (tagManagerOptions.tagClass ? ' ' + tagManagerOptions.tagClass : '');
-      return cl;
-    };
-
     var trimTag = function (tag) {
       var txt = jQuery.trim(tag);
 
@@ -202,7 +174,7 @@
       var t = 0;
 
       for (var i = l - 1; i >= 0; i--) {
-        if (-1 == jQuery.inArray(txt.charCodeAt(i), delimiters)) break;
+        if (-1 == jQuery.inArray(txt.charCodeAt(i), delimeters)) break;
         t++;
       }
 
@@ -212,7 +184,7 @@
 
       //remove from head
       for (var i = 0; i < l; i++) {
-        if (-1 == jQuery.inArray(txt.charCodeAt(i), delimiters)) break;
+        if (-1 == jQuery.inArray(txt.charCodeAt(i), delimeters)) break;
         t++;
       }
 
@@ -287,8 +259,16 @@
       }
     };
 
-    var pushTag = function (tag) {
-      if (!tag || tag.length <= 0) return;
+    var pushTag = function (tag, objToPush, isValid) {
+      if (!tag || (!isValid) || tag.length <= 0) return;
+
+      if(tagManagerOptions.onlyTagList){
+        if (tagManagerOptions.typeaheadSource != null) {
+          if((jQuery.inArray(tag, tagManagerOptions.typeaheadSource)) == -1){
+            return;
+          }
+        }
+      }
 
       if (tagManagerOptions.CapitalizeFirstLetter && tag.length > 1) {
         tag = tag.charAt(0).toUpperCase() + tag.slice(1).toLowerCase();
@@ -330,28 +310,27 @@
         tlis.push(tag);
         tlid.push(tagId);
 
+        tagManagerOptions.AjaxPushParameters.tag = tag;
+
         if (tagManagerOptions.AjaxPush != null) {
-          jQuery.post(tagManagerOptions.AjaxPush, { tag: tag });
+          jQuery.post(tagManagerOptions.AjaxPush, tagManagerOptions.AjaxPushParameters);
         }
 
         // console.log("tagList: " + tlis);
 
         var newTagId = objName + '_' + tagId;
         var newTagRemoveId = objName + '_Remover_' + tagId;
-
-        var html = '<span class="' + tagClasses() + '" id="' + newTagId + '">';
-        html += '<span>' + tag + '</span>';
-        html += '<a href="#" class="tm-tag-remove" id="' + newTagRemoveId + '" TagIdToRemove="' + tagId + '">';
-        html += tagManagerOptions.tagCloseIcon + '</a></span> ';
-        var $el = jQuery(html);
+        var html = '';
+        var cl = tagManagerOptions.tagClass ? ' '+tagManagerOptions.tagClass : '';
+        html += '<span class="myTag'+cl+'" id="' + newTagId + '"><span>' + tag + '&nbsp;&nbsp;</span><a href="#" class="myTagRemover" id="' + newTagRemoveId + '" TagIdToRemove="' + tagId + '" title="Remove">' + tagManagerOptions.tagCloseIcon + '</a></span> ';
 
         if (tagManagerOptions.tagsContainer != null) {
-          jQuery(tagManagerOptions.tagsContainer).append($el);
+          jQuery(tagManagerOptions.tagsContainer).append(html);
         } else {
-          obj.before($el);
+          obj.before(html);
         }
 
-        $el.find("#" + newTagRemoveId).on("click", obj, function (e) {
+        jQuery("#" + newTagRemoveId).on("click", obj, function (e) {
           e.preventDefault();
           var TagIdToRemove = parseInt(jQuery(this).attr("TagIdToRemove"));
           spliceTag(TagIdToRemove, e.data);
@@ -366,12 +345,6 @@
       obj.val("");
     };
 
-    var prefill = function (pta) {
-      jQuery.each(pta, function (key, val) {
-        pushTag(val);
-      });
-    };
-
     var initialize = function () {
       if (tagManagerOptions.AjaxPushAllTags) {
         obj.on('tags:refresh', pushAllTags);
@@ -382,18 +355,10 @@
       initialize();
     }
 
-    var killEvent = function (e) {
-      e.cancelBubble = true;
-      e.returnValue = false;
-      e.stopPropagation();
-      e.preventDefault();
-    };
-
-    var keyInArray = function (e, ary) {
-      return jQuery.inArray(e.which, ary) != -1
-    };
-
     return this.each(function () {
+
+      var tagIsValid = false;
+      var isSelectedFromList = false;
 
       if (typeof options == 'string') {
         switch (options) {
@@ -404,17 +369,13 @@
             popTag();
             break;
           case "pushTag":
-            pushTag(tagToManipulate);
+            pushTag(tagToManipulate, null, true);
             break;
         }
         return;
       }
 
-      // prevent double-initialization of TagManager
-      if ($(this).data('tagManager')){ return false; }
-      $(this).data('tagManager', true);
-
-      // store instance-specific data in the DOM object
+      //let's store some instance specific data directly into the DOM object
       var tlis = new Array();
       var tlid = new Array();
       obj.data("tlis", tlis); //list of string tags
@@ -438,95 +399,205 @@
 
       if (tagManagerOptions.typeahead) {
         setupTypeahead();
+        //obj.typeahead({ source: SourceArray })
       }
 
-      // hide popovers on focus and keypress events
-      obj.on('focus keypress', function (e) {
+      obj.on("focus", function (e) {
         if (jQuery(this).popover) {
-          jQuery(this).popover('hide');
+          jQuery(this).popover("hide");
+          //jQuery(this).popover = null;
         }
       });
 
-      // handle ESC (keyup used for browser compatibility)
+      // clear input field on Esc
       if (tagManagerOptions.isClearInputOnEsc) {
-        obj.on('keyup', function (e) {
+        obj.on("keyup", function (e) {
           if (e.which == 27) {
-            // console.log('esc detected');
-            jQuery(this).val('');
-            killEvent(e);
+            jQuery(this).val("");
+            e.cancelBubble = true;
+            e.returnValue = false;
+            e.stopPropagation();
+            e.preventDefault();
+            return false;
           }
         });
       }
 
-      obj.on('keypress', function (e) {
-        // disable ENTER
-        if (e.which == 13) {
-          if (tagManagerOptions.preventSubmitOnEnter) {
-            killEvent(e);
+      // disable submit on enter for this input field
+      obj.on("keypress", function (e) {
+        if (jQuery(this).popover) {
+          jQuery(this).popover("hide");
+          //jQuery(this).popover = null;
+        }
+
+        if (tagManagerOptions.preventSubmitOnEnter) {
+          if (e.which == 13) {
+            e.cancelBubble = true;
+            e.returnValue = false;
+            e.stopPropagation();
+            e.preventDefault();
+            //e.keyCode = 9;
+            return false;
           }
         }
 
-        // push delimiters (includes <enter> by default)
-        if (keyInArray(e, delimiters)) {
-          var taItem = typeaheadSelectedItem();
-          var taVisible = typeaheadVisible();
-          // ignore ENTER when Typeahead is open
-          if (!(e.which==13 && taItem && taVisible)) {
-            var tag = trimTag(jQuery(this).val());
-            pushTag(tag);
-            // console.log('keypress: pushTagDelimiter ' + tag);
-          }
+        var p = jQuery.inArray(e.which, delimeters);
+        var isKeyInList = '0' in jQuery(".typeahead:visible");
+        if (!isKeyInList && (- 1 != p)) {
+          //user just entered a valid delimeter
+          tagIsValid = true;
+          var user_input = jQuery(this).val(); //user_input = jQuery().inArray(delimeters[p]);
+          user_input = trimTag(user_input);
+          pushTag(user_input, e.data, tagIsValid);
           e.preventDefault();
+          // console.log("pushTag: keypress");
         }
+        else {
+          tagIsValid = false;
+        }
+
+        // console.log("keypress: " + e.which);
       });
 
-      // BACKSPACE (keydown used for browser compatibility)
       if (tagManagerOptions.deleteTagsOnBackspace) {
-        obj.on('keydown', function (e) {
-          if (keyInArray(e, backspace)) {
-            // console.log("backspace detected");
-            if (jQuery(this).val().length <= 0) {
+        obj.on("keydown", obj, function (e) {
+          var p = jQuery.inArray(e.which, backspace);
+          if (-1 != p) {
+            //user just entered backspace or equivalent
+            var user_input = jQuery(this).val(); //user_input = jQuery().inArray(delimeters[p]);
+            var i = user_input.length;
+            if (i <= 0) {
+              // console.log("backspace detected");
+              e.preventDefault();
               popTag();
-              killEvent(e);
             }
           }
         });
       }
 
       obj.change(function (e) {
+        e.cancelBubble = true;
+        e.returnValue = false;
+        e.stopPropagation();
+        e.preventDefault();
 
-        if (!jQuery.browser.webkit) { jQuery(this).focus(); } // why?
+        var selectedItemClass = tagManagerOptions.typeaheadOverrides.selectedClass;
+        var listItemSelector = '.' + selectedItemClass;
 
-        var tag;
-        var taItem = typeaheadSelectedItem();
-        var taVisible = typeaheadVisible();
+        // check the typeahead list selection
+        var data = $(this).data('typeahead');
+        if (data) {
+          isSelectedFromList = $(this).data('typeahead').$menu.find("*")
+            .filter(listItemSelector)
+            .hasClass(selectedItemClass);
 
-        if (taItem && taVisible) {
-          tag = trimTag(taItem.attr('data-value'));
-          taItem.removeClass(tagManagerOptions.typeaheadOverrides.selectedClass);
-          pushTag(tag);
-          // console.log('change: pushTypeAheadTag ' + tag);
+          if (isSelectedFromList) {
+            tagIsValid = true;
+          }
         }
-        /* unimplemented mode to push tag on blur
-         else if (tagManagerOptions.pushTagOnBlur) {
-         tag = trimTag(jQuery(this).val());
-         console.log('change: pushTagOnBlur ' + tag);
-         pushTag(tag);
-         } */
-        killEvent(e);
+
+        if (!tagIsValid) {
+          return false;
+        }
+
+        var is_chrome = navigator.userAgent.indexOf('Chrome') > -1;
+        var is_explorer = navigator.userAgent.indexOf('MSIE') > -1;
+        var is_firefox = navigator.userAgent.indexOf('Firefox') > -1;
+        var is_safari = navigator.userAgent.indexOf("Safari") > -1;
+
+        if (!is_chrome && !is_safari)
+          jQuery(this).focus();
+
+        // console.log('Handler for .change() called, value selected:' + obj.val());
+        var ao = jQuery(".typeahead:visible");
+        if (ao[0] != undefined) {
+          // console.log('change: typeaheadIsVisible is visible');
+          //when the user click with the mouse on the typeahead li element we get the change event fired twice, once when the input field loose focus and later with the input field value is replaced with li value
+
+          var isClear = !isSelectedFromList;
+
+          if (isSelectedFromList) {
+            // if user selected from list
+            var user_input = $(this).data('typeahead').$menu.find(listItemSelector).attr('data-value');
+            user_input = trimTag(user_input);
+            if (queuedTag == jQuery(this).val() && queuedTag == user_input) {
+              isClear = true;
+            } else {
+              pushTag(user_input, null, true);
+              queuedTag = user_input;
+              // console.log('Handler for .change() called, typeahead value pushed:' + queuedTag);
+            }
+            isSelectedFromList = false;
+            $(this).data('typeahead').$menu.find(listItemSelector).removeClass(selectedItemClass);
+          }
+
+          if (isClear) {
+            queuedTag = "";
+            jQuery(this).val(queuedTag);
+          }
+        } else {
+          // console.log('change: typeaheadIsVisible is NOT visible');
+          var user_input = jQuery(this).val(); //user_input = jQuery().inArray(delimeters[p]);
+          user_input = trimTag(user_input);
+          pushTag(user_input, null, true);
+          // console.log("pushTag: change ");
+        }
+
+        tagIsValid = false;
+
+        return false; //cancel bubble
       });
+
+      if (1 == 1 || !tagManagerOptions.typeahead) {
+        obj.on("blur", function (e) {
+          //lost focus
+          e.cancelBubble = true;
+          e.returnValue = false;
+          e.stopPropagation();
+          e.preventDefault();
+
+          var push = true;
+          if (tagManagerOptions.typeahead) {
+            var ao = jQuery(".typeahead:visible");
+            if (ao[0] != undefined) {
+              // console.log('blur: typeaheadIsVisible is visible');
+              push = false;
+            } else {
+              // console.log('blur: typeaheadIsVisible is NOT visible');
+              push = true;
+            }
+          }
+
+          if (push) {
+            // console.log('lost focus');
+            var user_input = jQuery(this).val(); //user_input = jQuery().inArray(delimeters[p]);
+            user_input = trimTag(user_input);
+            pushTag(user_input, null, tagIsValid);
+            // console.log("pushTag: blur");
+          }
+
+          return false;
+        });
+      }
 
       if (tagManagerOptions.prefilled != null) {
         if (typeof (tagManagerOptions.prefilled) == "object") {
-          prefill(tagManagerOptions.prefilled);
+          var pta = tagManagerOptions.prefilled;
+          jQuery.each(pta, function (key, val) {
+            var a = 1;
+            pushTag(val, obj, true);
+          });
         } else if (typeof (tagManagerOptions.prefilled) == "string") {
-          prefill(tagManagerOptions.prefilled.split(','));
-        } else if (typeof (tagManagerOptions.prefilled) == "function") {
-          prefill(tagManagerOptions.prefilled());
+          var pta = tagManagerOptions.prefilled.split(',');
+
+          jQuery.each(pta, function (key, val) {
+            var a = 1;
+            pushTag(val, obj, true);
+          });
+
         }
-      } else if (tagManagerOptions.hiddenTagListId != null) {
-        prefill($('#' + tagManagerOptions.hiddenTagListId).val().split(','));
       }
     });
+
   }
 })(jQuery);
