@@ -495,7 +495,7 @@
 
       obj.change(function (e) {
 
-        if (!jQuery.browser.webkit) { jQuery(this).focus(); } // why?
+        if (!/webkit/.test(navigator.userAgent.toLowerCase())) { jQuery(this).focus(); } // why?
 
         var tag;
         var taItem = typeaheadSelectedItem();
