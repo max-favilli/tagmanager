@@ -53,11 +53,15 @@ Authors
 + http://twitter.com/maxfavilli
 + http://github.com/max-favilli
 
+**Johnny Shields** (v 2.4.0+)
+
++ http://github.com/johnnyshields
+
 
 Copyright and license
 ---------------------
 
 Copyright 2012 MaxFavilli.com
 
-Licensed under the Mozilla Public LLicense, Version 2.2
+Licensed under the Mozilla Public License, Version 2.2
 You may not use this work except in compliance with the License.

@@ -1,5 +1,5 @@
 /* ===================================================
- * bootstrap-tagmanager.js v2.3
+ * bootstrap-tagmanager.js v2.4.0
  * http://welldonethings.com/tags/manager
  * ===================================================
  * Copyright 2012 Max Favilli
