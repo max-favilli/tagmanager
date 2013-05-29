@@ -48,7 +48,8 @@
       tagCloseIcon: '×',
       tagClass: '',
       validator: null,
-      onlyTagList: false
+      onlyTagList: false,
+      afterUpdate: null
     };
 
     var TypeaheadOverrides = (function () {
@@ -257,6 +258,10 @@
       if (lhiddenTagList) {
         jQuery(lhiddenTagList).val(tlis.join(",")).change();
       }
+      
+      if (jQuery.isFunction(tagManagerOptions.afterUpdate)) {
+        tagManagerOptions.afterUpdate(tlis);
+      }
     };
 
     var spliceTag = function (tagId) {
@@ -363,6 +368,7 @@
           obj.hide();
         }
       }
+        
       obj.val("");
     };
 
