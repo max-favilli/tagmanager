@@ -38,7 +38,8 @@
       typeaheadSource: null,
       AjaxPush: null,
       AjaxPushAllTags: null,
-      delimiters: [44, 188, 13, 9],
+      delimiters: [44], // ASCII: 'comma'
+      delimiterKeys: [13, 9], // Physical Keys: 'enter' and 'tab'
       backspace: [8],
       maxTags: 0,
       hiddenTagListName: null,
@@ -393,6 +394,16 @@
       return jQuery.inArray(e.which, ary) != -1
     };
 
+    var applyDelimiter = function (e) {
+      var taItem = typeaheadSelectedItem();
+      var taVisible = typeaheadVisible();
+      if (!(e.which==13 && taItem && taVisible)) {
+        var tag = trimTag(obj.val());
+        pushTag(tag);
+      }
+      e.preventDefault();
+    };
+
     return this.each(function () {
 
       if (typeof options == 'string') {
@@ -459,6 +470,13 @@
       }
 
       obj.on('keypress', function (e) {
+        // push ASCII-based delimiters
+        if (keyInArray(e, delimiters)) {
+          applyDelimiter(e);
+        }
+      });
+
+      obj.on('keydown', function (e) {
         // disable ENTER
         if (e.which == 13) {
           if (tagManagerOptions.preventSubmitOnEnter) {
@@ -466,17 +484,9 @@
           }
         }
 
-        // push delimiters (includes <enter> by default)
-        if (keyInArray(e, delimiters)) {
-          var taItem = typeaheadSelectedItem();
-          var taVisible = typeaheadVisible();
-          // ignore ENTER when Typeahead is open
-          if (!(e.which==13 && taItem && taVisible)) {
-            var tag = trimTag(jQuery(this).val());
-            pushTag(tag);
-            // console.log('keypress: pushTagDelimiter ' + tag);
-          }
-          e.preventDefault();
+        // push key-based delimiters (includes <enter> by default)
+        if (keyInArray(e, tagManagerOptions.delimiterKeys)) {
+          applyDelimiter(e);
         }
       });
 
