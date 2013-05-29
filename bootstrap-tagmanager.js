@@ -38,6 +38,7 @@
       typeaheadSource: null,
       AjaxPush: null,
       AjaxPushAllTags: null,
+      AjaxPushParameters: {},
       delimiters: [44, 188, 13, 9],
       backspace: [8],
       maxTags: 0,
