@@ -187,11 +187,13 @@
       // 1) default class (tm-tag)
       var cl = tagBaseClass;
       // 2) interpolate from input class: tm-input-xxx --> tm-tag-xxx
-      $.each(obj.attr('class').split(' '), function(index, value) {
-        if (value.indexOf(inputBaseClass+'-') != -1){
-          cl += ' ' + tagBaseClass + value.substring(inputBaseClass.length);
-        }
-      });
+      if (obj.attr('class')) {
+        $.each(obj.attr('class').split(' '), function(index, value) {
+          if (value.indexOf(inputBaseClass+'-') != -1){
+            cl += ' ' + tagBaseClass + value.substring(inputBaseClass.length);
+          }
+        });
+      }
       // 3) tags from tagClass option
       cl += (tagManagerOptions.tagClass ? ' ' + tagManagerOptions.tagClass : '');
       return cl;
