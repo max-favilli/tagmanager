@@ -4,10 +4,12 @@
 A jQuery plugin (working nicely with [Twitter Bootstrap](http://twitter.github.com/bootstrap))
 
 
-[Demo](http://welldonethings.com/tags/manager)
+[Demo and Documentation](http://welldonethings.com/tags/manager)
 -----------
 
 See a demo and read all the documentation at http://welldonethings.com/tags/manager.
+
+The documentation is automatically synced from Github, so if you'd like to make a correction please modify `/docs/docs.html` and raise a pull request.
 
 
 Quick start
@@ -16,24 +18,22 @@ Quick start
 Clone the repo, `git clone git@github.com:max-favilli/tagmanager.git`, or [download the latest release](https://github.com/max-favilli/tagmanager/zipball/master).
 
 
+Reporting Issues
+-----------
+
+* Please report issues on [our Github Issue Tracker](https://github.com/max-favilli/tagmanager/issues).
+* In your report, please provide a [jsfiddle](http://jsfiddle.net) (preferred), gist, or pasted HTML/JS with steps to **reproduce** the issue.
+* Before reporting:
+   * Make sure you are using the latest master JS and CSS.
+   * Check the [documentation](http://welldonethings.com/tags/manager) and existing open issues.
+* Issues which we are unable to reproduce or without activity after a few weeks will be closed.
+* Pull requests, documentation requests, and enhancement ideas are welcome.
+
+
 NUGET 
 -----------
 
 PM> Install-Package Bootstrap-tagmanager
-
-
-Bug tracker
------------
-
-Have a bug? Please create an issue here on GitHub!
-
-https://github.com/max-favilli/tagmanager/issues
-
-
-Blog
-----
-
-Read more detailed announcements, discussions, and more on [The Official Tags Manager Blog](http://welldonethings.com/tags/manager).
 
 
 Thanks to
