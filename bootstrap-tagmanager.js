@@ -39,8 +39,7 @@
       AjaxPush: null,
       AjaxPushAllTags: null,
       AjaxPushParameters: null,
-      delimiters: [44], // ASCII: 'comma'
-      delimiterKeys: [13, 9], // Physical Keys: 'enter' and 'tab'
+      delimiters: [9,13,44], // tab, enter, comma
       backspace: [8],
       maxTags: 0,
       hiddenTagListName: null,
@@ -85,6 +84,16 @@
     var obj = this;
     var objName = obj.attr('name').replace(/[^\w]/g, '_');
     var delimiters = tagManagerOptions.delimeters || tagManagerOptions.delimiters; // 'delimeter' is deprecated
+    // delimiter values to be handled as key codes
+    var keyNums = [9,13,17,18,19,37,38,39,40];
+    var delimiterChars = [], delimiterKeys = [];
+    jQuery.each(delimiters, function(i,v){
+      if (keyNums.indexOf(v) != -1){
+        delimiterKeys.push(v);
+      } else {
+        delimiterChars.push(v);
+      }
+    });
     var backspace = tagManagerOptions.backspace;
     var isInitialized = false;
     var tagBaseClass = 'tm-tag';
@@ -206,7 +215,7 @@
       var t = 0;
 
       for (var i = l - 1; i >= 0; i--) {
-        if (-1 == jQuery.inArray(txt.charCodeAt(i), delimiters)) break;
+        if (-1 == jQuery.inArray(txt.charCodeAt(i), delimiterChars)) break;
         t++;
       }
 
@@ -216,7 +225,7 @@
 
       //remove from head
       for (var i = 0; i < l; i++) {
-        if (-1 == jQuery.inArray(txt.charCodeAt(i), delimiters)) break;
+        if (-1 == jQuery.inArray(txt.charCodeAt(i), delimiterChars)) break;
         t++;
       }
 
@@ -474,7 +483,7 @@
 
       obj.on('keypress', function (e) {
         // push ASCII-based delimiters
-        if (keyInArray(e, delimiters)) {
+        if (keyInArray(e, delimiterChars)) {
           applyDelimiter(e);
         }
       });
@@ -488,7 +497,7 @@
         }
 
         // push key-based delimiters (includes <enter> by default)
-        if (keyInArray(e, tagManagerOptions.delimiterKeys)) {
+        if (keyInArray(e, delimiterKeys)) {
           applyDelimiter(e);
         }
       });
