@@ -1,102 +1,120 @@
-﻿<div class="sspace-nicely">
-  <p><a href=""><h1>Tags Manager (a jQuery plugin)</h1></a></p>
-  <form class="form-inline">
-    <input type="text" autocomplete="off" data-items="6" data-provide="typeahead" name="tags" placeholder="Tags" style="width:9em;" class="input-medium tm-input" data-original-title=""/>
-  </form>
-  <p class="help-block">Type some <a target="_blank" href="http://en.wikipedia.org/wiki/Tag_(metadata)">tags</a> in the input field, separate them with comma (or tab).</p>
+﻿<a href=""><h1>Tags Manager (a jQuery plugin)</h1></a>
 
-  <h3>And you can turn a simple input field into a tags manager with a line of code:</h3>
-  <br/>
+<div class="space-nicely">
+  <p>Type some <a target="_blank" href="http://en.wikipedia.org/wiki/Tag_(metadata)">tags</a> in the input field, and separate them with enter, comma, or tab:</p>
+  <form class="form-inline">
+    <input type="text" autocomplete="off" data-items="6" data-provide="typeahead" name="tags" placeholder="Tags" style="width:9em;" class="input-medium tm-input tm-input-info" data-original-title=""/>
+  </form>
+</div>
+
+<div class="space-nicely">
+  <h3>Turn a simple input field into a tags manager with a line of code:</h3>
   <p>HTML markup</p>
-            <pre class="prettyprint linenums">
-  &lt;input type="text" name="tags" placeholder="Tags" class="tm-input"/&gt;</pre>
+  <pre class="prettyprint linenums">&lt;input type="text" name="tags" placeholder="Tags" class="tm-input"/&gt;</pre>
   <p>Javascript</p>
-            <pre class="prettyprint linenums">
-  jQuery(".tm-input").tagsManager();</pre>
+  <pre class="prettyprint linenums">jQuery(".tm-input").tagsManager();</pre>
 </div>
 
 <div class="space-nicely">
-  <h2>Can have multiple instance on the same page</h2>
+  <h2>Using multiple tag manager instances on the same page</h2>
+  <p><span class="badge badge-important">Note</span> when using multiple instances of tag manager on a page, each input field must have a unique name, not just a unique ID. This behavior will be improved in v3.0</p>
   <form class="form-inline">
-    <input type="text" autocomplete="off" data-items="6" data-provide="typeahead" name="tagsk" placeholder="Tags" style="width:9em;" class="input-medium tm-input" data-original-title=""/>
-    <p class="help-block">Type some <a target="_blank" href="http://en.wikipedia.org/wiki/Tag_(metadata)">tags</a> in the input field (if the Ajax source is slow you may have to wait a couple of seconds to have the typeahead list show up), separate them with comma (or tab).</p>
+    <input type="text" autocomplete="off" data-items="6" data-provide="typeahead" name="tagsk" placeholder="Tags" style="width:9em;" class="input-medium tm-input tm-input-success" data-original-title=""/>
   </form>
-
-  <p>Just play with it.</p>
 </div>
 
 <div class="space-nicely">
-  <h2>How to retrieve tags on &lt;form&gt; submit</h2>
-  <p>Tags manager does try to be very humble, if you place an input field in a form, and turn it into a tag manger with the code above, a hidden input field will be added to the form and filled with a comma separated list of the tags the user entered.</p>
-  <p>When processing the user input on form submit, server side, all you have to do is manage an additional hidden field with <code>name="hiddenTagList"</code>.</p>
-  <p>If you have firebug installed or if you check the source code above in chrome developer tool or explorer developer tool you will see <code>&lt;input type="hidden" value="Pisa,Rome" name="hiddenTagList"&gt;</code></p>
+  <h2>Retrieving tags on &lt;form&gt; submit</h2>
+  <p>By default, Tag Manager creates a hidden input field (based on the <code>name</code> of the input) and stores its data in the hidden field as a comma separated list.</p>
+  <p>When processing the user input on form submit, simply parse the data of this hidden field.</p>
+  <p>Look for this hidden field in the examples above using a browser developer tool (such as Firefox Firebug). In the example you should see: <code>&lt;input type="hidden" value="Pisa,Rome" name="hiddenTagListA"&gt;</code></p>
+  <p>It is also possible to give this field a customer name using the <code>hiddenTagListName</code> parameter, or create your own hidden field and use the <code>hiddenTagListId</code> parameter.</p>
 </div>
 
 <div class="space-nicely">
-  <h2>Example of Typeahead ajax source</h2>
+  <h2>Pushing Tags via Ajax</h2>
+  <p>
+    Tags Manager can push entered tag values on-the-fly via Ajax as the user creates/deletes tags to a user-specified destination.
+    Use the <code>AjaxPushAllTags</code> option to push all tag values on every update, rather than incrementally per created tag.
+    Use the <code>AjaxPushParameters</code> option to add additional parameters on each ajax request.
+    Refer to documentation for additional parameters.
+  </p>
+  <pre class="prettyprint linenums">
+    jQuery(".tm-input").tagsManager({
+        AjaxPush: '/ajax/countries/push',
+        AjaxPushAllTags: true,
+        AjaxPushParameters: { 'authToken': 'foobar' }
+    });
+  </pre>
+</div>
+
+<div class="space-nicely">
+  <h2>Typeahead via Ajax source</h2>
+  <p>
+    Tags Manager can be used in combination with the Bootstrap Typeahead library.
+    (In a future version we will support Twitter Typeahead.js)
+  </p>
   <form class="form-inline">
-    <input type="text" autocomplete="off" data-items="6" data-provide="typeahead" name="tagsjax" placeholder="Tags" style="width:9em;" class="input-medium tm-input tm-input-success" data-original-title=""/>
+    <input type="text" autocomplete="off" data-items="6" data-provide="typeahead" name="tagsjax" placeholder="Tags" style="width:9em;" class="input-medium tm-input tm-input-warning" data-original-title=""/>
   </form>
-  <p class="help-block">Type some <a target="_blank" href="http://en.wikipedia.org/wiki/Tag_(metadata)">tags</a> in the input field, separate them with comma (or tab).</p>
-  <p>The code below show how to use an ajax source, and an ajax destination for any added tag:</p>
-          <pre class="prettyprint linenums">
-  jQuery(".tm-input").tagsManager({
+  <pre class="prettyprint linenums">
+    jQuery(".tm-input").tagsManager({
         typeahead: true,
         typeaheadAjaxSource: '/ajax/countries',
-        typeaheadAjaxPolling: true,
-        AjaxPush: '/ajax/countries/push',
-        AjaxPushParameters: { 'itemId': 2 }
-  });</pre>
+        typeaheadAjaxPolling: true
+    });
+  </pre>
 </div>
 
 <div class="space-nicely">
-  <h2>Example of Typeahead function() source</h2>
+  <h2>Typeahead via function() source</h2>
   <form class="form-inline">
     <input type="text" autocomplete="off" data-items="6" data-provide="typeahead" name="tagsfun" placeholder="Tags" style="width:9em;" class="input-medium tm-input tm-input-info" data-original-title=""/>
   </form>
   <p class="help-block">Type some <a target="_blank" href="http://en.wikipedia.org/wiki/Tag_(metadata)">tags</a> in the input field, separate them with comma (or tab).</p>
   <p>The code below show how to use an ajax source, and an ajax destination for any added tag:</p>
-          <pre class="prettyprint linenums">
-  jQuery(".tm-input").tagsManager({
-        preventSubmitOnEnter: true,
+  <pre class="prettyprint linenums">
+    jQuery(".tm-input").tagsManager({
         typeahead: true,
         typeaheadSource: your_function_here(),
         blinkBGColor_1: '#FFFF9C',
         blinkBGColor_2: '#CDE69C',
-  });</pre>
+    });
+  </pre>
 </div>
 
 <div class="space-nicely">
-  <h2>Tags Manager is configurable</h2>
+  <h2>Tags Manager Configuration</h2>
   <p>The code below show all the configurable options available (as of version 2.4.1):</p>
-          <pre class="prettyprint linenums">
-  jQuery(".tm-input").tagsManager({
-    prefilled: ["Pisa", "Rome"],
-    CapitalizeFirstLetter: true,
-    preventSubmitOnEnter: true,
-    isClearInputOnEsc: true,
-    typeahead: true,
-    typeaheadAjaxMethod: "GET",
-    typeaheadAjaxSource: null,
-    typeaheadSource: ["Pisa", "Rome", "Milan", "Florence", "New York", "Paris", "Berlin", "London", "Madrid"],
-    typeaheadAjaxPolling: false,
-    typeaheadDelegate: {},
-    AjaxPush: null,
-    AjaxPushAllTags: null,
-    AjaxPushParameters: null,
-    delimiters: [9, 13, 44],
-    backspace: [8]
-    blinkBGColor_1: '#FFFF9C',
-    blinkBGColor_2: '#CDE69C',
-    hiddenTagListName: 'hiddenTagListA',
-    hiddenTagListId: null,
-    deleteTagsOnBackspace: true,
-    tagsContainer: null,
-    tagCloseIcon: '×',
-    tagClass: '',
-    validator: null,
-    onlyTagList: false
-  });</pre>
+  <pre class="prettyprint linenums">
+    jQuery(".tm-input").tagsManager({
+        prefilled: ["Pisa", "Rome"],
+        CapitalizeFirstLetter: true,
+        preventSubmitOnEnter: true,
+        isClearInputOnEsc: true,
+        typeahead: true,
+        typeaheadAjaxMethod: "GET",
+        typeaheadAjaxSource: null,
+        typeaheadSource: ["Pisa", "Rome", "Milan", "Florence", "New York", "Paris", "Berlin", "London", "Madrid"],
+        typeaheadAjaxPolling: false,
+        typeaheadDelegate: {},
+        AjaxPush: null,
+        AjaxPushAllTags: null,
+        AjaxPushParameters: null,
+        delimiters: [9, 13, 44],
+        backspace: [8]
+        blinkBGColor_1: '#FFFF9C',
+        blinkBGColor_2: '#CDE69C',
+        hiddenTagListName: 'hiddenTagListA',
+        hiddenTagListId: null,
+        deleteTagsOnBackspace: true,
+        tagsContainer: null,
+        tagCloseIcon: '×',
+        tagClass: '',
+        validator: null,
+        onlyTagList: false
+    });
+  </pre>
 
   <table class="table">
     <tr>
@@ -116,12 +134,12 @@
     </tr>
     <tr>
       <td><b>preventSubmitOnEnter</b></td>
-      <td><span class="badge badge-warning">Deprecated (v2.4.0)</span> Will be hardcoded to true in v3.0.<br/>
+      <td><span class="badge badge-important">Deprecated (v2.4.0)</span> Will be hardcoded to true in v3.0.<br/>
       If true, hitting the <code>enter</code> key inside the input field, then it's associated form will not be submitted. Note that this is different than using <code>enter</code> as a tag separator (see <em>delimiters</em> parameter.) Default: true.</td>
     </tr>
     <tr>
       <td><b>isClearInputOnEsc</b></td>
-      <td><span class="badge badge-warning">Deprecated (v2.4.0)</span> Will be hardcoded to true in v3.0.<br/>
+      <td><span class="badge badge-important">Deprecated (v2.4.0)</span> Will be hardcoded to true in v3.0.<br/>
       If true, hitting the <code>esc</code> key inside the input field will clear its value. Default: true.</td>
     </tr>
     <tr>
@@ -154,7 +172,10 @@
     </tr>
     <tr>
       <td><b>AjaxPushAllTags</b></td>
-      <td>If true, enables a mode to sync the entire tag state via AJAX (rather than incrementally) each time a tag is added/deleted.</code> Default: false.</td>
+      <td>
+        If true, enables a mode to sync the entire tag state via AJAX (rather than incrementally)
+        each time a tag is added/deleted.</code> Default: false.
+      </td>
     </tr>
     <tr>
       <td><b>AjaxPushParameters</b></td>
@@ -173,7 +194,7 @@
     <tr>
       <td><b>delimeters</b></td>
       <td>
-        <span class="badge badge-warning">Deprecated (v2.4.0)</span> Incorrect spelling of <em>delimiters</em>; same function as <em>delimiters</em>
+        <span class="badge badge-important">Deprecated (v2.4.0)</span> Incorrect spelling of <em>delimiters</em>; same function as <em>delimiters</em>
       </td>
     </tr>
     <tr>
@@ -187,7 +208,7 @@
     <tr>
       <td><b>hiddenTagListName</b></td>
       <td>
-        <span class="badge badge-warning">Deprecated (v2.4.0)</span> Usage will be replaced in 3.0 with hiddenTagListId.<br/>
+        <span class="badge badge-important">Deprecated (v2.4.0)</span> Usage will be replaced in 3.0 with hiddenTagListId.<br/>
         Define a custom name for the hidden tags input field which stores the tag values. Default: 'hidden-' + the name of the tag input field<br/>
         <span class="badge badge-info">Note</span> if you have multiple instance of TagManager in a form you SHOULD give a different name to each hidden tags list field!
       </td>
@@ -200,7 +221,7 @@
     </tr>
     <tr>
       <td><b>deleteTagsOnBackspace</b></td>
-      <td><span class="badge badge-warning">Deprecated (v2.4.0)</span> Will be hardcoded to true in v3.0; <em>backspace</em> will be continued to be supported.<br/>
+      <td><span class="badge badge-important">Deprecated (v2.4.0)</span> Will be hardcoded to true in v3.0; <em>backspace</em> will be continued to be supported.<br/>
       If true, using the keys defined in the <em>backspace</em> parameter will delete the most recent tag if the input cursor is at the beginning of the field. Default: true.</td>
     </tr>
     <tr>
@@ -237,16 +258,13 @@
 </div>
 
 <div class="space-nicely">
-  <h2>You can use the following methods:</h2>
+  <h2>Tag Manager Methods</h2>
   <p>You can pop the last added tag (the rightmost being show)</p>
-          <pre class="prettyprint linenums">
-  .tagsManager('popTag');</pre>
+  <pre class="prettyprint linenums">.tagsManager('popTag');</pre>
   <p>You can push a new tag </p>
-          <pre class="prettyprint linenums">
-  .tagsManager('pushTag','I_am_a_new_tag');</pre>
+  <pre class="prettyprint linenums">.tagsManager('pushTag','I_am_a_new_tag');</pre>
   <p>You can remove all tags </p>
-          <pre class="prettyprint linenums">
-  .tagsManager('empty');</pre>
+  <pre class="prettyprint linenums">.tagsManager('empty');</pre>
 </div>
 
 <div class="space-nicely">
@@ -263,11 +281,6 @@
 </div>
 
 <div class="space-nicely">
-  <h2>Using multiple tag manager instances on a page</h2>
-  <p><span class="badge badge-important">NOTE</span> if have multiple instances of tag manager on a page, each input field must have a unique name, not just a unique ID. This behavior will be improved in v3.0</p>
-</div>
-
-<div class="space-nicely">
   <h2>History</h2>
   <p>I built Tags Manager while working on an <a target="_blank" href="https://logmymoney.com">online personal finance tool</a>, I wanted a simple solution to manage tags for each expense users were entering, <a target="_blank" href="https://www.google.com/search?q=tags+like+stackoverflow">like in stackoverflow</a> and many other sites.</p>
 </div>
@@ -280,9 +293,9 @@
     </li>
     <li><a target="_blank" href="http://ioncache.github.com/Tag-Handler/">Tag Handler by ioncache</a>, in my opinion is probably the best general purpose tags manager around.
     </li>
-    <li><a target="_blank" href="http://xoxco.com/projects/code/tagsinput/">JQUERY TAGS INPUT PLUGIN</a>, it's really very cute.
+    <li><a target="_blank" href="http://xoxco.com/projects/code/tagsinput/">jQuery Tags Input Plugin</a>, it's really very cute.
     </li>
-    <li><a target="_blank" href="http://stackapps.com/questions/2062/stack-overflow-tag-manager">Stack Overflow Tag Manager</a>, if you want to mimic stackoverflow behavior.
+    <li><a target="_blank" href="http://stackapps.com/questions/2062/stack-overflow-tag-manager">Stack Overflow Tag Manager</a>, if you want to mimic StackOverflow behavior.
     </li>
   </ul>
   <p>The four above are the best around in my opinion, but... I developed Tags Manager. I wanted it to be very simple, I didn't need a pencil mouse pointer when the user hover it. I didn't need inplace edit of the tag, I think it's confusing for the user. I didn't want the tag manager to generate a lot of html in the form.</p>
