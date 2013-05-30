@@ -325,6 +325,7 @@
   <p>But just in case... You can find some thoughts about that <a target="_blank" href="http://stackoverflow.com/questions/3731756/like-stackoverflow-questions-tags-how-to-design-it-in-databases">here</a>.</p>
 </div>
 
+<script src="http://twitter.github.io/bootstrap/assets/js/bootstrap-typeahead.js"/>
 <script>
   jQuery(document).ready(function () {
     prettyPrint();
@@ -332,7 +333,6 @@
 
   jQuery(".tm-input:eq(0)").tagsManager({
     prefilled: ["Pisa", "Rome"],
-    preventSubmitOnEnter: true,
     typeahead: true,
     typeaheadAjaxSource: null,
     typeaheadSource: ["Pisa", "Rome", "Milan", "Florence", "New York", "Paris", "Berlin", "London", "Madrid"],
@@ -342,7 +342,6 @@
   });
   jQuery(".tm-input:eq(1)").tagsManager({
     prefilled: ["Angola", "Laos", "Nepal"],
-    preventSubmitOnEnter: true,
     typeahead: true,
     typeaheadAjaxSource: null,
     typeaheadSource: ["Angola", "Belgium", "Canada", "Denmark", "Estonia", "Germany", "Italy", "Laos", "Mauritania", "Nepal", "Oman"],
@@ -351,7 +350,6 @@
     hiddenTagListName: 'hiddenTagListB'
   });
   jQuery(".tm-input:eq(2)").tagsManager({
-    preventSubmitOnEnter: true,
     typeahead: true,
     typeaheadAjaxSource: '/ajax/countries',
     typeaheadAjaxPolling: true,
@@ -360,7 +358,6 @@
     blinkBGColor_2: '#CDE69C'
   });
   jQuery(".tm-input:eq(3)").tagsManager({
-    preventSubmitOnEnter: true,
     typeahead: true,
     typeaheadSource: funSource,
     blinkBGColor_1: '#FFFF9C',
@@ -368,7 +365,6 @@
   });
 
   function funSource() {
-    var ret = ["Manchester", "Astonvilla", "Real Madrid", "Barcelona", "Milan AC", "Internazionale", "Roma AC", "Chelsea"];
-    return ret;
+    return ["Manchester", "Astonvilla", "Real Madrid", "Barcelona", "Milan AC", "Internazionale", "Roma AC", "Chelsea"];
   }
 </script>
