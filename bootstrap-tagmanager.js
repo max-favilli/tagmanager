@@ -301,6 +301,8 @@
     };
 
     var pushTag = function (tag) {
+      tag = jQuery.trim(tag);
+
       if (!tag || tag.length <= 0) return;
 
       if (tagManagerOptions.CapitalizeFirstLetter && tag.length > 1) {
