@@ -45,7 +45,7 @@ interface ITagsManager {
     obj: JQuery;
     objName: string;
     queuedTag: string;
-    delimeters: number[];
+    delimiters: number[];
     backspace: number[];
     tagToManipulate: string;
 
