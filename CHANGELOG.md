@@ -1,4 +1,19 @@
 
+## 2.4.1
+
+* Feature: Added API parameter 'AjaxPushParameters', which enables a custom payload on AJAX push requests (kingofthejungle)
+* Feature: Added support for 'prefilled' parameter as a function (cliffordwhansen)
+* Feature: Added API parameter 'typeaheadAjaxMethod' as "GET" or "POST" (default "POST") for retrieving typeahead values via AJAX (santoshs)
+* Feature: Auto-detect whether delimiters codes should be handled as keys or chars, and use appropriate event callback, i.e. keydown for keys, keypress for chars (johnnyshields)
+* Feature: Use the first ASCII (non-key) delimiter code as the base delimiter for string storage (johnnyshields)
+* Refactor: Move event initializer for AjaxPushAllTags into same place as other event initializers, and removed isInitialized variable (johnnyshields)
+* Refactor: Cleanup trimTag() method and apply it consistently to pushTag() (johnnyshields)
+* Fix: Correct typo of delimeters -> delimiters in Typrescript definition (johnnyshields)
+* Fix: Clean whitespace around tags when calling pushTag() (quocvu)
+* Fix: Version 2.4.0 was erronously requiring that the tag input have class attribute specified (johnnyshields)
+* Fix: jQuery.browser method is no longer supported as of jQuery 1.9, so using native JS method (johnnyshields)
+* Deprecations: Mark parameters preventSubmitOnEnter, isClearInputOnEsc, deleteTagsOnBackspace as deprecated, as they will be hardcoded to their default values in v3.0 (johnnyshields)
+
 ## 2.4.0
 
 * Feature: Use Bootstrap semantic colors in LESS and CSS (johnnyshields)
