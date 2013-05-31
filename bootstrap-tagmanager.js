@@ -27,8 +27,8 @@
     var tagManagerOptions = {
       prefilled: null,
       CapitalizeFirstLetter: false,
-      preventSubmitOnEnter: true,
-      isClearInputOnEsc: true,
+      preventSubmitOnEnter: true, // deprecated
+      isClearInputOnEsc: true, // deprecated
       typeahead: false,
       typeaheadAjaxMethod: "POST",
       typeaheadAjaxSource: null,
@@ -44,7 +44,7 @@
       maxTags: 0,
       hiddenTagListName: null,
       hiddenTagListId: null,
-      deleteTagsOnBackspace: true,
+      deleteTagsOnBackspace: true, // deprecated
       tagsContainer: null,
       tagCloseIcon: '×',
       tagClass: '',
