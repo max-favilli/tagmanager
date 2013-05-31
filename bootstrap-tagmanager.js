@@ -209,28 +209,13 @@
     };
 
     var trimTag = function (tag) {
-      var txt = jQuery.trim(tag);
-
-      var l = txt.length;
-      var t = 0;
-
-      for (var i = l - 1; i >= 0; i--) {
-        if (-1 == jQuery.inArray(txt.charCodeAt(i), delimiterChars)) break;
-        t++;
+      tag = jQuery.trim(tag);
+      // truncate at the first delimiter char
+      var i = 0;
+      for (i; i < tag.length; i++) {
+        if (jQuery.inArray(tag.charCodeAt(i), delimiterChars) != -1) break;
       }
-
-      txt = txt.substring(0, l - t);
-      l = txt.length;
-      t = 0;
-
-      //remove from head
-      for (var i = 0; i < l; i++) {
-        if (-1 == jQuery.inArray(txt.charCodeAt(i), delimiterChars)) break;
-        t++;
-      }
-
-      txt = txt.substring(t, l);
-      return txt;
+      return tag.substring(0, i);
     };
 
     var popTag = function () {
@@ -301,7 +286,7 @@
     };
 
     var pushTag = function (tag) {
-      tag = jQuery.trim(tag);
+      tag = trimTag(tag);
 
       if (!tag || tag.length <= 0) return;
 
@@ -412,8 +397,7 @@
       var taItem = typeaheadSelectedItem();
       var taVisible = typeaheadVisible();
       if (!(e.which==13 && taItem && taVisible)) {
-        var tag = trimTag(obj.val());
-        pushTag(tag);
+        pushTag(obj.val());
       }
       e.preventDefault();
     };
@@ -521,21 +505,18 @@
 
         if (!/webkit/.test(navigator.userAgent.toLowerCase())) { jQuery(this).focus(); } // why?
 
-        var tag;
         var taItem = typeaheadSelectedItem();
         var taVisible = typeaheadVisible();
 
         if (taItem && taVisible) {
-          tag = trimTag(taItem.attr('data-value'));
           taItem.removeClass(tagManagerOptions.typeaheadOverrides.selectedClass);
-          pushTag(tag);
+          pushTag(taItem.attr('data-value'));
           // console.log('change: pushTypeAheadTag ' + tag);
         }
         /* unimplemented mode to push tag on blur
          else if (tagManagerOptions.pushTagOnBlur) {
-         tag = trimTag(jQuery(this).val());
          console.log('change: pushTagOnBlur ' + tag);
-         pushTag(tag);
+         pushTag(jQuery(this).val());
          } */
         killEvent(e);
       });
