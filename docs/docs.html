@@ -183,10 +183,11 @@
     </tr>
     <tr>
       <td><b>delimiters</b></td>
-      <td>Default: <code>[9,13,44]</code> (tab, enter, comma). Delimiters should be ASCII chars, except for the following values which are handled as key codes:
+      <td>Default: <code>[9,13,44]</code> (tab, enter, comma). Delimiters should be numeric ASCII char codes. Please note the following:
         <ul>
-          <li>tab: 9, enter: 13, shift: 16, ctrl: 17, alt: 18, pause/break: 19, leftarrow: 37, uparrow: 38, rightarrow: 39, downarrow: 40</li>
-          <li>Note that codes 45 (key = insert, char = -) and 46 (key = delete, char = .) are handled as chars, so currently insert and delete cannot be used as delimiters</li>
+          <li>The following values are handled as key codes: 9 (tab), 13 (enter), 16 (shift), 17 (ctrl), 18 (alt), 19 (pause/break), 37 (leftarrow), 38 (uparrow), 39 (rightarrow), 40 (downarrow)</li>
+          <li>Note that codes 45 (key = insert, char = -) and 46 (key = delete, char = .) are handled as chars, so currently insert and delete keys cannot be used as delimiters</li>
+          <li>The first char code (non-key code) specified in the array will be used as the base delimiter for parsing tags to/from the hidden field "list string". This will default to comma if not specified.</li>
           <li>See <a target="_blank" href="http://unixpapa.com/js/key.html">http://unixpapa.com/js/key.html</a> for a full explanation of ASCII versus key codes.</li>
         </ul>
       </td>

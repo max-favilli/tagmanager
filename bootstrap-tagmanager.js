@@ -94,6 +94,7 @@
         delimiterChars.push(v);
       }
     });
+    var baseDelimiter = String.fromCharCode(delimiterChars[0] || 44);
     var backspace = tagManagerOptions.backspace;
     var tagBaseClass = 'tm-tag';
     var inputBaseClass = 'tm-input';
@@ -249,10 +250,10 @@
       var tlis = obj.data("tlis");
       var lhiddenTagList = obj.data("lhiddenTagList");
 
-      obj.trigger('tags:refresh', tlis.join(","));
+      obj.trigger('tags:refresh', tlis.join(baseDelimiter));
 
       if (lhiddenTagList) {
-        jQuery(lhiddenTagList).val(tlis.join(",")).change();
+        jQuery(lhiddenTagList).val(tlis.join(baseDelimiter)).change();
       }
     };
 
@@ -518,12 +519,12 @@
         if (typeof (tagManagerOptions.prefilled) == "object") {
           prefill(tagManagerOptions.prefilled);
         } else if (typeof (tagManagerOptions.prefilled) == "string") {
-          prefill(tagManagerOptions.prefilled.split(','));
+          prefill(tagManagerOptions.prefilled.split(baseDelimiter));
         } else if (typeof (tagManagerOptions.prefilled) == "function") {
           prefill(tagManagerOptions.prefilled());
         }
       } else if (tagManagerOptions.hiddenTagListId != null) {
-        prefill($('#' + tagManagerOptions.hiddenTagListId).val().split(','));
+        prefill($('#' + tagManagerOptions.hiddenTagListId).val().split(baseDelimiter));
       }
     });
   }
