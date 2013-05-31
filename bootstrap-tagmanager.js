@@ -95,7 +95,6 @@
       }
     });
     var backspace = tagManagerOptions.backspace;
-    var isInitialized = false;
     var tagBaseClass = 'tm-tag';
     var inputBaseClass = 'tm-input';
 
@@ -372,16 +371,6 @@
       });
     };
 
-    var initialize = function () {
-      if (tagManagerOptions.AjaxPushAllTags) {
-        obj.on('tags:refresh', pushAllTags);
-      }
-    };
-
-    if (!isInitialized) {
-      initialize();
-    }
-
     var killEvent = function (e) {
       e.cancelBubble = true;
       e.returnValue = false;
@@ -447,6 +436,10 @@
 
       if (tagManagerOptions.typeahead) {
         setupTypeahead();
+      }
+
+      if (tagManagerOptions.AjaxPushAllTags) {
+        obj.on('tags:refresh', pushAllTags);
       }
 
       // hide popovers on focus and keypress events
