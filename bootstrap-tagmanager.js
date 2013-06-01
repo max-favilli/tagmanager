@@ -99,6 +99,8 @@
     var tagBaseClass = 'tm-tag';
     var inputBaseClass = 'tm-input';
 
+    if (jQuery.isFunction(tagManagerOptions.validator)) obj.data('validator', tagManagerOptions.validator);
+
     var setupTypeahead = function () {
       if (!obj.typeahead) return;
 
@@ -295,9 +297,7 @@
       }
 
       // call the validator (if any) and do not let the tag pass if invalid
-      if (jQuery.isFunction(tagManagerOptions.validator)) {
-        if (!tagManagerOptions.validator(tag)) return;
-      }
+      if (obj.data('validator') && !obj.data('validator')(tag)) return;
 
       var tlis = obj.data("tlis");
       var tlid = obj.data("tlid");
