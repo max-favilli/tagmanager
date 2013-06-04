@@ -6,6 +6,8 @@
 /// <reference path="../jquery/jquery.d.ts"/>
 
 interface ITagsManagerOptions {
+    onTagAdded: Function;
+    onTagRemoved: Function;
     prefilled?: any;
     CapitalizeFirstLetter?: bool;
     preventSubmitOnEnter?: bool;

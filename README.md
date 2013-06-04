@@ -9,7 +9,7 @@ A jQuery plugin (working nicely with [Twitter Bootstrap](http://twitter.github.c
 
 See a demo and read all the documentation at http://welldonethings.com/tags/manager.
 
-The documentation is automatically synced from Github, so if you'd like to make a correction please modify `/docs/docs.html` and raise a pull request.
+The documentation is automatically sync'ed from Github, so if you'd like to make a correction please modify `/docs/docs.html` and raise a pull request.
 
 
 Quick start
@@ -56,6 +56,10 @@ Authors
 **Johnny Shields** (v 2.4.0+)
 
 + http://github.com/johnnyshields
+
+**Jason Rogers** (v 2.4.2+)
+
++ http://github.com/jacaetevha
 
 
 Copyright and license
