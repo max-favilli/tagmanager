@@ -15,15 +15,16 @@
  * limitations under the License.
  * ========================================================== */
 
-"use strict";
+jQuery(document).ready(function($){
 
-(function (jQuery) {
+  "use strict";
+
   if (typeof console === "undefined" || typeof console.log === "undefined") {
     console = {};
     console.log = function () { };
   }
 
-  jQuery.fn.tagsManager = function (options,tagToManipulate) {
+  $.fn.tagsManager = function (options,tagToManipulate) {
     var tagManagerOptions = {
       prefilled: null,
       CapitalizeFirstLetter: false,
@@ -57,8 +58,8 @@
         this.instanceSelectHandler = null;
         this.selectedClass = "selected";
         this.select = null;
-        if ("typeahead" in jQuery.fn) {
-          this.instanceSelectHandler = jQuery.fn.typeahead.Constructor.prototype.select;
+        if ("typeahead" in $.fn) {
+          this.instanceSelectHandler = $.fn.typeahead.Constructor.prototype.select;
           this.select = function (overrides) {
             this.$menu.find(".active").addClass(overrides.selectedClass);
             overrides.instanceSelectHandler.apply(this, arguments);
@@ -75,7 +76,7 @@
 
     tagManagerOptions.typeaheadOverrides = new TypeaheadOverrides();
 
-    jQuery.extend(tagManagerOptions, options);
+    $.extend(tagManagerOptions, options);
 
     if (tagManagerOptions.hiddenTagListName === null) {
       tagManagerOptions.hiddenTagListName = "hidden-" + this.attr('name');
@@ -87,7 +88,7 @@
     // delimiter values to be handled as key codes
     var keyNums = [9,13,17,18,19,37,38,39,40];
     var delimiterChars = [], delimiterKeys = [];
-    jQuery.each(delimiters, function(i,v){
+    $.each(delimiters, function(i,v){
       if (keyNums.indexOf(v) != -1){
         delimiterKeys.push(v);
       } else {
@@ -99,15 +100,15 @@
     var tagBaseClass = 'tm-tag';
     var inputBaseClass = 'tm-input';
 
-    if (jQuery.isFunction(tagManagerOptions.validator)) obj.data('validator', tagManagerOptions.validator);
+    if ($.isFunction(tagManagerOptions.validator)) obj.data('validator', tagManagerOptions.validator);
 
     var setupTypeahead = function () {
       if (!obj.typeahead) return;
 
       var taOpts = tagManagerOptions.typeaheadDelegate;
 
-      if (tagManagerOptions.typeaheadSource != null && jQuery.isFunction(tagManagerOptions.typeaheadSource)) {
-        jQuery.extend(taOpts, { source: tagManagerOptions.typeaheadSource });
+      if (tagManagerOptions.typeaheadSource != null && $.isFunction(tagManagerOptions.typeaheadSource)) {
+        $.extend(taOpts, { source: tagManagerOptions.typeaheadSource });
         obj.typeahead(taOpts);
       } else if (tagManagerOptions.typeaheadSource != null) {
         obj.typeahead(taOpts);
@@ -117,7 +118,7 @@
           obj.typeahead(taOpts);
 
           if (typeof (tagManagerOptions.typeaheadAjaxSource) == "string") {
-            jQuery.ajax({
+            $.ajax({
               cache: false,
               type: tagManagerOptions.typeaheadAjaxMethod,
               contentType: "application/json",
@@ -128,7 +129,7 @@
             });
           }
         } else if (tagManagerOptions.typeaheadAjaxPolling) {
-          jQuery.extend(taOpts, { source: ajaxPolling });
+          $.extend(taOpts, { source: ajaxPolling });
           obj.typeahead(taOpts);
         }
       }
@@ -136,7 +137,7 @@
       var data = obj.data('typeahead');
       if (data) {
         // set the overrided handler
-        data.select = jQuery.proxy(tagManagerOptions.typeaheadOverrides.select,
+        data.select = $.proxy(tagManagerOptions.typeaheadOverrides.select,
           obj.data('typeahead'),
           tagManagerOptions.typeaheadOverrides);
       }
@@ -151,14 +152,14 @@
       if (data && data.tags) {
         var sourceAjaxArray = [];
         sourceAjaxArray.length = 0;
-        jQuery.each(data.tags, function (key, val) {
+        $.each(data.tags, function (key, val) {
           sourceAjaxArray.push(val.tag);
           if (isSetTypeaheadSource) {
             setTypeaheadSource(sourceAjaxArray);
           }
         });
 
-        if (jQuery.isFunction(process)) {
+        if ($.isFunction(process)) {
           process(sourceAjaxArray);
         }
       }
@@ -177,12 +178,12 @@
     };
 
     var typeaheadVisible = function () {
-      return jQuery('.typeahead:visible')[0];
+      return $('.typeahead:visible')[0];
     };
 
     var ajaxPolling = function (query, process) {
       if (typeof (tagManagerOptions.typeaheadAjaxSource) == "string") {
-        jQuery.ajax({
+        $.ajax({
           cache: false,
           type: "POST",
           contentType: "application/json",
@@ -211,11 +212,11 @@
     };
 
     var trimTag = function (tag) {
-      tag = jQuery.trim(tag);
+      tag = $.trim(tag);
       // truncate at the first delimiter char
       var i = 0;
       for (i; i < tag.length; i++) {
-        if (jQuery.inArray(tag.charCodeAt(i), delimiterChars) != -1) break;
+        if ($.inArray(tag.charCodeAt(i), delimiterChars) != -1) break;
       }
       return tag.substring(0, i);
     };
@@ -228,7 +229,7 @@
         var tagId = tlid.pop();
         tlis.pop();
         // console.log("TagIdToRemove: " + tagId);
-        jQuery("#" + objName + "_" + tagId).remove();
+        $("#" + objName + "_" + tagId).remove();
         refreshHiddenTagList();
         // console.log(tlis);
       }
@@ -242,7 +243,7 @@
         var tagId = tlid.pop();
         tlis.pop();
         // console.log("TagIdToRemove: " + tagId);
-        jQuery("#" + objName + "_" + tagId).remove();
+        $("#" + objName + "_" + tagId).remove();
         refreshHiddenTagList();
         // console.log(tlis);
       }
@@ -255,7 +256,7 @@
       obj.trigger('tags:refresh', tlis.join(baseDelimiter));
 
       if (lhiddenTagList) {
-        jQuery(lhiddenTagList).val(tlis.join(baseDelimiter)).change();
+        $(lhiddenTagList).val(tlis.join(baseDelimiter)).change();
       }
     };
 
@@ -263,13 +264,13 @@
       var tlis = obj.data("tlis");
       var tlid = obj.data("tlid");
 
-      var p = jQuery.inArray(tagId, tlid);
+      var p = $.inArray(tagId, tlid);
 
       // console.log("TagIdToRemove: " + tagId);
       // console.log("position: " + p);
 
       if (-1 != p) {
-        jQuery("#" + objName + "_" + tagId).remove();
+        $("#" + objName + "_" + tagId).remove();
         tlis.splice(p, 1);
         tlid.splice(p, 1);
         refreshHiddenTagList();
@@ -283,7 +284,7 @@
 
     var pushAllTags = function (e, tagstring) {
       if (tagManagerOptions.AjaxPushAllTags) {
-        jQuery.post(tagManagerOptions.AjaxPushAllTags, { tags: tagstring });
+        $.post(tagManagerOptions.AjaxPushAllTags, { tags: tagstring });
       }
     };
 
@@ -307,7 +308,7 @@
 
       var alreadyInList = false;
       var tlisLowerCase = tlis.map(function(elem) { return elem.toLowerCase(); });
-      var p = jQuery.inArray(tag.toLowerCase(), tlisLowerCase);
+      var p = $.inArray(tag.toLowerCase(), tlisLowerCase);
       if (-1 != p) {
         // console.log("tag:" + tag + " !!already in list!!");
         alreadyInList = true;
@@ -315,7 +316,7 @@
 
       if (alreadyInList) {
         var pTagId = tlid[p];
-        jQuery("#" + objName + "_" + pTagId).stop()
+        $("#" + objName + "_" + pTagId).stop()
           .animate({ backgroundColor: tagManagerOptions.blinkBGColor_1 }, 100)
           .animate({ backgroundColor: tagManagerOptions.blinkBGColor_2 }, 100)
           .animate({ backgroundColor: tagManagerOptions.blinkBGColor_1 }, 100)
@@ -331,7 +332,7 @@
         tlid.push(tagId);
 
         if (tagManagerOptions.AjaxPush != null) {
-          jQuery.post(tagManagerOptions.AjaxPush, jQuery.extend({ tag: tag }, tagManagerOptions.AjaxPushParameters));
+          $.post(tagManagerOptions.AjaxPush, $.extend({ tag: tag }, tagManagerOptions.AjaxPushParameters));
         }
 
         // console.log("tagList: " + tlis);
@@ -343,17 +344,17 @@
         html += '<span>' + tag + '</span>';
         html += '<a href="#" class="tm-tag-remove" id="' + newTagRemoveId + '" TagIdToRemove="' + tagId + '">';
         html += tagManagerOptions.tagCloseIcon + '</a></span> ';
-        var $el = jQuery(html);
+        var $el = $(html);
 
         if (tagManagerOptions.tagsContainer != null) {
-          jQuery(tagManagerOptions.tagsContainer).append($el);
+          $(tagManagerOptions.tagsContainer).append($el);
         } else {
           obj.before($el);
         }
 
         $el.find("#" + newTagRemoveId).on("click", obj, function (e) {
           e.preventDefault();
-          var TagIdToRemove = parseInt(jQuery(this).attr("TagIdToRemove"));
+          var TagIdToRemove = parseInt($(this).attr("TagIdToRemove"));
           spliceTag(TagIdToRemove, e.data);
         });
 
@@ -367,7 +368,7 @@
     };
 
     var prefill = function (pta) {
-      jQuery.each(pta, function (key, val) {
+      $.each(pta, function (key, val) {
         pushTag(val);
       });
     };
@@ -380,7 +381,7 @@
     };
 
     var keyInArray = function (e, ary) {
-      return jQuery.inArray(e.which, ary) != -1
+      return $.inArray(e.which, ary) != -1
     };
 
     var applyDelimiter = function (e) {
@@ -432,7 +433,7 @@
           obj.siblings("input[name='" + tagManagerOptions.hiddenTagListName + "']")[0]
         );
       } else {
-        obj.data("lhiddenTagList", jQuery('#' + tagManagerOptions.hiddenTagListId))
+        obj.data("lhiddenTagList", $('#' + tagManagerOptions.hiddenTagListId))
       }
 
       if (tagManagerOptions.typeahead) {
@@ -445,8 +446,8 @@
 
       // hide popovers on focus and keypress events
       obj.on('focus keypress', function (e) {
-        if (jQuery(this).popover) {
-          jQuery(this).popover('hide');
+        if ($(this).popover) {
+          $(this).popover('hide');
         }
       });
 
@@ -455,7 +456,7 @@
         obj.on('keyup', function (e) {
           if (e.which == 27) {
             // console.log('esc detected');
-            jQuery(this).val('');
+            $(this).val('');
             killEvent(e);
           }
         });
@@ -487,7 +488,7 @@
         obj.on('keydown', function (e) {
           if (keyInArray(e, backspace)) {
             // console.log("backspace detected");
-            if (jQuery(this).val().length <= 0) {
+            if ($(this).val().length <= 0) {
               popTag();
               killEvent(e);
             }
@@ -497,7 +498,7 @@
 
       obj.change(function (e) {
 
-        if (!/webkit/.test(navigator.userAgent.toLowerCase())) { jQuery(this).focus(); } // why?
+        if (!/webkit/.test(navigator.userAgent.toLowerCase())) { $(this).focus(); } // why?
 
         var taItem = typeaheadSelectedItem();
         var taVisible = typeaheadVisible();
@@ -510,7 +511,7 @@
         /* unimplemented mode to push tag on blur
          else if (tagManagerOptions.pushTagOnBlur) {
          console.log('change: pushTagOnBlur ' + tag);
-         pushTag(jQuery(this).val());
+         pushTag($(this).val());
          } */
         killEvent(e);
       });
@@ -528,4 +529,4 @@
       }
     });
   }
-})(jQuery);
+});
