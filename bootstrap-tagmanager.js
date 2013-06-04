@@ -15,7 +15,7 @@
  * limitations under the License.
  * ========================================================== */
 
-jQuery(document).ready(function($){
+(function($){
 
   "use strict";
 
@@ -529,4 +529,4 @@ jQuery(document).ready(function($){
       }
     });
   }
-});
+})(jQuery);
