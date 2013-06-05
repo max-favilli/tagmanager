@@ -415,9 +415,18 @@
       e.preventDefault();
     };
 
-    var _tagManager = this;
     return this.each(function () {
-      if (typeof options == 'string') {
+      // prevent double-initialization of TagManager
+      var initialized = !!$(this).data('tagManager');
+      var optionsIsString = typeof options == 'string';
+
+      if (initialized && !optionsIsString) {
+        return false;
+      } else if (!initialized) {
+        $(this).data('tagManager', true);
+      }
+
+      if (optionsIsString) {
         switch (options) {
           case "empty":
             empty();
@@ -431,10 +440,6 @@
         }
         return;
       }
-
-      // prevent double-initialization of TagManager
-      if (!!$(this).data('tagManager')){ return false; }
-      $(this).data('tagManager', _tagManager);
 
       // store instance-specific data in the DOM object
       var tlis = new Array();
