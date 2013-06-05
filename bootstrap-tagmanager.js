@@ -26,6 +26,8 @@
   jQuery.fn.tagsManager = function (options,tagToManipulate) {
     var tagManagerOptions = {
       onTagAdded: null,
+      onTagAddition: null,
+      onTagRemoval: null,
       onTagRemoved: null,
       prefilled: null,
       CapitalizeFirstLetter: false,
@@ -266,14 +268,15 @@
       var tlid = obj.data("tlid");
 
       var p = jQuery.inArray(tagId, tlid);
-      var tag;
+      var tag = -1 != p ? tlis[p] : null;
 
-      // console.log("TagIdToRemove: " + tagId);
-      // console.log("position: " + p);
+      var canSpliceTag = tag && (!tagManagerOptions.onTagRemoval || tagManagerOptions.onTagRemoval(tag));
+      if (!canSpliceTag) {
+        return;
+      }
 
       if (-1 != p) {
         jQuery("#" + objName + "_" + tagId).remove();
-        tag = tlis[p];
         tlis.splice(p, 1);
         tlid.splice(p, 1);
         refreshHiddenTagList();
@@ -284,7 +287,7 @@
         obj.show();
       }
 
-      if (tagManagerOptions.onTagRemoved && tag) {
+      if (tagManagerOptions.onTagRemoved) {
         tagManagerOptions.onTagRemoved(tag);
       }
     };
@@ -294,6 +297,10 @@
         jQuery.post(tagManagerOptions.AjaxPushAllTags, { tags: tagstring });
       }
     };
+
+    var canPushTag = function(tag) {
+      return !tagManagerOptions.onTagAddition || (tagManagerOptions.onTagAddition && !!tagManagerOptions.onTagAddition(tag));
+    }
 
     var pushTag = function (tag) {
       tag = trimTag(tag);
@@ -330,7 +337,7 @@
           .animate({ backgroundColor: tagManagerOptions.blinkBGColor_2 }, 100)
           .animate({ backgroundColor: tagManagerOptions.blinkBGColor_1 }, 100)
           .animate({ backgroundColor: tagManagerOptions.blinkBGColor_2 }, 100);
-      } else {
+      } else if (canPushTag(tag)) {
         var max = Math.max.apply(null, tlid);
         max = max == -Infinity ? 0 : max;
 
@@ -341,8 +348,6 @@
         if (tagManagerOptions.AjaxPush != null) {
           jQuery.post(tagManagerOptions.AjaxPush, jQuery.extend({ tag: tag }, tagManagerOptions.AjaxPushParameters));
         }
-
-        // console.log("tagList: " + tlis);
 
         var newTagId = objName + '_' + tagId;
         var newTagRemoveId = objName + '_Remover_' + tagId;
@@ -371,7 +376,6 @@
           obj.hide();
         }
 
-
         if (tagManagerOptions.onTagAdded) {
           tagManagerOptions.onTagAdded(tag);
         }
@@ -380,12 +384,15 @@
     };
 
     var prefill = function (pta) {
-      var original = tagManagerOptions.onTagAdded;
+      var originalTagAdded = tagManagerOptions.onTagAdded;
+      var originalTagAddition = tagManagerOptions.onTagAddition;
       tagManagerOptions.onTagAdded = null;
+      tagManagerOptions.onTagAddition = null;
       jQuery.each(pta, function (key, val) {
         pushTag(val);
       });
-      tagManagerOptions.onTagAdded = original;
+      tagManagerOptions.onTagAdded = originalTagAdded;
+      tagManagerOptions.onTagAddition = originalTagAddition;
     };
 
     var killEvent = function (e) {
@@ -408,8 +415,8 @@
       e.preventDefault();
     };
 
+    var _tagManager = this;
     return this.each(function () {
-
       if (typeof options == 'string') {
         switch (options) {
           case "empty":
@@ -426,8 +433,8 @@
       }
 
       // prevent double-initialization of TagManager
-      if ($(this).data('tagManager')){ return false; }
-      $(this).data('tagManager', true);
+      if (!!$(this).data('tagManager')){ return false; }
+      $(this).data('tagManager', _tagManager);
 
       // store instance-specific data in the DOM object
       var tlis = new Array();

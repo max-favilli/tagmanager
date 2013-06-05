@@ -7,6 +7,8 @@
 
 interface ITagsManagerOptions {
     onTagAdded: Function;
+    onTagAddition: Function;
+    onTagRemoval: Function;
     onTagRemoved: Function;
     prefilled?: any;
     CapitalizeFirstLetter?: bool;

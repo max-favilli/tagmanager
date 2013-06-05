@@ -89,6 +89,8 @@
   <pre class="prettyprint linenums">
     jQuery(".tm-input").tagsManager({
         onTagAdded: function(tag) { alert(tag + ' was added'); },
+        onTagAddition: function(tag) { return true; },
+        onTagRemoval: function(tag) { return true; },
         onTagRemoved: function(tag) { alert(tag + ' was removed'); },
         prefilled: ["Pisa", "Rome"],
         CapitalizeFirstLetter: true,
@@ -123,7 +125,23 @@
       <td><b>onTagAdded</b></td>
       <td>Callback with the tag that was added. Default: null. Allowed formats:
         <ul>
-          <li>a <b>Function</b> whose return value is ignored. This function receives one argument, the tag that was just added. This callback is not triggered when attempting to add a duplicate tag.</li>
+          <li>a <b>Function</b> whose return value is ignored. This function receives one argument, the tag that was just added. This callback is not triggered when attempting to add a duplicate tag, nor during prefilling.</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td><b>onTagAddition</b></td>
+      <td>Callback with the tag that to be added. Default: null. Allowed formats:
+        <ul>
+          <li>a <b>Function</b> whose return value should be true or false. This function receives one argument, the tag to be added. This callback is not triggered when attempting to add a duplicate tag, nor during prefilling. If a false return value is encountered the tag will not be added.</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td><b>onTagRemoval</b></td>
+      <td>Callback with the tag to be removed. Default: null. Allowed formats:
+        <ul>
+          <li>a <b>Function</b> whose return value should be true or false. This function receives one argument, the tag to be removed. If a false return value is encountered the tag will not be removed.</li>
         </ul>
       </td>
     </tr>
