@@ -88,6 +88,10 @@
   <p>The code below show all the configurable options available (as of version 2.4.1):</p>
   <pre class="prettyprint linenums">
     jQuery(".tm-input").tagsManager({
+        onTagAdded: function(tag) { alert(tag + ' was added'); },
+        onTagAddition: function(tag) { return true; },
+        onTagRemoval: function(tag) { return true; },
+        onTagRemoved: function(tag) { alert(tag + ' was removed'); },
         prefilled: ["Pisa", "Rome"],
         CapitalizeFirstLetter: true,
         preventSubmitOnEnter: true,
@@ -117,6 +121,54 @@
   </pre>
 
   <table class="table">
+    <tr>
+      <td><b>onTagAdded</b></td>
+      <td>Callback with the tag that was added. Default: null. Allowed formats:
+        <ul>
+          <li>a <b>Function</b> whose return value is ignored. This function receives one argument, the tag that was just added. This callback is not triggered when attempting to add a duplicate tag, nor during prefilling.</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td><b>onTagAddition</b></td>
+      <td>Callback with the tag that to be added. Default: null. Allowed formats:
+        <ul>
+          <li>a <b>Function</b> whose return value should be true or false. This function receives one argument, the tag to be added. This callback is not triggered when attempting to add a duplicate tag, nor during prefilling. If a false return value is encountered the tag will not be added.</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td><b>onTagRemoval</b></td>
+      <td>Callback with the tag to be removed. Default: null. Allowed formats:
+        <ul>
+          <li>a <b>Function</b> whose return value should be true or false. This function receives one argument, the tag to be removed. If a false return value is encountered the tag will not be removed.</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td><b>onTagRemoved</b></td>
+      <td>Callback with the tag that was removed. Default: null. Allowed formats:
+        <ul>
+          <li>a <b>Function</b> whose return value is ignored. This function receives one argument, the tag that was just removed.</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td><b>onTagInputHide</b></td>
+      <td>Callback after the input is hidden (due to max tags being reached). Default: null. Allowed formats:
+        <ul>
+          <li>a <b>Function</b> whose return value is ignored. This function receives no arguments.</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td><b>onTagInputShow</b></td>
+      <td>Callback after the input is shown. Default: null. Allowed formats:
+        <ul>
+          <li>a <b>Function</b> whose return value is ignored. This function receives no arguments.</li>
+        </ul>
+      </td>
+    </tr>
     <tr>
       <td><b>prefilled</b></td>
       <td>Populates the initial tag values. Default: null. Allowed formats:
