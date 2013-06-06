@@ -10,6 +10,8 @@ interface ITagsManagerOptions {
     onTagAddition: Function;
     onTagRemoval: Function;
     onTagRemoved: Function;
+    onTagInputHide: Function;
+    onTagInputShow: Function;
     prefilled?: any;
     CapitalizeFirstLetter?: bool;
     preventSubmitOnEnter?: bool;

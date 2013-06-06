@@ -29,6 +29,8 @@
       onTagAddition: null,
       onTagRemoval: null,
       onTagRemoved: null,
+      onTagInputHide: null,
+      onTagInputShow: null,
       prefilled: null,
       CapitalizeFirstLetter: false,
       preventSubmitOnEnter: true, // deprecated
@@ -285,6 +287,9 @@
 
       if (tagManagerOptions.maxTags > 0 && tlis.length < tagManagerOptions.maxTags) {
         obj.show();
+        if (tagManagerOptions.onTagInputShow) {
+          tagManagerOptions.onTagInputShow();
+        }
       }
 
       if (tagManagerOptions.onTagRemoved) {
@@ -374,6 +379,9 @@
 
         if (tagManagerOptions.maxTags > 0 && tlis.length >= tagManagerOptions.maxTags) {
           obj.hide();
+          if (tagManagerOptions.onTagInputHide) {
+            tagManagerOptions.onTagInputHide();
+          }
         }
 
         if (tagManagerOptions.onTagAdded) {
