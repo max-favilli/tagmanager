@@ -168,6 +168,7 @@
     var setTypeaheadSource = function (source) {
       obj.data('active', true);
       obj.data('typeahead').source = source;
+      tagManagerOptions.typeaheadSource = source;
       obj.data('active', false);
     };
 
