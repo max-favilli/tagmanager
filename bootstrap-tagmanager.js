@@ -294,9 +294,12 @@
 
       if (!tag || tag.length <= 0) return;
 
+      var source = $.isFunction(tagManagerOptions.typeaheadSource) ? 
+                      tagManagerOptions.typeaheadSource() : tagManagerOptions.typeaheadSource;
+
       if(tagManagerOptions.onlyTagList &&
         tagManagerOptions.typeaheadSource != null &&
-        $.inArray(tag, tagManagerOptions.typeaheadSource()) == -1) return;
+        $.inArray(tag, source) == -1) return;
 
       if (tagManagerOptions.CapitalizeFirstLetter && tag.length > 1) {
         tag = tag.charAt(0).toUpperCase() + tag.slice(1).toLowerCase();
