@@ -296,7 +296,7 @@
 
       if(tagManagerOptions.onlyTagList &&
         tagManagerOptions.typeaheadSource != null &&
-        $.inArray(tag, tagManagerOptions.typeaheadSource) == -1) return;
+        $.inArray(tag, tagManagerOptions.typeaheadSource()) == -1) return;
 
       if (tagManagerOptions.CapitalizeFirstLetter && tag.length > 1) {
         tag = tag.charAt(0).toUpperCase() + tag.slice(1).toLowerCase();
