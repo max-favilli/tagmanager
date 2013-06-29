@@ -89,7 +89,7 @@
     var keyNums = [9,13,17,18,19,37,38,39,40];
     var delimiterChars = [], delimiterKeys = [];
     $.each(delimiters, function(i,v){
-      if (keyNums.indexOf(v) != -1){
+      if ( $.inArray(v, keyNums) != -1 ){
         delimiterKeys.push(v);
       } else {
         delimiterChars.push(v);
