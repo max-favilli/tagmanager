@@ -322,8 +322,13 @@
       var tlis = obj.data("tlis");
       var tlid = obj.data("tlid");
 
-      // dont accept new tags beyond the defined maximum
-      if (tagManagerOptions.maxTags > 0 && tlis.length >= tagManagerOptions.maxTags) return;
+      // don't accept new tags beyond the defined maximum
+      if (tagManagerOptions.maxTags > 0 && tlis.length >= tagManagerOptions.maxTags) {
+        if (tagManagerOptions.onTagInputHide) {
+          tagManagerOptions.onTagInputHide();
+        }
+        return;
+      }
 
       var alreadyInList = false;
       var tlisLowerCase = tlis.map(function(elem) { return elem.toLowerCase(); });
@@ -377,15 +382,15 @@
 
         refreshHiddenTagList();
 
+        if (tagManagerOptions.onTagAdded) {
+          tagManagerOptions.onTagAdded(tag);
+        }
+
         if (tagManagerOptions.maxTags > 0 && tlis.length >= tagManagerOptions.maxTags) {
           obj.hide();
           if (tagManagerOptions.onTagInputHide) {
             tagManagerOptions.onTagInputHide();
           }
-        }
-
-        if (tagManagerOptions.onTagAdded) {
-          tagManagerOptions.onTagAdded(tag);
         }
       }
       obj.val("");
