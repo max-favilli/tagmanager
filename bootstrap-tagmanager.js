@@ -349,9 +349,10 @@
 
         var newTagId = objName + '_' + tagId;
         var newTagRemoveId = objName + '_Remover_' + tagId;
+        var escaped = $("<span></span>").text(tag).html();
 
         var html = '<span class="' + tagClasses() + '" id="' + newTagId + '">';
-        html += '<span>' + tag + '</span>';
+        html += '<span>' + escaped + '</span>';
         html += '<a href="#" class="tm-tag-remove" id="' + newTagRemoveId + '" TagIdToRemove="' + tagId + '">';
         html += tagManagerOptions.tagCloseIcon + '</a></span> ';
         var $el = $(html);
