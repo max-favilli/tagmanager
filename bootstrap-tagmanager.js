@@ -285,7 +285,7 @@
 
     var pushAllTags = function (e, tagstring) {
       if (tagManagerOptions.AjaxPushAllTags) {
-        $.post(tagManagerOptions.AjaxPushAllTags, { tags: tagstring });
+        $.post(tagManagerOptions.AjaxPush, { tags: tagstring });
       }
     };
 
