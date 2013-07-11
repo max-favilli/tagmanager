@@ -1,5 +1,5 @@
 /* ===================================================
- * bootstrap-tagmanager.js v2.4.1
+ * bootstrap-tagmanager.js v2.4.2
  * http://welldonethings.com/tags/manager
  * ===================================================
  * Copyright 2012 Max Favilli
@@ -26,6 +26,7 @@
 
   $.fn.tagsManager = function (options,tagToManipulate) {
     var tagManagerOptions = {
+      version_three: true,
       prefilled: null,
       CapitalizeFirstLetter: false,
       preventSubmitOnEnter: true, // deprecated
@@ -74,7 +75,8 @@
       return this;
     }
 
-    tagManagerOptions.typeaheadOverrides = new TypeaheadOverrides();
+	if(!tagManagerOptions.version_three)
+	  tagManagerOptions.typeaheadOverrides = new TypeaheadOverrides();
 
     $.extend(tagManagerOptions, options);
 
@@ -134,12 +136,15 @@
         }
       }
 
-      var data = obj.data('typeahead');
-      if (data) {
+      if(!tagManagerOptions.version_three)
+      {
+        var data = obj.data('typeahead');
+        if (data) {
         // set the overrided handler
         data.select = $.proxy(tagManagerOptions.typeaheadOverrides.select,
           obj.data('typeahead'),
           tagManagerOptions.typeaheadOverrides);
+        }
       }
     };
 
@@ -177,6 +182,9 @@
       var typeahead_data = obj.data('typeahead');
       return typeahead_data ? typeahead_data.$menu.find(listItemSelector) : undefined;
     };
+
+    if(!tagManagerOptions.version_three)
+      typeaheadSelectedItem = undefined;
 
     var typeaheadVisible = function () {
       return $('.typeahead:visible')[0];
@@ -285,7 +293,7 @@
 
     var pushAllTags = function (e, tagstring) {
       if (tagManagerOptions.AjaxPushAllTags) {
-        $.post(tagManagerOptions.AjaxPush, { tags: tagstring });
+        $.post(tagManagerOptions.AjaxPushAllTags, { tags: tagstring });
       }
     };
 
@@ -396,7 +404,9 @@
     };
 
     var applyDelimiter = function (e) {
-      var taItem = typeaheadSelectedItem();
+      var taItem;
+      if(typeaheadSelectedItem)
+        taItem = typeaheadSelectedItem();
       var taVisible = typeaheadVisible();
       if (!(e.which==13 && taItem && taVisible)) {
         pushTag(obj.val());
@@ -404,7 +414,8 @@
       e.preventDefault();
     };
 
-    return this.each(function () {
+    var returnValue = null;
+    this.each(function () {
 
       if (typeof options == 'string') {
         switch (options) {
@@ -416,6 +427,9 @@
             break;
           case "pushTag":
             pushTag(tagToManipulate);
+            break;
+          case "tags":
+            returnValue = { tags: obj.data("tlis") };
             break;
         }
         return;
@@ -511,7 +525,9 @@
 
         if (!/webkit/.test(navigator.userAgent.toLowerCase())) { $(this).focus(); } // why?
 
-        var taItem = typeaheadSelectedItem();
+        var taItem;
+        if(typeaheadSelectedItem)
+          taItem = typeaheadSelectedItem();
         var taVisible = typeaheadVisible();
 
         if (taItem && taVisible) {
@@ -539,5 +555,10 @@
         prefill($('#' + tagManagerOptions.hiddenTagListId).val().split(baseDelimiter));
       }
     });
+
+    if (!returnValue)
+      returnValue = this;
+
+    return returnValue;
   }
 })(jQuery);
