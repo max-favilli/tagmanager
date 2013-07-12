@@ -15,7 +15,7 @@
  * limitations under the License.
  * ========================================================== */
 
-(function($){
+(function ($) {
 
   "use strict";
 
@@ -24,7 +24,7 @@
     console.log = function () { };
   }
 
-  $.fn.tagsManager = function (options,tagToManipulate) {
+  $.fn.tagsManager = function (options, tagToManipulate) {
     var tagManagerOptions = {
       version_three: true,
       prefilled: null,
@@ -41,7 +41,7 @@
       AjaxPush: null,
       AjaxPushAllTags: null,
       AjaxPushParameters: null,
-      delimiters: [9,13,44], // tab, enter, comma
+      delimiters: [9, 13, 44], // tab, enter, comma
       backspace: [8],
       maxTags: 0,
       hiddenTagListName: null,
@@ -75,8 +75,8 @@
       return this;
     }
 
-	if(!tagManagerOptions.version_three)
-	  tagManagerOptions.typeaheadOverrides = new TypeaheadOverrides();
+    if (!tagManagerOptions.version_three)
+      tagManagerOptions.typeaheadOverrides = new TypeaheadOverrides();
 
     $.extend(tagManagerOptions, options);
 
@@ -85,13 +85,18 @@
     }
 
     var obj = this;
-    var objName = obj.attr('name').replace(/[^\w]/g, '_');
+    var rndid = "";
+
+    var albet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    for (var i = 0; i < 5; i++)
+      rndid += albet.charAt(Math.floor(Math.random() * albet.length));
+
     var delimiters = tagManagerOptions.delimeters || tagManagerOptions.delimiters; // 'delimeter' is deprecated
     // delimiter values to be handled as key codes
-    var keyNums = [9,13,17,18,19,37,38,39,40];
+    var keyNums = [9, 13, 17, 18, 19, 37, 38, 39, 40];
     var delimiterChars = [], delimiterKeys = [];
-    $.each(delimiters, function(i,v){
-      if ( $.inArray(v, keyNums) != -1 ){
+    $.each(delimiters, function (i, v) {
+      if ($.inArray(v, keyNums) != -1) {
         delimiterKeys.push(v);
       } else {
         delimiterChars.push(v);
@@ -136,19 +141,18 @@
         }
       }
 
-      if(!tagManagerOptions.version_three)
-      {
+      if (!tagManagerOptions.version_three) {
         var data = obj.data('typeahead');
         if (data) {
-        // set the overrided handler
-        data.select = $.proxy(tagManagerOptions.typeaheadOverrides.select,
-          obj.data('typeahead'),
-          tagManagerOptions.typeaheadOverrides);
+          // set the overrided handler
+          data.select = $.proxy(tagManagerOptions.typeaheadOverrides.select,
+            obj.data('typeahead'),
+            tagManagerOptions.typeaheadOverrides);
         }
       }
     };
 
-    var onTypeaheadAjaxSuccess = function(data, isSetTypeaheadSource, process) {
+    var onTypeaheadAjaxSuccess = function (data, isSetTypeaheadSource, process) {
       // format data if it is an asp.net 3.5 response
       if ("d" in data) {
         data = data.d;
@@ -183,7 +187,7 @@
       return typeahead_data ? typeahead_data.$menu.find(listItemSelector) : undefined;
     };
 
-    if(!tagManagerOptions.version_three)
+    if (tagManagerOptions.version_three)
       typeaheadSelectedItem = undefined;
 
     var typeaheadVisible = function () {
@@ -209,8 +213,8 @@
       var cl = tagBaseClass;
       // 2) interpolate from input class: tm-input-xxx --> tm-tag-xxx
       if (obj.attr('class')) {
-        $.each(obj.attr('class').split(' '), function(index, value) {
-          if (value.indexOf(inputBaseClass+'-') != -1){
+        $.each(obj.attr('class').split(' '), function (index, value) {
+          if (value.indexOf(inputBaseClass + '-') != -1) {
             cl += ' ' + tagBaseClass + value.substring(inputBaseClass.length);
           }
         });
@@ -238,7 +242,7 @@
         var tagId = tlid.pop();
         tlis.pop();
         // console.log("TagIdToRemove: " + tagId);
-        $("#" + objName + "_" + tagId).remove();
+        $("#" + rndid + "_" + tagId).remove();
         refreshHiddenTagList();
         // console.log(tlis);
       }
@@ -252,7 +256,7 @@
         var tagId = tlid.pop();
         tlis.pop();
         // console.log("TagIdToRemove: " + tagId);
-        $("#" + objName + "_" + tagId).remove();
+        $("#" + rndid + "_" + tagId).remove();
         refreshHiddenTagList();
         // console.log(tlis);
       }
@@ -279,7 +283,7 @@
       // console.log("position: " + p);
 
       if (-1 != p) {
-        $("#" + objName + "_" + tagId).remove();
+        $("#" + rndid + "_" + tagId).remove();
         tlis.splice(p, 1);
         tlid.splice(p, 1);
         refreshHiddenTagList();
@@ -302,13 +306,12 @@
 
       if (!tag || tag.length <= 0) return;
 
-      if (tagManagerOptions.typeaheadSource != null)
-      {
-          var source = $.isFunction(tagManagerOptions.typeaheadSource) ? 
-                      tagManagerOptions.typeaheadSource() : tagManagerOptions.typeaheadSource;
-                      
-          if(tagManagerOptions.onlyTagList &&
-              $.inArray(tag, source) == -1) return;
+      if (tagManagerOptions.typeaheadSource != null) {
+        var source = $.isFunction(tagManagerOptions.typeaheadSource) ?
+                    tagManagerOptions.typeaheadSource() : tagManagerOptions.typeaheadSource;
+
+        if (tagManagerOptions.onlyTagList &&
+            $.inArray(tag, source) == -1) return;
       }
 
       if (tagManagerOptions.CapitalizeFirstLetter && tag.length > 1) {
@@ -325,7 +328,7 @@
       if (tagManagerOptions.maxTags > 0 && tlis.length >= tagManagerOptions.maxTags) return;
 
       var alreadyInList = false;
-      var tlisLowerCase = tlis.map(function(elem) { return elem.toLowerCase(); });
+      var tlisLowerCase = tlis.map(function (elem) { return elem.toLowerCase(); });
       var p = $.inArray(tag.toLowerCase(), tlisLowerCase);
       if (-1 != p) {
         // console.log("tag:" + tag + " !!already in list!!");
@@ -334,7 +337,7 @@
 
       if (alreadyInList) {
         var pTagId = tlid[p];
-        $("#" + objName + "_" + pTagId).stop()
+        $("#" + rndid + "_" + pTagId).stop()
           .animate({ backgroundColor: tagManagerOptions.blinkBGColor_1 }, 100)
           .animate({ backgroundColor: tagManagerOptions.blinkBGColor_2 }, 100)
           .animate({ backgroundColor: tagManagerOptions.blinkBGColor_1 }, 100)
@@ -355,8 +358,8 @@
 
         // console.log("tagList: " + tlis);
 
-        var newTagId = objName + '_' + tagId;
-        var newTagRemoveId = objName + '_Remover_' + tagId;
+        var newTagId = rndid + '_' + tagId;
+        var newTagRemoveId = rndid + '_Remover_' + tagId;
         var escaped = $("<span></span>").text(tag).html();
 
         var html = '<span class="' + tagClasses() + '" id="' + newTagId + '">';
@@ -405,10 +408,10 @@
 
     var applyDelimiter = function (e) {
       var taItem;
-      if(typeaheadSelectedItem)
+      if (typeaheadSelectedItem)
         taItem = typeaheadSelectedItem();
       var taVisible = typeaheadVisible();
-      if (!(e.which==13 && taItem && taVisible)) {
+      if (!(e.which == 13 && taItem && taVisible)) {
         pushTag(obj.val());
       }
       e.preventDefault();
@@ -436,7 +439,7 @@
       }
 
       // prevent double-initialization of TagManager
-      if ($(this).data('tagManager')){ return false; }
+      if ($(this).data('tagManager')) { return false; }
       $(this).data('tagManager', true);
 
       // store instance-specific data in the DOM object
@@ -526,7 +529,7 @@
         if (!/webkit/.test(navigator.userAgent.toLowerCase())) { $(this).focus(); } // why?
 
         var taItem;
-        if(typeaheadSelectedItem)
+        if (typeaheadSelectedItem)
           taItem = typeaheadSelectedItem();
         var taVisible = typeaheadVisible();
 

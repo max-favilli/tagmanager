@@ -1,4 +1,4 @@
-## 3.0
+## 3.0.0
 
 * Feature: Added API method 'tags', which return a json with the current list of tags (Max Favilli)
 * Deprecations: Removed support for bootstrap typeahead
