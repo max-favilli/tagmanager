@@ -1,3 +1,18 @@
+## Next Release
+
+* Your change here
+
+## 2.4.2
+
+* Issue #132: Escape tags for display instead of emitting it as raw HTML (chkwok)
+* Issue #125: Fixed AjaxPushAllTags (henryoswald)
+* Issue #125: Fix typeaheadSource check if object or function in pushTag (zkwentz)
+* Issue #127: Replace array.indexOf with $.inArray to support IE8 (Leonidaz)
+* Issue #126: Fix for onlyTagList true when pushing tag (zkwentz)
+* Issue #118: Fix problem with onlyTagList when using typeaheadAjaxSource (stalinb87)
+* Issue #110: re-add onlyTagList feature which was accidentally deleted (johnnyshields)
+* Wrap jQuery in a no-conflict wrapper; use `$` instead of `jQuery` consistently (johnnyshields)
+* Issue #94: 'pushTag' method does not call validator if configured (johnnyshields)
 
 ## 2.4.1
 
