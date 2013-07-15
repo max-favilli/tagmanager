@@ -92,6 +92,8 @@
         onTagAddition: function(tag) { return true; },
         onTagRemoval: function(tag) { return true; },
         onTagRemoved: function(tag) { alert(tag + ' was removed'); },
+        onTagInputHide: function() { alert('hid tag input element'); },
+        onTagInputShow: function() { alert('showed tag input element'); },
         prefilled: ["Pisa", "Rome"],
         CapitalizeFirstLetter: true,
         preventSubmitOnEnter: true,
