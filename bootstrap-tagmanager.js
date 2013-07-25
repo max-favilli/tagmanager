@@ -37,6 +37,8 @@
       typeaheadOverrides: null,
       typeaheadDelegate: {},
       typeaheadSource: null,
+      typeaheadSourceDataPrefix: 'tm',
+      typeaheadSourceItemLabel: 'value',
       AjaxPush: null,
       AjaxPushAllTags: null,
       AjaxPushParameters: null,
@@ -50,7 +52,8 @@
       tagCloseIcon: '×',
       tagClass: '',
       validator: null,
-      onlyTagList: false
+      onlyTagList: false,
+      allowDuplicates: false
     };
 
     var TypeaheadOverrides = (function () {
@@ -290,9 +293,17 @@
     };
 
     var pushTag = function (tag) {
-      tag = trimTag(tag);
+      var originalTag = tag;
+      console.log('Original tag is ' + JSON.stringify(originalTag));
+      if (typeof(tag) === 'object') {
+          tag = tag[tagManagerOptions.typeaheadSourceItemLabel];
+      }
+      else {
+          tag = trimTag(tag);
+      }
 
       if (!tag || tag.length <= 0) return;
+      
 
       if (tagManagerOptions.typeaheadSource != null)
       {
@@ -317,11 +328,13 @@
       if (tagManagerOptions.maxTags > 0 && tlis.length >= tagManagerOptions.maxTags) return;
 
       var alreadyInList = false;
-      var tlisLowerCase = tlis.map(function(elem) { return elem.toLowerCase(); });
-      var p = $.inArray(tag.toLowerCase(), tlisLowerCase);
-      if (-1 != p) {
-        // console.log("tag:" + tag + " !!already in list!!");
-        alreadyInList = true;
+      if (!tagManagerOptions.allowDuplicates) {
+        var tlisLowerCase = tlis.map(function(elem) { return elem.toLowerCase(); });
+        var p = $.inArray(tag.toLowerCase(), tlisLowerCase);
+        if (-1 != p) {
+          // console.log("tag:" + tag + " !!already in list!!");
+          alreadyInList = true;
+        }
       }
 
       if (alreadyInList) {
@@ -352,7 +365,17 @@
         var escaped = $("<span></span>").text(tag).html();
 
         var html = '<span class="' + tagClasses() + '" id="' + newTagId + '">';
-        html += '<span>' + escaped + '</span>';
+        if (typeof(originalTag) === 'object') {
+          html += '<span ';
+          for (var k in originalTag) {
+            html += 'data-tm-' + k + '=' + originalTag[k];
+            html += ' ';
+          }
+          html += '>' + escaped + '</span>';
+        }
+        else {
+          html += '<span>' + escaped + '</span>';
+        }
         html += '<a href="#" class="tm-tag-remove" id="' + newTagRemoveId + '" TagIdToRemove="' + tagId + '">';
         html += tagManagerOptions.tagCloseIcon + '</a></span> ';
         var $el = $(html);
@@ -399,7 +422,7 @@
       var taItem = typeaheadSelectedItem();
       var taVisible = typeaheadVisible();
       if (!(e.which==13 && taItem && taVisible)) {
-        pushTag(obj.val());
+        pushTag(trimTag(obj.val()));
       }
       e.preventDefault();
     };
@@ -516,7 +539,16 @@
 
         if (taItem && taVisible) {
           taItem.removeClass(tagManagerOptions.typeaheadOverrides.selectedClass);
-          pushTag(taItem.attr('data-value'));
+          var tagObject = {};
+          var isObjectTag = false;
+          for (var property in taItem.data()) {
+            if (property.indexOf(tagManagerOptions.typeaheadSourceDataPrefix) === 0) {
+              var name = property.slice(tagManagerOptions.typeaheadSourceDataPrefix.length).toLowerCase();
+              isObjectTag = true;
+              tagObject[name] = taItem.data(property);
+            }
+          }
+          pushTag(isObjectTag ? tagObject : taItem.attr('data-value'));
           // console.log('change: pushTypeAheadTag ' + tag);
         }
         /* unimplemented mode to push tag on blur
