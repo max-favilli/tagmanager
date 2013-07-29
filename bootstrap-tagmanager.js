@@ -317,7 +317,7 @@
       if (tagManagerOptions.maxTags > 0 && tlis.length >= tagManagerOptions.maxTags) return;
 
       var alreadyInList = false;
-      var tlisLowerCase = $.map(tlis, function (elem) { return elem.toLowerCase(); });
+      var tlisLowerCase = $.map(tlis, function(elem){ return elem.toLowerCase(); });
       var p = $.inArray(tag.toLowerCase(), tlisLowerCase);
       if (-1 != p) {
         // console.log("tag:" + tag + " !!already in list!!");
