@@ -407,6 +407,9 @@
     return this.each(function () {
 
       if (typeof options == 'string') {
+        //restore options state before public method calls
+        tagManagerOptions = obj.data('tagManager-options');
+        
         switch (options) {
           case "empty":
             empty();
@@ -538,6 +541,9 @@
       } else if (tagManagerOptions.hiddenTagListId != null) {
         prefill($('#' + tagManagerOptions.hiddenTagListId).val().split(baseDelimiter));
       }
+      
+      //store options state for further public method calls
+      obj.data('tagManager-options', tagManagerOptions);
     });
   }
 })(jQuery);
