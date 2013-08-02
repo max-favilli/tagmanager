@@ -460,7 +460,7 @@
 
       // hide popovers on focus and keypress events
       obj.on('focus keypress', function (e) {
-        if ($(this).popover) {
+        if ($(this).data('popover')) {
           $(this).popover('hide');
         }
       });
