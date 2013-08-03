@@ -296,9 +296,9 @@
 
       if (tagManagerOptions.typeaheadSource != null)
       {
-          var source = $.isFunction(tagManagerOptions.typeaheadSource) ? 
+          var source = $.isFunction(tagManagerOptions.typeaheadSource) ?
                       tagManagerOptions.typeaheadSource() : tagManagerOptions.typeaheadSource;
-                      
+
           if(tagManagerOptions.onlyTagList &&
               $.inArray(tag, source) == -1) return;
       }
@@ -409,7 +409,6 @@
       if (typeof options == 'string') {
         //restore options state before public method calls
         tagManagerOptions = obj.data('tagManager-options');
-        
         switch (options) {
           case "empty":
             empty();
@@ -493,7 +492,13 @@
 
         // push key-based delimiters (includes <enter> by default)
         if (keyInArray(e, delimiterKeys)) {
-          applyDelimiter(e);
+            var tag = trimTag(obj.val());
+
+            // should pass tab key if current field is empty
+            if ((!tag || tag.length <= 0) && e.which == 9)
+                return;
+
+            applyDelimiter(e);
         }
       });
 
@@ -541,7 +546,7 @@
       } else if (tagManagerOptions.hiddenTagListId != null) {
         prefill($('#' + tagManagerOptions.hiddenTagListId).val().split(baseDelimiter));
       }
-      
+
       //store options state for further public method calls
       obj.data('tagManager-options', tagManagerOptions);
     });
