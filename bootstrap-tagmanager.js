@@ -186,7 +186,7 @@
       if (typeof (tagManagerOptions.typeaheadAjaxSource) == "string") {
         $.ajax({
           cache: false,
-          type: "POST",
+          type: tagManagerOptions.typeaheadAjaxMethod,
           contentType: "application/json",
           dataType: "json",
           url: tagManagerOptions.typeaheadAjaxSource,
