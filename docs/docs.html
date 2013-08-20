@@ -37,7 +37,7 @@
 <div class="space-nicely">
   <p>Type some <a target="_blank" href="http://en.wikipedia.org/wiki/Tag_(metadata)">tags</a> in the input field, and separate them with enter, comma, or tab:</p>
   <form class="form-inline">
-    <input type="text" autocomplete="off" data-items="6" data-provide="typeahead" name="tags" placeholder="Tags" style="width:9em;" class="input-medium tm-input tm-input-info" data-original-title=""/>
+    <input type="text" autocomplete="off" name="tags" placeholder="Tags" style="width:9em;" class="input-medium tm-input tm-input-info" data-original-title=""/>
   </form>
 </div>
 
@@ -53,7 +53,7 @@
   <h2>Using multiple tag manager instances on the same page</h2>
   <p><span class="badge badge-important">Note</span> you can have as many instances of tag manager on a single page as you want, with no conflicts; but please read below how to manage them when retrieving user input during &lt;form&gt; submit.</p>
   <form class="form-inline">
-    <input type="text" autocomplete="off" data-items="6" data-provide="typeahead" name="tagsk" placeholder="Tags" style="width:9em;" class="input-medium tm-input tm-input-success" data-original-title=""/>
+    <input type="text" autocomplete="off" name="tagsk" placeholder="Tags" style="width:9em;" class="input-medium tm-input tm-input-success" data-original-title=""/>
   </form>
 </div>
 
@@ -78,6 +78,20 @@
 
     });
   </pre>
+</div>
+
+<div class="space-nicely">
+  <h2>Typeahead via Ajax source</h2>
+  <p>
+    Now that we are using <a href="http://twitter.github.io/typeahead.js/">typeahead.js</a> from tag manger v3.0 it make sense to use typeahead.js own API to load typeahead from an ajax source, it's very flexible, it's very powerful, and we strongly suggest to read <a href="https://github.com/twitter/typeahead.js">the docs on github</a> to learn how to configure it, to give you a hint, look above at example explaining how to set up tag mangager in conjunction with typeahead.js and check the typeahead.js parameter <code>prefetch</code>.
+  </p>
+</div>
+
+<div class="space-nicely">
+  <h2>Typeahead via function() source</h2>
+  <p>
+    Again, now that we are using <a href="http://twitter.github.io/typeahead.js/">typeahead.js</a> from tag manger v3.0 you can use the powerful typeahead.js API to load from any source. Check <a href="https://github.com/twitter/typeahead.js">the docs on github</a> to learn how to configure a local source as a <code>function()</code>, look in the docs for typeahead.js parameter <code>local</code>.
+  </p>
 </div>
 
 <div class="space-nicely">
@@ -107,20 +121,27 @@
         AjaxPushParameters: { 'authToken': 'foobar' }
     });
   </pre>
+  <p><span class="badge badge-important">Note</span> to see this working, open firebug or chrome developer tools and chech the XHR ajax request being generated when you add or remove tags from the input field above.</p>
 </div>
 
 <div class="space-nicely">
-  <h2>Typeahead via Ajax source</h2>
+  <h2>Using API</h2>
   <p>
-    Now that we are using <a href="http://twitter.github.io/typeahead.js/">typeahead.js</a> from tag manger v3.0 it make sense to use typeahead.js own API to load typeahead from an ajax source, it's very flexible, it's very powerful, and we strongly suggest to read <a href="https://github.com/twitter/typeahead.js">the docs on github</a> to learn how to configure it, to give you a hint, look above at example explaining how to set up tag mangager in conjunction with typeahead.js and check the typeahead.js parameter <code>prefetch</code>.
+    Tags Manager has a nice API you can use to programmatically add or remove tags, see below an example, and check the complete list of methods in the configuration section.
   </p>
-</div>
-
-<div class="space-nicely">
-  <h2>Typeahead via function() source</h2>
-  <p>
-    Again, now that we are using <a href="http://twitter.github.io/typeahead.js/">typeahead.js</a> from tag manger v3.0 you can use the powerful typeahead.js API to load from any source. Check <a href="https://github.com/twitter/typeahead.js">the docs on github</a> to learn how to configure a local source as a <code>function()</code>, look in the docs for typeahead.js parameter <code>local</code>.
-  </p>
+  <form class="form-inline">
+    <input type="text" autocomplete="off" name="tagsk" placeholder="Tags" style="width:9em;" class="input-medium tm-input tm-input-success" data-original-title=""/>
+    <button class="btn" id="addtag">add a tag</button>
+    <button class="btn" id="removetag">remove last tag</button>
+  </form>
+  <pre class="prettyprint linenums">
+    jQuery(".tm-input").tagsManager({
+        AjaxPush: '/ajax/countries/push',
+        AjaxPushAllTags: true,
+        AjaxPushParameters: { 'authToken': 'foobar' }
+    });
+  </pre>
+  <p><span class="badge badge-important">Note</span> to see this working, open firebug or chrome developer tools and chech the XHR ajax request being generated when you add or remove tags from the input field above.</p>
 </div>
 
 <div class="space-nicely">
@@ -363,6 +384,28 @@
     AjaxPush: '/ajax/countries/push',
     AjaxPushAllTags: true,
     AjaxPushParameters: { 'authToken': 'foobar' }
+  });
+
+  var tmfour = jQuery(".tm-input:eq(4)").tagsManager({
+    AjaxPush: '/ajax/countries/push',
+    AjaxPushAllTags: true,
+    AjaxPushParameters: { 'authToken': 'foobar' }
+  });
+
+  jQuery('#addtag').on('click', function (e) {
+    e.preventDefault();
+
+    var tag = "";
+    var albet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    for (var i = 0; i < 5; i++)
+      tag += albet.charAt(Math.floor(Math.random() * albet.length));
+    tmfour.tagsManager('pushTag', tag);
+  });
+
+  jQuery('#removetag').on('click', function (e) {
+    e.preventDefault();
+
+    tmfour.tagsManager('popTag');
   });
 
 </script>
