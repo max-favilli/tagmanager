@@ -1,4 +1,38 @@
-﻿<a href=""><h1>Tags Manager (a jQuery plugin)</h1></a>
+﻿<style>
+  /*typeahead*/
+  .tt-dropdown-menu {
+    width: 422px;
+    margin-top: 12px;
+    padding: 8px 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    -webkit-border-radius: 8px;
+       -moz-border-radius: 8px;
+            border-radius: 8px;
+    -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+       -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+            box-shadow: 0 5px 10px rgba(0,0,0,.2);
+  }
+
+  .tt-suggestion {
+    padding: 3px 20px;
+    font-size: 18px;
+    line-height: 24px;
+  }
+
+  .tt-suggestion.tt-is-under-cursor {
+    color: #fff;
+    background-color: #0097cf;
+
+  }
+
+  .tt-suggestion p {
+    margin: 0;
+  }
+</style>
+
+<a href=""><h1>Tags Manager (a jQuery plugin)</h1></a>
 
 <div class="space-nicely">
   <p>Type some <a target="_blank" href="http://en.wikipedia.org/wiki/Tag_(metadata)">tags</a> in the input field, and separate them with enter, comma, or tab:</p>
@@ -17,18 +51,42 @@
 
 <div class="space-nicely">
   <h2>Using multiple tag manager instances on the same page</h2>
-  <p><span class="badge badge-important">Note</span> when using multiple instances of tag manager on a page, each input field must have a unique name, not just a unique ID. This behavior will be improved in v3.0</p>
+  <p><span class="badge badge-important">Note</span> you can have as many instances of tag manager on a single page as you want, with no conflicts; but please read below how to manage them when retrieving user input during &lt;form&gt; submit.</p>
   <form class="form-inline">
     <input type="text" autocomplete="off" data-items="6" data-provide="typeahead" name="tagsk" placeholder="Tags" style="width:9em;" class="input-medium tm-input tm-input-success" data-original-title=""/>
   </form>
 </div>
 
 <div class="space-nicely">
+  <h2>Using tag manager in conjunction with <a href="http://twitter.github.io/typeahead.js/">typeahead.js</a></h2>
+  <p><span class="badge badge-important">Note</span> before v3.0 tagmanager was using bootstrap-typeahead, but bootstrap deprecated typeahead from bootstrap v3.0; in this example we are using twitter-typeahead, which is different from <i>bootstrap-typeahead</i>. Both bootstrap-typeahead and twitter-typeahead are developed by the same developers, but they have a different API; and twitter-typeahead is much more feature rich.</p>
+  <form class="form-inline">
+    <input type="text" autocomplete="off" name="tagsk" placeholder="Tags" style="width:9em;" class="input-medium tm-input tm-input-success" data-original-title=""/>
+  </form>
+  <pre class="prettyprint linenums">
+    var tagApi = jQuery("#your_pretty_id").tagsManager({
+      prefilled: ["Angola", "Laos", "Nepal"]
+    });
+
+    jQuery("#your_pretty_id").typeahead({
+      name: 'countries',
+      limit: 15,
+      prefetch: '/ajax/countries/json'
+    }).on('typeahead:selected', function (e, d) {
+
+      tagApi.tagsManager("pushTag", d.value);
+
+    });
+  </pre>
+</div>
+
+<div class="space-nicely">
   <h2>Retrieving tags on &lt;form&gt; submit</h2>
-  <p>By default, Tag Manager creates a hidden input field (based on the <code>name</code> of the input) and stores its data in the hidden field as a comma separated list.</p>
+  <p>By default, Tag Manager creates a hidden input field with a random generated name and stores its data in this hidden field as a comma separated list.</p>
   <p>When processing the user input on form submit, simply parse the data of this hidden field.</p>
-  <p>Look for this hidden field in the examples above using a browser developer tool (such as Firefox Firebug). In the example you should see: <code>&lt;input type="hidden" value="Pisa,Rome" name="hiddenTagListA"&gt;</code></p>
+  <p>Look for this hidden field in the examples above using a browser developer tool (such as Firefox Firebug). In the example you should see: <code>&lt;input type="hidden" value="Pisa,Rome" name="hidden-somerandomgeneratedcode"&gt;</code></p>
   <p>It is also possible to give this field a customer name using the <code>hiddenTagListName</code> parameter, or create your own hidden field and use the <code>hiddenTagListId</code> parameter.</p>
+  <p><span class="badge badge-important">Note</span> if you are using javascript to post the list of tags you may be much more interested in tag manage API, see below how to retrieve the list of tags entered by the user using the API or how to have tag manager automatically push the tags to a ajax location.</p>
 </div>
 
 <div class="space-nicely">
@@ -51,36 +109,15 @@
 <div class="space-nicely">
   <h2>Typeahead via Ajax source</h2>
   <p>
-    Tags Manager can be used in combination with the Bootstrap Typeahead library.
-    (In a future version we will support Twitter Typeahead.js)
+    Now that we are using <a href="http://twitter.github.io/typeahead.js/">typeahead.js</a> from tag manger v3.0 it make sense to use typeahead.js own API to load typeahead from an ajax source, it's very flexible, it's very powerful, and we strongly suggest to read <a href="https://github.com/twitter/typeahead.js">the docs on github</a> to learn how to configure it, to give you a hint, look above at example explaining how to set up tag mangager in conjunction with typeahead.js and check the typeahead.js parameter <code>prefetch</code>.
   </p>
-  <form class="form-inline">
-    <input type="text" autocomplete="off" data-items="6" data-provide="typeahead" name="tagsjax" placeholder="Tags" style="width:9em;" class="input-medium tm-input tm-input-warning" data-original-title=""/>
-  </form>
-  <pre class="prettyprint linenums">
-    jQuery(".tm-input").tagsManager({
-        typeahead: true,
-        typeaheadAjaxSource: '/ajax/countries',
-        typeaheadAjaxPolling: true
-    });
-  </pre>
 </div>
 
 <div class="space-nicely">
   <h2>Typeahead via function() source</h2>
-  <form class="form-inline">
-    <input type="text" autocomplete="off" data-items="6" data-provide="typeahead" name="tagsfun" placeholder="Tags" style="width:9em;" class="input-medium tm-input tm-input-info" data-original-title=""/>
-  </form>
-  <p class="help-block">Type some <a target="_blank" href="http://en.wikipedia.org/wiki/Tag_(metadata)">tags</a> in the input field, separate them with comma (or tab).</p>
-  <p>The code below show how to use an ajax source, and an ajax destination for any added tag:</p>
-  <pre class="prettyprint linenums">
-    jQuery(".tm-input").tagsManager({
-        typeahead: true,
-        typeaheadSource: your_function_here(),
-        blinkBGColor_1: '#FFFF9C',
-        blinkBGColor_2: '#CDE69C',
-    });
-  </pre>
+  <p>
+    Again, now that we are using <a href="http://twitter.github.io/typeahead.js/">typeahead.js</a> from tag manger v3.0 you can use the powerful typeahead.js API to load from any source. Check <a href="https://github.com/twitter/typeahead.js">the docs on github</a> to learn how to configure a local source as a <code>function()</code>, look in the docs for typeahead.js parameter <code>local</code>.
+  </p>
 </div>
 
 <div class="space-nicely">
@@ -90,14 +127,6 @@
     jQuery(".tm-input").tagsManager({
         prefilled: ["Pisa", "Rome"],
         CapitalizeFirstLetter: true,
-        preventSubmitOnEnter: true,
-        isClearInputOnEsc: true,
-        typeahead: true,
-        typeaheadAjaxMethod: "GET",
-        typeaheadAjaxSource: null,
-        typeaheadSource: ["Pisa", "Rome", "Milan", "Florence", "New York", "Paris", "Berlin", "London", "Madrid"],
-        typeaheadAjaxPolling: false,
-        typeaheadDelegate: {},
         AjaxPush: null,
         AjaxPushAllTags: null,
         AjaxPushParameters: null,
@@ -131,40 +160,6 @@
     <tr>
       <td><b>CapitalizeFirstLetter</b></td>
       <td>If true, all tags will be displayed with first letter capitalized. Default: false.</td>
-    </tr>
-    <tr>
-      <td><b>preventSubmitOnEnter</b></td>
-      <td><span class="badge badge-important">Deprecated (v2.4.0)</span> Will be hardcoded to true in v3.0.<br/>
-      If true, hitting the <code>enter</code> key inside the input field, then it's associated form will not be submitted. Note that this is different than using <code>enter</code> as a tag separator (see <em>delimiters</em> parameter.) Default: true.</td>
-    </tr>
-    <tr>
-      <td><b>isClearInputOnEsc</b></td>
-      <td><span class="badge badge-important">Deprecated (v2.4.0)</span> Will be hardcoded to true in v3.0.<br/>
-      If true, hitting the <code>esc</code> key inside the input field will clear its value. Default: true.</td>
-    </tr>
-    <tr>
-      <td><b>typeahead</b></td>
-      <td>If true a <a target="_blank" href="http://twitter.github.com/bootstrap/">Bootstrap</a> typeahead is setup, <a target="_blank" href="http://twitter.github.com/bootstrap/javascript.html#typeahead">typeahead</a> is a nice plugin for bootstrap, when the user start typing something a popup below the input field show possible values matching the typed text.<br/>Currently this features is available only if you also include bootstrap, if you are not using it tags manager typeahead won't work. Should be relatively easy to replace typeahead with <a target="_blank" href="http://jqueryui.com/demos/autocomplete/">jQuery UI autocomplete</a> for the ones not using bootstrap, but I didn't. If anyone is really interested I can consider including that in a next releas that.<br/>If you choose to use typeahead please check the typeahead specific paramenters in the bootstrap documentation.<br/>And in case you don't want browsers autocomplete to mess with your own autocomplete learn to add <code>autocomplete="off"</code> on every Tags Manager input field.</td>
-    </tr>
-    <tr>
-      <td><b>typeaheadAjaxMethod</b></td>
-      <td>Method to retrieve typeahead values by Ajax. Allowed: <code>"POST"</code> or <code>"GET"</code>. Default: <code>"POST"</code></td>
-    </tr>
-    <tr>
-      <td><b>typeaheadAjaxSource</b></td>
-      <td>If you are a fan of <a target="_blank" href="http://twitter.github.com/bootstrap/javascript.html#typeahead">bootstrap typeahead plugin</a> you may love this, is a JSON AJAX source for the list of possible values to display in the typeahead popup. The JSON returned by your serverside code should look like this: <code>{"tags":[{"tag":"Pisa"},{"tag":"Rome"},{"tag":"Milan"},{"tag":"Florence"},{"tag":"New York"},{"tag":"Paris"},{"tag":"Berlin"},{"tag":"London"},{"tag":"Madrid"}]}</code></td>
-    </tr>
-    <tr>
-      <td><b>typeaheadSource</b></td>
-      <td>This is passed to standard Bootstrap <a target="_blank" href="http://twitter.github.com/bootstrap/javascript.html#typeahead">typeahead</a> <i>source</i> initialization option, so if you don't need an AJAX dynamically generated list you can provide a static one, or you can pass a function(), see typeahead docs for details. Of course in your very function() you can do ajax or whatever you want.</code></td>
-    </tr>
-    <tr>
-      <td><b>typeaheadAjaxPolling</b></td>
-      <td>With Bootstrap v2.0 typeahead can request the list of entries to show to an ajax source everytime the user type something in the input field, provide "true" to this option to activate it. Otherwise the ajax source will be queried only at initialization.</code></td>
-    </tr>
-    <tr>
-      <td><b>typeaheadDelegate</b></td>
-      <td>Options to be passed directly to the underlying Bootstrap typeahead object. Default: none.</td>
     </tr>
     <tr>
       <td><b>AjaxPush</b></td>
@@ -204,7 +199,9 @@
     </tr>
     <tr>
       <td><b>blinkBGColor_1<br/>blinkBGColor_2</b></td>
-      <td>When a duplicate tag is entered the user is notified with a blinking of the corresponding (duplicate) tag, here you can configure the colors.</td>
+      <td>When a duplicate tag is entered the user is notified with a blinking of the corresponding (duplicate) tag, here you can configure the colors.
+        <p><span class="badge badge-important">Note</span> this is working only if you also include <a hrf="http://jqueryui.com/">jQuery UI</a> in your project.</p>
+      </td>
     </tr>
     <tr>
       <td><b>hiddenTagListName</b></td>
@@ -219,11 +216,6 @@
       <td>
         If you wish to use your own explicitly defined hidden field to store tags
       </td>
-    </tr>
-    <tr>
-      <td><b>deleteTagsOnBackspace</b></td>
-      <td><span class="badge badge-important">Deprecated (v2.4.0)</span> Will be hardcoded to true in v3.0; <em>backspace</em> will be continued to be supported.<br/>
-      If true, using the keys defined in the <em>backspace</em> parameter will delete the most recent tag if the input cursor is at the beginning of the field. Default: true.</td>
     </tr>
     <tr>
       <td><b>maxTags</b></td>
@@ -266,6 +258,8 @@
   <pre class="prettyprint linenums">.tagsManager('pushTag','I_am_a_new_tag');</pre>
   <p>You can remove all tags </p>
   <pre class="prettyprint linenums">.tagsManager('empty');</pre>
+  <p>You can retrieve the list of all tags entered so far</p>
+  <pre class="prettyprint linenums">.tagsManager('tags');</pre>
 </div>
 
 <div class="space-nicely">
@@ -304,11 +298,9 @@
 </div>
 
 <div class="space-nicely">
-  <h2>Version 3.0 in Development</h2>
+  <h2>Version 3.0 is in beta.</h2>
   <p>
-    Bootstrap 3, due out in mid-2013, will <a target="_blank" href="https://github.com/twitter/bootstrap/commit/88dd9de9bad56b30a12466477a810c78648200c9">replace the Bootstrap Typeahead module with Twitter Typeahead.js</a>.
-    Correspondingly, TagsManager will be begin it's own v3.0 upgrade which will support Twitter Typeahead.js exclusively. As Twitter Typeahead.js is more feature-rich,
-    we will remove much of the Typeahead and Ajax layers in favor of native Typeahead.js functionality.
+    Version 3.0 is in beta, there are a couple of things which doesn't work as they should when used in conjunction with typeahes.js, please check discussion on github, we are trying to fix this.
   </p>
 </div>
 
@@ -333,23 +325,38 @@
 
   jQuery(".tm-input:eq(0)").tagsManager({
     prefilled: ["Pisa", "Rome"],
-    typeahead: true,
-    typeaheadAjaxSource: null,
-    typeaheadSource: ["Pisa", "Rome", "Milan", "Florence", "New York", "Paris", "Berlin", "London", "Madrid"],
     blinkBGColor_1: '#FFFF9C',
-    blinkBGColor_2: '#CDE69C',
-    hiddenTagListName: 'hiddenTagListA'
+    blinkBGColor_2: '#CDE69C'//,
   });
   jQuery(".tm-input:eq(1)").tagsManager({
     prefilled: ["Angola", "Laos", "Nepal"],
-    typeahead: true,
-    typeaheadAjaxSource: null,
-    typeaheadSource: ["Angola", "Belgium", "Canada", "Denmark", "Estonia", "Germany", "Italy", "Laos", "Mauritania", "Nepal", "Oman"],
     blinkBGColor_1: '#FFFF9C',
-    blinkBGColor_2: '#CDE69C',
-    hiddenTagListName: 'hiddenTagListB'
+    blinkBGColor_2: '#CDE69C'//,
   });
-  jQuery(".tm-input:eq(2)").tagsManager({
+
+  var tagApi = jQuery(".tm-input:eq(2)").tagsManager({
+    prefilled: ["Angola", "Laos", "Nepal"],
+    blinkBGColor_1: '#FFFF9C',
+    blinkBGColor_2: '#CDE69C'
+  });
+
+  jQuery(".tm-input:eq(2)").typeahead({
+    name: 'countries',
+    limit: 15,
+    prefetch: '/ajax/countries/json'
+  }).on('typeahead:selected', function (e, d) {
+
+    console.log("new tag from typeahead.js: " + d.value );
+    console.log("all existing tags: " + tagApi.tagsManager("tags").tags);
+
+    tagApi.tagsManager("pushTag", d.value);
+
+    console.log("new list of tags: " + tagApi.tagsManager("tags").tags);
+
+  });
+
+  jQuery(".tm-input:eq(3)").tagsManager({
+    hiddenTagListName: 'hiddenTagListB',
     typeahead: true,
     typeaheadAjaxSource: '/ajax/countries',
     typeaheadAjaxPolling: true,
@@ -357,7 +364,7 @@
     blinkBGColor_1: '#FFFF9C',
     blinkBGColor_2: '#CDE69C'
   });
-  jQuery(".tm-input:eq(3)").tagsManager({
+  jQuery(".tm-input:eq(4)").tagsManager({
     typeahead: true,
     typeaheadSource: funSource,
     blinkBGColor_1: '#FFFF9C',

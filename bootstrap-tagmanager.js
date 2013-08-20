@@ -48,41 +48,18 @@
       hiddenTagListId: null,
       deleteTagsOnBackspace: true, // deprecated
       tagsContainer: null,
-      tagCloseIcon: '×',
+      tagCloseIcon: 'x',
       tagClass: '',
       validator: null,
       onlyTagList: false
     };
-
-    var TypeaheadOverrides = (function () {
-      function TypeaheadOverrides() {
-        this.instanceSelectHandler = null;
-        this.selectedClass = "selected";
-        this.select = null;
-        if ("typeahead" in $.fn) {
-          this.instanceSelectHandler = $.fn.typeahead.Constructor.prototype.select;
-          this.select = function (overrides) {
-            this.$menu.find(".active").addClass(overrides.selectedClass);
-            overrides.instanceSelectHandler.apply(this, arguments);
-          };
-        }
-      }
-      return TypeaheadOverrides;
-    })();
 
     // exit when no matched elements
     if (!(0 in this)) {
       return this;
     }
 
-    if (!tagManagerOptions.version_three)
-      tagManagerOptions.typeaheadOverrides = new TypeaheadOverrides();
-
     $.extend(tagManagerOptions, options);
-
-    if (tagManagerOptions.hiddenTagListName === null) {
-      tagManagerOptions.hiddenTagListName = "hidden-" + this.attr('name');
-    }
 
     var obj = this;
     var rndid = "";
@@ -90,6 +67,10 @@
     var albet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     for (var i = 0; i < 5; i++)
       rndid += albet.charAt(Math.floor(Math.random() * albet.length));
+
+    if (tagManagerOptions.hiddenTagListName === null) {
+      tagManagerOptions.hiddenTagListName = "hidden-" + rndid;
+    }
 
     var delimiters = tagManagerOptions.delimeters || tagManagerOptions.delimiters; // 'delimeter' is deprecated
     // delimiter values to be handled as key codes
@@ -109,104 +90,21 @@
 
     if ($.isFunction(tagManagerOptions.validator)) obj.data('validator', tagManagerOptions.validator);
 
-    var setupTypeahead = function () {
-      if (!obj.typeahead) return;
 
-      var taOpts = tagManagerOptions.typeaheadDelegate;
+    //var ajaxPolling = function (query, process) {
+    //  if (typeof (tagManagerOptions.typeaheadAjaxSource) == "string") {
+    //    $.ajax({
+    //      cache: false,
+    //      type: "POST",
+    //      contentType: "application/json",
+    //      dataType: "json",
+    //      url: tagManagerOptions.typeaheadAjaxSource,
+    //      data: JSON.stringify({ typeahead: query }),
+    //      success: function (data) { onTypeaheadAjaxSuccess(data, false, process); }
+    //    });
+    //  }
+    //};
 
-      if (tagManagerOptions.typeaheadSource != null && $.isFunction(tagManagerOptions.typeaheadSource)) {
-        $.extend(taOpts, { source: tagManagerOptions.typeaheadSource });
-        obj.typeahead(taOpts);
-      } else if (tagManagerOptions.typeaheadSource != null) {
-        obj.typeahead(taOpts);
-        setTypeaheadSource(tagManagerOptions.typeaheadSource);
-      } else if (tagManagerOptions.typeaheadAjaxSource != null) {
-        if (!tagManagerOptions.typeaheadAjaxPolling) {
-          obj.typeahead(taOpts);
-
-          if (typeof (tagManagerOptions.typeaheadAjaxSource) == "string") {
-            $.ajax({
-              cache: false,
-              type: tagManagerOptions.typeaheadAjaxMethod,
-              contentType: "application/json",
-              dataType: "json",
-              url: tagManagerOptions.typeaheadAjaxSource,
-              data: JSON.stringify({ typeahead: "" }),
-              success: function (data) { onTypeaheadAjaxSuccess(data, true); }
-            });
-          }
-        } else if (tagManagerOptions.typeaheadAjaxPolling) {
-          $.extend(taOpts, { source: ajaxPolling });
-          obj.typeahead(taOpts);
-        }
-      }
-
-      if (!tagManagerOptions.version_three) {
-        var data = obj.data('typeahead');
-        if (data) {
-          // set the overrided handler
-          data.select = $.proxy(tagManagerOptions.typeaheadOverrides.select,
-            obj.data('typeahead'),
-            tagManagerOptions.typeaheadOverrides);
-        }
-      }
-    };
-
-    var onTypeaheadAjaxSuccess = function (data, isSetTypeaheadSource, process) {
-      // format data if it is an asp.net 3.5 response
-      if ("d" in data) {
-        data = data.d;
-      }
-
-      if (data && data.tags) {
-        var sourceAjaxArray = [];
-        sourceAjaxArray.length = 0;
-        $.each(data.tags, function (key, val) {
-          sourceAjaxArray.push(val.tag);
-          if (isSetTypeaheadSource) {
-            setTypeaheadSource(sourceAjaxArray);
-          }
-        });
-
-        if ($.isFunction(process)) {
-          process(sourceAjaxArray);
-        }
-      }
-    };
-
-    var setTypeaheadSource = function (source) {
-      obj.data('active', true);
-      obj.data('typeahead').source = source;
-      tagManagerOptions.typeaheadSource = source;
-      obj.data('active', false);
-    };
-
-    var typeaheadSelectedItem = function () {
-      var listItemSelector = '.' + tagManagerOptions.typeaheadOverrides.selectedClass;
-      var typeahead_data = obj.data('typeahead');
-      return typeahead_data ? typeahead_data.$menu.find(listItemSelector) : undefined;
-    };
-
-    if (tagManagerOptions.version_three)
-      typeaheadSelectedItem = undefined;
-
-    var typeaheadVisible = function () {
-      return $('.typeahead:visible')[0];
-    };
-
-    var ajaxPolling = function (query, process) {
-      if (typeof (tagManagerOptions.typeaheadAjaxSource) == "string") {
-        $.ajax({
-          cache: false,
-          type: "POST",
-          contentType: "application/json",
-          dataType: "json",
-          url: tagManagerOptions.typeaheadAjaxSource,
-          data: JSON.stringify({ typeahead: query }),
-          success: function (data) { onTypeaheadAjaxSuccess(data, false, process); }
-        });
-      }
-    };
 
     var tagClasses = function () {
       // 1) default class (tm-tag)
@@ -306,14 +204,6 @@
 
       if (!tag || tag.length <= 0) return;
 
-      if (tagManagerOptions.typeaheadSource != null) {
-        var source = $.isFunction(tagManagerOptions.typeaheadSource) ?
-                    tagManagerOptions.typeaheadSource() : tagManagerOptions.typeaheadSource;
-
-        if (tagManagerOptions.onlyTagList &&
-            $.inArray(tag, source) == -1) return;
-      }
-
       if (tagManagerOptions.CapitalizeFirstLetter && tag.length > 1) {
         tag = tag.charAt(0).toUpperCase() + tag.slice(1).toLowerCase();
       }
@@ -407,13 +297,7 @@
     };
 
     var applyDelimiter = function (e) {
-      var taItem;
-      if (typeaheadSelectedItem)
-        taItem = typeaheadSelectedItem();
-      var taVisible = typeaheadVisible();
-      if (!(e.which == 13 && taItem && taVisible)) {
-        pushTag(obj.val());
-      }
+      pushTag(obj.val());
       e.preventDefault();
     };
 
@@ -462,10 +346,6 @@
         );
       } else {
         obj.data("lhiddenTagList", $('#' + tagManagerOptions.hiddenTagListId))
-      }
-
-      if (tagManagerOptions.typeahead) {
-        setupTypeahead();
       }
 
       if (tagManagerOptions.AjaxPushAllTags) {
@@ -528,16 +408,6 @@
 
         if (!/webkit/.test(navigator.userAgent.toLowerCase())) { $(this).focus(); } // why?
 
-        var taItem;
-        if (typeaheadSelectedItem)
-          taItem = typeaheadSelectedItem();
-        var taVisible = typeaheadVisible();
-
-        if (taItem && taVisible) {
-          taItem.removeClass(tagManagerOptions.typeaheadOverrides.selectedClass);
-          pushTag(taItem.attr('data-value'));
-          // console.log('change: pushTypeAheadTag ' + tag);
-        }
         /* unimplemented mode to push tag on blur
          else if (tagManagerOptions.pushTagOnBlur) {
          console.log('change: pushTagOnBlur ' + tag);
