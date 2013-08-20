@@ -144,6 +144,10 @@
         refreshHiddenTagList();
         // console.log(tlis);
       }
+
+      if (tagManagerOptions.maxTags > 0 && tlis.length < tagManagerOptions.maxTags) {
+        obj.show();
+      }
     };
 
     var empty = function () {
@@ -160,6 +164,9 @@
       }
       obj.trigger('tags:emptied', null);
 
+      if (tagManagerOptions.maxTags > 0 && tlis.length < tagManagerOptions.maxTags) {
+        obj.show();
+      }
     };
 
     var refreshHiddenTagList = function () {
