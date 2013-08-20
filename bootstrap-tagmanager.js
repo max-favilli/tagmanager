@@ -138,10 +138,15 @@
 
       if (tlid.length > 0) {
         var tagId = tlid.pop();
+
+        var tagBeingRemoved = tlis[tlis.length - 1];
+        obj.trigger('tm:popping', tagBeingRemoved);
         tlis.pop();
+
         // console.log("TagIdToRemove: " + tagId);
         $("#" + rndid + "_" + tagId).remove();
         refreshHiddenTagList();
+        obj.trigger('tm:popped', tagBeingRemoved);
         // console.log(tlis);
       }
 
@@ -162,7 +167,7 @@
         refreshHiddenTagList();
         // console.log(tlis);
       }
-      obj.trigger('tags:emptied', null);
+      obj.trigger('tm:emptied', null);
 
       if (tagManagerOptions.maxTags > 0 && tlis.length < tagManagerOptions.maxTags) {
         obj.show();
@@ -173,7 +178,7 @@
       var tlis = obj.data("tlis");
       var lhiddenTagList = obj.data("lhiddenTagList");
 
-      obj.trigger('tags:refresh', tlis.join(baseDelimiter));
+      obj.trigger('tm:refresh', tlis.join(baseDelimiter));
 
       if (lhiddenTagList) {
         $(lhiddenTagList).val(tlis.join(baseDelimiter)).change();
@@ -190,21 +195,32 @@
       // console.log("position: " + p);
 
       if (-1 != p) {
+        var tagBeingRemoved = tlis[p];
+
+        obj.trigger('tm:splicing', tagBeingRemoved);
+
         $("#" + rndid + "_" + tagId).remove();
         tlis.splice(p, 1);
         tlid.splice(p, 1);
         refreshHiddenTagList();
+
+        obj.trigger('tm:spliced', tagBeingRemoved);
+
         // console.log(tlis);
       }
+
 
       if (tagManagerOptions.maxTags > 0 && tlis.length < tagManagerOptions.maxTags) {
         obj.show();
       }
     };
 
-    var pushAllTags = function (e, tagstring) {
+    var pushAllTags = function (e, tag) {
       if (tagManagerOptions.AjaxPushAllTags) {
-        $.post(tagManagerOptions.AjaxPushAllTags, { tags: tagstring });
+        if (e.type != 'tm:pushed' || $.inArray(tag, tagManagerOptions.prefilled) == -1) {
+          var tlis = obj.data("tlis");
+          $.post(tagManagerOptions.AjaxPush, { tags: tlis.join(baseDelimiter) });
+        }
       }
     };
 
@@ -244,6 +260,8 @@
           .animate({ backgroundColor: tagManagerOptions.blinkBGColor_1 }, 100)
           .animate({ backgroundColor: tagManagerOptions.blinkBGColor_2 }, 100);
       } else {
+        obj.trigger('tm:pushing', tag);
+
         var max = Math.max.apply(null, tlid);
         max = max == -Infinity ? 0 : max;
 
@@ -282,7 +300,8 @@
         });
 
         refreshHiddenTagList();
-        obj.trigger('tags:pushed', tag);
+
+        obj.trigger('tm:pushed', tag);
 
         if (tagManagerOptions.maxTags > 0 && tlis.length >= tagManagerOptions.maxTags) {
           obj.hide();
@@ -361,7 +380,9 @@
       }
 
       if (tagManagerOptions.AjaxPushAllTags) {
-        obj.on('tags:refresh', pushAllTags);
+        obj.on('tm:spliced', pushAllTags);
+        obj.on('tm:popped', pushAllTags);
+        obj.on('tm:pushed', pushAllTags);
       }
 
       // hide popovers on focus and keypress events

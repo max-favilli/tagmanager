@@ -97,6 +97,9 @@
     Use the <code>AjaxPushParameters</code> option to add additional parameters on each ajax request.
     Refer to documentation for additional parameters.
   </p>
+  <form class="form-inline">
+    <input type="text" autocomplete="off" name="tagsk" placeholder="Tags" style="width:9em;" class="input-medium tm-input tm-input-success" data-original-title=""/>
+  </form>
   <pre class="prettyprint linenums">
     jQuery(".tm-input").tagsManager({
         AjaxPush: '/ajax/countries/push',
@@ -174,7 +177,7 @@
     </tr>
     <tr>
       <td><b>AjaxPushParameters</b></td>
-      <td>Adds an additional parameter payload to push with each AJAX request, for example server authenication parameters. Default: null.</td>
+      <td>Adds an additional parameter payload to push with each AJAX request, for example server authentication parameters. Default: null.</td>
     </tr>
     <tr>
       <td><b>delimiters</b></td>
@@ -356,22 +359,10 @@
   });
 
   jQuery(".tm-input:eq(3)").tagsManager({
-    hiddenTagListName: 'hiddenTagListB',
-    typeahead: true,
-    typeaheadAjaxSource: '/ajax/countries',
-    typeaheadAjaxPolling: true,
+    prefilled: ["Angola", "Laos", "Nepal"],
     AjaxPush: '/ajax/countries/push',
-    blinkBGColor_1: '#FFFF9C',
-    blinkBGColor_2: '#CDE69C'
-  });
-  jQuery(".tm-input:eq(4)").tagsManager({
-    typeahead: true,
-    typeaheadSource: funSource,
-    blinkBGColor_1: '#FFFF9C',
-    blinkBGColor_2: '#CDE69C'
+    AjaxPushAllTags: true,
+    AjaxPushParameters: { 'authToken': 'foobar' }
   });
 
-  function funSource() {
-    return ["Manchester", "Astonvilla", "Real Madrid", "Barcelona", "Milan AC", "Internazionale", "Roma AC", "Chelsea"];
-  }
 </script>
