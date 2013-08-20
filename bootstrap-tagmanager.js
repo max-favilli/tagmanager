@@ -158,6 +158,8 @@
         refreshHiddenTagList();
         // console.log(tlis);
       }
+      obj.trigger('tags:emptied', null);
+
     };
 
     var refreshHiddenTagList = function () {
@@ -243,7 +245,9 @@
         tlid.push(tagId);
 
         if (tagManagerOptions.AjaxPush != null) {
-          $.post(tagManagerOptions.AjaxPush, $.extend({ tag: tag }, tagManagerOptions.AjaxPushParameters));
+          if ($.inArray(tag, tagManagerOptions.prefilled) == -1) {
+            $.post(tagManagerOptions.AjaxPush, $.extend({ tag: tag }, tagManagerOptions.AjaxPushParameters));
+          }
         }
 
         // console.log("tagList: " + tlis);
@@ -271,6 +275,7 @@
         });
 
         refreshHiddenTagList();
+        obj.trigger('tags:pushed', tag);
 
         if (tagManagerOptions.maxTags > 0 && tlis.length >= tagManagerOptions.maxTags) {
           obj.hide();
