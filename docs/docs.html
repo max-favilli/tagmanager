@@ -32,7 +32,7 @@
   }
 </style>
 
-<a href=""><h1>Tags Manager (a jQuery plugin)</h1></a>
+<a href=""><h1>Tag Manager (a jQuery plugin)</h1></a>
 
 <div class="space-nicely">
   <p>Type some <a target="_blank" href="http://en.wikipedia.org/wiki/Tag_(metadata)">tags</a> in the input field, and separate them with enter, comma, or tab:</p>
@@ -106,7 +106,7 @@
 <div class="space-nicely">
   <h2>Pushing Tags via Ajax</h2>
   <p>
-    Tags Manager can push entered tag values on-the-fly via Ajax as the user creates/deletes tags to a user-specified destination.
+    Tagmanager can push entered tag values on-the-fly via Ajax as the user creates/deletes tags to a user-specified destination.
     Use the <code>AjaxPushAllTags</code> option to push all tag values on every update, rather than incrementally per created tag.
     Use the <code>AjaxPushParameters</code> option to add additional parameters on each ajax request.
     Refer to documentation for additional parameters.
@@ -127,7 +127,7 @@
 <div class="space-nicely">
   <h2>Using API</h2>
   <p>
-    Tags Manager has a nice API you can use to programmatically add or remove tags, see below an example, and check the complete list of methods in the configuration section.
+    Tagmanager has a nice API you can use to programmatically add or remove tags, see below an example, and check the complete list of methods in the configuration section.
   </p>
   <form class="form-inline">
     <input type="text" autocomplete="off" name="tagsk" placeholder="Tags" style="width:9em;" class="input-medium tm-input tm-input-success" data-original-title=""/>
@@ -145,7 +145,7 @@
 </div>
 
 <div class="space-nicely">
-  <h2>Tags Manager Configuration</h2>
+  <h2>Tagmanager Configuration</h2>
   <p>The code below show all the configurable options available (as of version 2.4.1):</p>
   <pre class="prettyprint linenums">
     jQuery(".tm-input").tagsManager({
@@ -209,12 +209,6 @@
           <li>The first char code (non-key code) specified in the array will be used as the base delimiter for parsing tags to/from the hidden field "list string". This will default to comma if not specified.</li>
           <li>See <a target="_blank" href="http://unixpapa.com/js/key.html">http://unixpapa.com/js/key.html</a> for a full explanation of ASCII versus key codes.</li>
         </ul>
-      </td>
-    </tr>
-    <tr>
-      <td><b>delimeters</b></td>
-      <td>
-        <span class="badge badge-important">Deprecated (v2.4.0)</span> Incorrect spelling of <em>delimiters</em>; same function as <em>delimiters</em>
       </td>
     </tr>
     <tr>
@@ -299,11 +293,11 @@
 
 <div class="space-nicely">
   <h2>History</h2>
-  <p>I built Tags Manager while working on an <a target="_blank" href="https://logmymoney.com">online personal finance tool</a>, I wanted a simple solution to manage tags for each expense users were entering, <a target="_blank" href="https://www.google.com/search?q=tags+like+stackoverflow">like in stackoverflow</a> and many other sites.</p>
+  <p>I built Tagmanager while working on an <a target="_blank" href="https://logmymoney.com">online personal finance tool</a>, I wanted a simple solution to manage tags for each expense users were entering, <a target="_blank" href="https://www.google.com/search?q=tags+like+stackoverflow">like in stackoverflow</a> and many other sites.</p>
 </div>
 
 <div class="space-nicely">
-  <h2>Alternatives to my Tags Manager</h2>
+  <h2>Alternatives to my Tagmanager</h2>
   <p>Before to develop my own tags manager I spent quite a lot of time investigating what other solutions where available, so I think I can spare you some time listing them here and explaining why I developed my own.</p>
   <ul>
     <li><a target="_blank" href="http://levycarneiro.com/projects/tag-it/example.html">Tag it! by Levy Carneiro Jr</a>, one of the very first one as far as I know, which inspired all the others.
@@ -315,8 +309,8 @@
     <li><a target="_blank" href="http://stackapps.com/questions/2062/stack-overflow-tag-manager">Stack Overflow Tag Manager</a>, if you want to mimic StackOverflow behavior.
     </li>
   </ul>
-  <p>The four above are the best around in my opinion, but... I developed Tags Manager. I wanted it to be very simple, I didn't need a pencil mouse pointer when the user hover it. I didn't need inplace edit of the tag, I think it's confusing for the user. I didn't want the tag manager to generate a lot of html in the form.</p>
-  <p>And I wanted it to be fully integrated with bootstrap and its typeahead.</p>
+  <p>The four above are the best around in my opinion, but... I developed Tagmanager. I wanted it to be very simple, I didn't need a pencil mouse pointer when the user hover it. I didn't need inplace edit of the tag, I think it's confusing for the user. I didn't want the tag manager to generate a lot of html in the form.</p>
+  <p>And I wanted it to be fully integrated with bootstrap and typeahead.</p>
 </div>
 
 <div class="space-nicely">
