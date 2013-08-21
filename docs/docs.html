@@ -228,17 +228,15 @@
       </td>
     </tr>
     <tr>
-      <td><b>hiddenTagListName</b></td>
+      <td><b>output</b></td>
       <td>
-        <span class="badge badge-important">Deprecated (v2.4.0)</span> Usage will be replaced in 3.0 with hiddenTagListId.<br/>
-        Define a custom name for the hidden tags input field which stores the tag values. Default: 'hidden-' + the name of the tag input field<br/>
-        <span class="badge badge-info">Note</span> if you have multiple instance of TagManager in a form you SHOULD give a different name to each hidden tags list field!
+        Should be a valid <a href="http://www.w3schools.com/cssref/css_selectors.asp">CSS selector</a>, if present this input field will receive the comma separated list of tags entered; tag manager does not check if this selector is really an input field, just tries to fill the value with jQuery <a href="http://api.jquery.com/val/"><code>.val()</code></a>.
       </td>
     </tr>
     <tr>
-      <td><b>hiddenTagListId</b></td>
+      <td><b>replace</b></td>
       <td>
-        If you wish to use your own explicitly defined hidden field to store tags
+        (true|false) If set, the element name of the input field will be transfered to the hidden input field storing the comma separated list of tags entered; in other words if you have <code>&lt;input name="tags"/&gt;</code> and you turn it into a tagmanager with this parameter true on form submit you will find the tags posted with <code>name="tag"</code>.
       </td>
     </tr>
     <tr>

@@ -1,5 +1,5 @@
 /* ===================================================
- * bootstrap-tagmanager.js v3.0.0
+ * tagmanager.js v3.0.0
  * http://welldonethings.com/tags/manager
  * ===================================================
  * Copyright 2012 Max Favilli
@@ -29,26 +29,20 @@
     var rndid = "";
 
     var tagManagerOptions = {
-      version_three: true,
       prefilled: null,
       CapitalizeFirstLetter: false,
       preventSubmitOnEnter: true, // deprecated
       isClearInputOnEsc: true, // deprecated
-      typeahead: false,
-      typeaheadAjaxMethod: "POST",
-      typeaheadAjaxSource: null,
-      typeaheadAjaxPolling: false,
-      typeaheadOverrides: null,
-      typeaheadDelegate: {},
-      typeaheadSource: null,
       AjaxPush: null,
       AjaxPushAllTags: null,
       AjaxPushParameters: null,
       delimiters: [9, 13, 44], // tab, enter, comma
       backspace: [8],
       maxTags: 0,
-      hiddenTagListName: null,
-      hiddenTagListId: null,
+      hiddenTagListName: null,  // deprecated
+      hiddenTagListId: null,  // deprecated
+      replace: true,
+      output: null,
       deleteTagsOnBackspace: true, // deprecated
       tagsContainer: null,
       tagCloseIcon: 'x',
@@ -78,6 +72,11 @@
       obj.data("tm_rndid", rndid);
     }
 
+    if (tagManagerOptions.replace === true && tagManagerOptions.hiddenTagListName === null) {
+      var original_name = obj.attr('name');
+      tagManagerOptions.hiddenTagListName = original_name;
+      obj.attr('name', "display-" + rndid);
+    }
     if (tagManagerOptions.hiddenTagListName === null) {
       tagManagerOptions.hiddenTagListName = "hidden-" + rndid;
     }
@@ -392,20 +391,15 @@
       obj.data("tlis", tlis); //list of string tags
       obj.data("tlid", tlid); //list of ID of the string tags
 
-      if (tagManagerOptions.hiddenTagListId == null) { /* if hidden input not given default activity */
-        var hiddenTag = $("input[name='" + tagManagerOptions.hiddenTagListName + "']");
-        if (hiddenTag.length > 0) {
-          hiddenTag.remove();
-        }
-
-        var html = "";
-        html += "<input name='" + tagManagerOptions.hiddenTagListName + "' type='hidden' value=''/>";
-        obj.after(html);
-        obj.data("lhiddenTagList",
-          obj.siblings("input[name='" + tagManagerOptions.hiddenTagListName + "']")[0]
-        );
+      if (tagManagerOptions.output == null) { 
+        var hiddenObj = jQuery('<input/>', {
+          type: 'hidden',
+          name: tagManagerOptions.hiddenTagListName
+        });
+        obj.after(hiddenObj);
+        obj.data("lhiddenTagList", hiddenObj);
       } else {
-        obj.data("lhiddenTagList", $('#' + tagManagerOptions.hiddenTagListId))
+        obj.data("lhiddenTagList", jQuery(tagManagerOptions.output))
       }
 
       if (tagManagerOptions.AjaxPushAllTags) {
@@ -486,8 +480,10 @@
         } else if (typeof (tagManagerOptions.prefilled) == "function") {
           prefill(tagManagerOptions.prefilled());
         }
-      } else if (tagManagerOptions.hiddenTagListId != null) {
-        prefill($('#' + tagManagerOptions.hiddenTagListId).val().split(baseDelimiter));
+      } else if (tagManagerOptions.output != null) {
+        if (jQuery(tagManagerOptions.output) && jQuery(tagManagerOptions.output).val())
+        var existing_tags = jQuery(tagManagerOptions.output)
+        prefill(jQuery(tagManagerOptions.output).val().split(baseDelimiter));
       }
     });
 
