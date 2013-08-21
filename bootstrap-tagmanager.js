@@ -316,7 +316,13 @@
         if (tagManagerOptions.tagsContainer != null) {
           $(tagManagerOptions.tagsContainer).append($el);
         } else {
-          obj.before($el);
+          if (tagId > 1) {
+            var lastTagId = tagId - 1;
+            var lastTagObj = $("#" + rndid + "_" + lastTagId);
+            lastTagObj.after($el);
+          } else {
+            obj.before($el);
+          }
         }
 
         $el.find("#" + newTagRemoveId).on("click", obj, function (e) {
