@@ -234,7 +234,7 @@
       }
     };
 
-    var pushTag = function (tag) {
+    var pushTag = function (tag, ignore_events) {
       tag = trimTag(tag);
 
       if (!tag || tag.length <= 0) return;
@@ -270,7 +270,8 @@
           .animate({ backgroundColor: tagManagerOptions.blinkBGColor_1 }, 100)
           .animate({ backgroundColor: tagManagerOptions.blinkBGColor_2 }, 100);
       } else {
-        obj.trigger('tm:pushing', tag);
+        if(!ignore_events)
+          obj.trigger('tm:pushing', tag);
 
         var max = Math.max.apply(null, tlid);
         max = max == -Infinity ? 0 : max;
@@ -279,11 +280,12 @@
         tlis.push(tag);
         tlid.push(tagId);
 
-        if (tagManagerOptions.AjaxPush != null) {
-          if ($.inArray(tag, tagManagerOptions.prefilled) == -1) {
-            $.post(tagManagerOptions.AjaxPush, $.extend({ tag: tag }, tagManagerOptions.AjaxPushParameters));
+        if (!ignore_events)
+          if (tagManagerOptions.AjaxPush != null) {
+            if ($.inArray(tag, tagManagerOptions.prefilled) == -1) {
+              $.post(tagManagerOptions.AjaxPush, $.extend({ tag: tag }, tagManagerOptions.AjaxPushParameters));
+            }
           }
-        }
 
         // console.log("tagList: " + tlis);
 
@@ -311,7 +313,8 @@
 
         refreshHiddenTagList();
 
-        obj.trigger('tm:pushed', tag);
+        if (!ignore_events)
+          obj.trigger('tm:pushed', tag);
 
         if (tagManagerOptions.maxTags > 0 && tlis.length >= tagManagerOptions.maxTags) {
           obj.hide();
@@ -322,7 +325,7 @@
 
     var prefill = function (pta) {
       $.each(pta, function (key, val) {
-        pushTag(val);
+        pushTag(val,true);
       });
     };
 
