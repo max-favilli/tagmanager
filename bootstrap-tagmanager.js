@@ -25,6 +25,9 @@
   }
 
   $.fn.tagsManager = function (options, tagToManipulate) {
+    var obj = this;
+    var rndid = "";
+
     var tagManagerOptions = {
       version_three: true,
       prefilled: null,
@@ -59,14 +62,21 @@
       return this;
     }
 
-    $.extend(tagManagerOptions, options);
+    if (typeof options == 'string') {
+      tagManagerOptions = obj.data("tm_options");
+    } else {
+      $.extend(tagManagerOptions, options);
+      obj.data("tm_options", tagManagerOptions);
+    }
 
-    var obj = this;
-    var rndid = "";
-
-    var albet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    for (var i = 0; i < 5; i++)
-      rndid += albet.charAt(Math.floor(Math.random() * albet.length));
+    if (typeof options == 'string') {
+      rndid = obj.data("tm_rndid");
+    } else {
+      var albet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+      for (var i = 0; i < 5; i++)
+        rndid += albet.charAt(Math.floor(Math.random() * albet.length));
+      obj.data("tm_rndid", rndid);
+    }
 
     if (tagManagerOptions.hiddenTagListName === null) {
       tagManagerOptions.hiddenTagListName = "hidden-" + rndid;
