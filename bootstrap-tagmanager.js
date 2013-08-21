@@ -142,6 +142,18 @@
       return tag.substring(0, i);
     };
 
+    var showOrHide = function () {
+      var tlis = obj.data("tlis");
+      if (tagManagerOptions.maxTags > 0 && tlis.length < tagManagerOptions.maxTags) {
+        obj.show();
+        obj.trigger('tm:show');
+      }
+      if (tagManagerOptions.maxTags > 0 && tlis.length >= tagManagerOptions.maxTags) {
+        obj.hide();
+        obj.trigger('tm:hide');
+      }
+    };
+
     var popTag = function () {
       var tlis = obj.data("tlis");
       var tlid = obj.data("tlid");
@@ -160,9 +172,10 @@
         // console.log(tlis);
       }
 
-      if (tagManagerOptions.maxTags > 0 && tlis.length < tagManagerOptions.maxTags) {
-        obj.show();
-      }
+      showOrHide();
+      //if (tagManagerOptions.maxTags > 0 && tlis.length < tagManagerOptions.maxTags) {
+      //  obj.show();
+      //}
     };
 
     var empty = function () {
@@ -179,20 +192,21 @@
       }
       obj.trigger('tm:emptied', null);
 
-      if (tagManagerOptions.maxTags > 0 && tlis.length < tagManagerOptions.maxTags) {
-        obj.show();
-      }
+      showOrHide();
+      //if (tagManagerOptions.maxTags > 0 && tlis.length < tagManagerOptions.maxTags) {
+      //  obj.show();
+      //}
     };
 
     var refreshHiddenTagList = function () {
       var tlis = obj.data("tlis");
       var lhiddenTagList = obj.data("lhiddenTagList");
 
-      obj.trigger('tm:refresh', tlis.join(baseDelimiter));
-
       if (lhiddenTagList) {
         $(lhiddenTagList).val(tlis.join(baseDelimiter)).change();
       }
+
+      obj.trigger('tm:refresh', tlis.join(baseDelimiter));
     };
 
     var spliceTag = function (tagId) {
@@ -220,9 +234,10 @@
       }
 
 
-      if (tagManagerOptions.maxTags > 0 && tlis.length < tagManagerOptions.maxTags) {
-        obj.show();
-      }
+      showOrHide();
+      //if (tagManagerOptions.maxTags > 0 && tlis.length < tagManagerOptions.maxTags) {
+      //  obj.show();
+      //}
     };
 
     var pushAllTags = function (e, tag) {
@@ -316,9 +331,10 @@
         if (!ignore_events)
           obj.trigger('tm:pushed', tag);
 
-        if (tagManagerOptions.maxTags > 0 && tlis.length >= tagManagerOptions.maxTags) {
-          obj.hide();
-        }
+        showOrHide();
+        //if (tagManagerOptions.maxTags > 0 && tlis.length >= tagManagerOptions.maxTags) {
+        //  obj.hide();
+        //}
       }
       obj.val("");
     };
