@@ -91,7 +91,8 @@
   display: none;
 }
 input[type="text"].tm-input {
-  margin-bottom: 5px;
+/*   margin-bottom: 5px;
+ */  vertical-align: middle !important;
 }
 .control-group.tm-group {
   margin-bottom: 5px;
