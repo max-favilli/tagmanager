@@ -1,4 +1,4 @@
-[Tags Manager](http://welldonethings.com/tags/manager)
+[Tags Manager v3.0 Release Candidate](http://welldonethings.com/tags/manager)
 ==========
 
 A jQuery plugin (working nicely with [Twitter Bootstrap](http://twitter.github.com/bootstrap))
