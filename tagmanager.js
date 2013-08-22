@@ -347,9 +347,9 @@
                 }
 
                 if (opts.AjaxPushAllTags) {
-                    $self.on('tm:spliced', privateMethods.pushAllTags.call($self));
-                    $self.on('tm:popped', privateMethods.pushAllTags.call($self));
-                    $self.on('tm:pushed', privateMethods.pushAllTags.call($self));
+                    $self.on('tm:spliced', privateMethods.pushAllTags);
+                    $self.on('tm:popped', privateMethods.pushAllTags);
+                    $self.on('tm:pushed', privateMethods.pushAllTags);
                 }
 
                 // hide popovers on focus and keypress events
