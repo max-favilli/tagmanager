@@ -1,13 +1,13 @@
-[Tags Manager v3.0 Release Candidate](http://welldonethings.com/tags/manager)
+[Tags Manager v3.0 Release Candidate](http://welldonethings.com/tags/manager/v3)
 ==========
 
 A jQuery plugin (working nicely with [Twitter Bootstrap](http://twitter.github.com/bootstrap))
 
 
-[Demo and Documentation](http://welldonethings.com/tags/manager)
+[Demo and Documentation](http://welldonethings.com/tags/manager/v3)
 -----------
 
-See a demo and read all the documentation at http://welldonethings.com/tags/manager.
+See a demo and read all the documentation at http://welldonethings.com/tags/manager/v3.
 
 The documentation is automatically synced from Github, so if you'd like to make a correction please modify `/docs/docs.html` and raise a pull request.
 
@@ -25,7 +25,7 @@ Reporting Issues
 * In your report, please provide a [jsfiddle](http://jsfiddle.net) (preferred), gist, or pasted HTML/JS with steps to **reproduce** the issue.
 * Before reporting:
    * Make sure you are using the latest master JS and CSS.
-   * Check the [documentation](http://welldonethings.com/tags/manager) and existing open issues.
+   * Check the [documentation](http://welldonethings.com/tags/manager/v3) and existing open issues.
 * Issues which we are unable to reproduce or without activity after a few weeks will be closed.
 * Pull requests, documentation requests, and enhancement ideas are welcome.
 
