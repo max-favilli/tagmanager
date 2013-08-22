@@ -56,7 +56,7 @@
             }
 
             // call the validator (if any) and do not let the tag pass if invalid
-            if (opts.data('validator') && !opts.data('validator')(tag)) { return; }
+            if (opts.validator && !opts.validator(tag)) { return; }
 
             // dont accept new tags beyond the defined maximum
             if (opts.maxTags > 0 && tlis.length >= opts.maxTags) { return; }
@@ -115,7 +115,7 @@
                 } else {
                     if (tagId > 1) {
                         lastTagId = tagId - 1;
-                        lastTagObj = $("#" + rndid + "_" + lastTagId);
+                        lastTagObj = $("#" + $self.data("tm_rndid") + "_" + lastTagId);
                         lastTagObj.after($el);
                     } else {
                         $self.before($el);
@@ -128,17 +128,16 @@
                     privateMethods.spliceTag.call($self, TagIdToRemove, e.data);
                 });
 
-                refreshHiddenTagList();
+                privateMethods.refreshHiddenTagList.call($self);
 
-                if (!ignoreEvents)
-                    obj.trigger('tm:pushed', tag);
+                if (!ignoreEvents) { $self.trigger('tm:pushed', tag); }
 
-                showOrHide();
+                privateMethods.showOrHide.call($self);
                 //if (tagManagerOptions.maxTags > 0 && tlis.length >= tagManagerOptions.maxTags) {
                 //  obj.hide();
                 //}
             }
-            obj.val("");
+            $self.val("");
         },
 
         popTag : function () {
@@ -247,13 +246,15 @@
         },
 
         applyDelimiter : function (e) {
-            publicMethods.pushTag($(this).val());
+            var $self = $(this);
+            publicMethods.pushTag.call($self,$(this).val());
             e.preventDefault();
         },
 
         prefill : function (pta) {
+            var $self = $(this);
             $.each(pta, function (key, val) {
-                publicMethods.pushTag(val, true);
+                publicMethods.pushTag.call($self, val, true);
             });
         },
 
@@ -403,7 +404,7 @@
 
                 $self.change(function(e) {
                     if (!/webkit/.test(navigator.userAgent.toLowerCase())) {
-                        $(this).focus();
+                        $self.focus();
                     } // why?
 
                     /* unimplemented mode to push tag on blur
@@ -416,15 +417,15 @@
 
                 if (opts.prefilled !== null) {
                     if (typeof (opts.prefilled) === "object") {
-                        privateMethods.prefill(opts.prefilled);
+                        privateMethods.prefill.call($self, opts.prefilled);
                     } else if (typeof (opts.prefilled) === "string") {
-                        privateMethods.prefill(opts.prefilled.split(opts.baseDelimiter));
+                        privateMethods.prefill.call($self, opts.prefilled.split(opts.baseDelimiter));
                     } else if (typeof (opts.prefilled) === "function") {
-                        privateMethods.prefill(opts.prefilled());
+                        privateMethods.prefill.call($self, opts.prefilled());
                     }
                 } else if (opts.output !== null) {
                     if ($(opts.output) && $(opts.output).val()) { var existing_tags = $(opts.output); }
-                    privateMethods.prefill($(opts.output).val().split(opts.baseDelimiter));
+                    privateMethods.prefill.call($self,$(opts.output).val().split(opts.baseDelimiter));
                 }
 
             });
