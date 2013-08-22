@@ -1,7 +1,7 @@
 {
-    "name": "bootstrap.TagManager",
-    "version": "2.4.1",
-    "title": "bootstrap.TagManager",
+    "name": "TagManager",
+    "version": "3.0.0",
+    "title": "Tag Manager",
     "author": {
         "name": "Max Favilli",
         "url": "http://maxfavilli.com"
@@ -34,8 +34,8 @@
     ],
     "files": [
         "README.md",
-        "bootstrap-tagmanager.css",
-        "bootstrap-tagmanager.js",
+        "tagmanager.css",
+        "tagmanager.js",
         "license.txt"
     ]
 }
