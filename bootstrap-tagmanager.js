@@ -50,6 +50,7 @@
       maxTags: 0,
       hiddenTagListName: null,
       hiddenTagListId: null,
+      hiddenTagListDelimiter: null,
       deleteTagsOnBackspace: true, // deprecated
       tagsContainer: null,
       tagCloseIcon: '×',
@@ -91,7 +92,7 @@
     var objName = obj.attr('name').replace(/[^\w]/g, '_');
     var delimiters = tagManagerOptions.delimeters || tagManagerOptions.delimiters; // 'delimeter' is deprecated
     // delimiter values to be handled as key codes
-    var keyNums = [9,13,17,18,19,37,38,39,40];
+    var keyNums = [9,13,17,18,19,37,38,39,40,59,124];
     var delimiterChars = [], delimiterKeys = [];
     jQuery.each(delimiters, function(i,v){
       if (keyNums.indexOf(v) != -1){
@@ -100,7 +101,7 @@
         delimiterChars.push(v);
       }
     });
-    var baseDelimiter = String.fromCharCode(delimiterChars[0] || 44);
+    var baseDelimiter = tagManagerOptions.hiddenTagListDelimiter || String.fromCharCode(delimiterChars[0] || 44);
     var backspace = tagManagerOptions.backspace;
     var tagBaseClass = 'tm-tag';
     var inputBaseClass = 'tm-input';
@@ -258,11 +259,17 @@
       var tlis = obj.data("tlis");
       var lhiddenTagList = obj.data("lhiddenTagList");
 
-      obj.trigger('tags:refresh', tlis.join(baseDelimiter));
+      obj.trigger('tags:refresh', escapeTagValuesForHiddenTagList(tlis).join(baseDelimiter));
 
       if (lhiddenTagList) {
         jQuery(lhiddenTagList).val(tlis.join(baseDelimiter)).change();
       }
+    };
+
+    var escapeTagValuesForHiddenTagList = function(tagList) {
+      return jQuery.map(tagList, function(tag) {
+        return tag.replace(new RegExp('[^\]' + baseDelimiter), "\\" + baseDelimiter);
+      });
     };
 
     var spliceTag = function (tagId) {

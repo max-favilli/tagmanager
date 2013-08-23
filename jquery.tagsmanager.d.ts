@@ -32,6 +32,7 @@ interface ITagsManagerOptions {
     blinkBGColor_2?: string;
     hiddenTagListName?: string;
     hiddenTagListId?: string;
+    hiddenTagListDelimiter?: string;
     deleteTagsOnBackspace?: bool;
     tagsContainer?: HTMLElement;
     tagCloseIcon?: string;
