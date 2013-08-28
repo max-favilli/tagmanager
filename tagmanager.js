@@ -318,17 +318,17 @@
             if (!$.isFunction(opts.validator)) { opts.validator = null; };
 
             this.each(function() {
-                var $self = $(this), hiddenObj, rndid, albet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+                var $self = $(this), hiddenObj ='', rndid ='', albet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+                // prevent double-initialization of TagManager
+                if ($self.data('tagManager')) { return false; }
+                $self.data('tagManager', true);
 
                 for (var i = 0; i < 5; i++) {
                   rndid += albet.charAt(Math.floor(Math.random() * albet.length));
                 }
 
                 $self.data("tm_rndid", rndid);
-
-                // prevent double-initialization of TagManager
-                if ($self.data('tagManager')) { return false; }
-                $(this).data('tagManager', true);
 
                 // store instance-specific data in the DOM object
                 $self.data('opts',opts)
