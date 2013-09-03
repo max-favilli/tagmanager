@@ -146,26 +146,29 @@
 
 <div class="space-nicely">
   <h2>Tagmanager Configuration</h2>
-  <p>The code below show all the configurable options available (as of version 2.4.1):</p>
+  <p>The code below show all the configurable options available (as of version 3.0.0):</p>
   <pre class="prettyprint linenums">
     jQuery(".tm-input").tagsManager({
-        prefilled: ["Pisa", "Rome"],
-        CapitalizeFirstLetter: true,
-        AjaxPush: null,
-        AjaxPushAllTags: null,
-        AjaxPushParameters: null,
-        delimiters: [9, 13, 44],
-        backspace: [8]
-        blinkBGColor_1: '#FFFF9C',
-        blinkBGColor_2: '#CDE69C',
-        hiddenTagListName: 'hiddenTagListA',
-        hiddenTagListId: null,
-        deleteTagsOnBackspace: true,
-        tagsContainer: null,
-        tagCloseIcon: '×',
-        tagClass: '',
-        validator: null,
-        onlyTagList: false
+      prefilled: null,
+      CapitalizeFirstLetter: false,
+      preventSubmitOnEnter: true, // deprecated
+      isClearInputOnEsc: true, // deprecated
+      AjaxPush: null,
+      AjaxPushAllTags: null,
+      AjaxPushParameters: null,
+      delimiters: [9, 13, 44], // tab, enter, comma
+      backspace: [8],
+      maxTags: 0,
+      hiddenTagListName: null, // deprecated
+      hiddenTagListId: null, // deprecated
+      replace: true,
+      output: null,
+      deleteTagsOnBackspace: true, // deprecated
+      tagsContainer: null,
+      tagCloseIcon: 'x',
+      tagClass: '',
+      validator: null,
+      onlyTagList: false
     });
   </pre>
 
@@ -177,7 +180,7 @@
           <li>an <b>Array</b> of strings</li>
           <li>a <b>String</b> delimited by the first char code in the <em>delimiters</em> parameter (comma by default)</li>
           <li>a <b>Function</b> which returns an array</li>
-          <li>if prefill is not provided <em>hiddenTagListId</em> will be used as a fallback if provided. Note the value in hiddenTagListId should be a string delimited by the first char code in the <em>delimiters</em> parameter (comma by default)</li>
+          <li>if prefill is not provided <em>output</em> will be used as a fallback if provided. Note the value in output should be a string delimited by the first char code in the <em>delimiters</em> parameter (comma by default)</li>
         </ul>
       </td>
     </tr>
