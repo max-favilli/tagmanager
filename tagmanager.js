@@ -48,7 +48,8 @@
       tagCloseIcon: 'x',
       tagClass: '',
       validator: null,
-      onlyTagList: false
+      onlyTagList: false,
+      preserveTabFocus: false
     };
 
     // exit when no matched elements
@@ -363,7 +364,9 @@
 
     var applyDelimiter = function (e) {
       pushTag(obj.val());
-      e.preventDefault();
+      if(e.keyCode === 9 && tagManagerOptions.preserveTabFocus !== true){
+        e.preventDefault();
+      }
     };
 
     var returnValue = null;
@@ -397,7 +400,7 @@
       obj.data("tlis", tlis); //list of string tags
       obj.data("tlid", tlid); //list of ID of the string tags
 
-      if (tagManagerOptions.output == null) { 
+      if (tagManagerOptions.output == null) {
         var hiddenObj = jQuery('<input/>', {
           type: 'hidden',
           name: tagManagerOptions.hiddenTagListName
