@@ -62,7 +62,8 @@
             if (opts.maxTags > 0 && tlis.length >= opts.maxTags) { return; }
 
             alreadyInList = false;
-            tlisLowerCase = tlis.map(function(elem) {
+            //use jQuery.map to make this work in IE8 (pure JS map is JS 1.6 but IE8 only supports JS 1.5)
+            tlisLowerCase = jQuery.map(tlis, function(elem) {
                 return elem.toLowerCase();
             });
 
