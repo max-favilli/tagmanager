@@ -38,7 +38,8 @@
         tagCloseIcon: 'x',
         tagClass: '',
         validator: null,
-        onlyTagList: false
+        onlyTagList: false,
+        readOnly: false
     },
 
     publicMethods = {
@@ -106,9 +107,14 @@
                 escaped = $("<span/>").text(tag).html();
 
                 html = '<span class="' + privateMethods.tagClasses.call($self) + '" id="' + newTagId + '">';
-                html+= '<span>' + escaped + '</span>';
-                html+= '<a href="#" class="tm-tag-remove" id="' + newTagRemoveId + '" TagIdToRemove="' + tagId + '">';
-                html+= opts.tagCloseIcon + '</a></span> ';
+                html += '<span>' + escaped + '</span>';
+
+                if (!opts.readOnly) {
+                    html += '<a href="#" class="tm-tag-remove" id="' + newTagRemoveId + '" TagIdToRemove="' + tagId + '">';
+                    html += opts.tagCloseIcon + '</a>';
+                }
+
+                html+= '</span> ';
                 $el = $(html);
 
                 if (opts.tagsContainer !== null) {
@@ -415,6 +421,13 @@
                      } */
                     privateMethods.killEvent(e);
                 });
+
+                if (opts.readOnly) {
+                    $self.attr('readonly', true);
+                    opts.backspace = [];//clear out the ability to delete on backspace
+                } else {
+                    $self.attr('readonly', false);
+                }
 
                 if (opts.prefilled !== null) {
                     if (typeof (opts.prefilled) === "object") {
