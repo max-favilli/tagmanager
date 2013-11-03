@@ -423,11 +423,8 @@
                 });
 
                 if (opts.readOnly) {
-                    $self.attr('readonly', true);
-                    opts.backspace = [];//clear out the ability to delete on backspace
-                } else {
-                    $self.attr('readonly', false);
-                }
+                    $self.attr('style', 'display: none');
+                } 
 
                 if (opts.prefilled !== null) {
                     if (typeof (opts.prefilled) === "object") {
