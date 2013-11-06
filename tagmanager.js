@@ -93,7 +93,7 @@
                 tlid.push(tagId);
 
                 if (!ignoreEvents)
-                    if (opts.AjaxPush !== null) {
+                    if (opts.AjaxPush !== null && opts.AjaxPushAllTags == null) {
                         if ($.inArray(tag, opts.prefilled) === -1) {
                             $.post(opts.AjaxPush, $.extend({tag: tag}, opts.AjaxPushParameters));
                         }
@@ -260,10 +260,10 @@
         },
 
         pushAllTags : function (e, tag) {
-            var $self = this, opts = $self.data('opts'), tlis = $self.data("tlis");
+            var $self = $(this), opts = $self.data('opts'), tlis = $self.data("tlis");
             if (opts.AjaxPushAllTags) {
                 if (e.type !== 'tm:pushed' || $.inArray(tag, opts.prefilled) === -1) {
-                    $.post(opts.AjaxPush, { tags: tlis.join(opts.baseDelimiter) });
+                    $.post(opts.AjaxPush, $.extend({ tags: tlis.join(opts.baseDelimiter) }, opts.AjaxPushParameters));
                 }
             }
         },
