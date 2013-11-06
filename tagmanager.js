@@ -263,7 +263,7 @@
             var $self = $(this), opts = $self.data('opts'), tlis = $self.data("tlis");
             if (opts.AjaxPushAllTags) {
                 if (e.type !== 'tm:pushed' || $.inArray(tag, opts.prefilled) === -1) {
-                    $.post(opts.AjaxPush, { tags: tlis.join(opts.baseDelimiter) });
+                    $.post(opts.AjaxPush, $.extend({ tags: tlis.join(opts.baseDelimiter) }, opts.AjaxPushParameters));
                 }
             }
         },
