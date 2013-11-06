@@ -93,7 +93,7 @@
                 tlid.push(tagId);
 
                 if (!ignoreEvents)
-                    if (opts.AjaxPush !== null) {
+                    if (opts.AjaxPush !== null && opts.AjaxPushAllTags == null) {
                         if ($.inArray(tag, opts.prefilled) === -1) {
                             $.post(opts.AjaxPush, $.extend({tag: tag}, opts.AjaxPushParameters));
                         }
