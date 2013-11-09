@@ -75,6 +75,7 @@
             }
 
             if (alreadyInList) {
+                $self.trigger('tm:duplicated', tag);
                 $("#" + $self.data("tm_rndid") + "_" + tlid[idx]).stop()
                     .animate({backgroundColor: opts.blinkBGColor_1}, 100)
                     .animate({backgroundColor: opts.blinkBGColor_2}, 100)
@@ -430,6 +431,8 @@
                 }
 
             });
+
+            return this;
         }
     };
 
