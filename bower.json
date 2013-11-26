@@ -1,0 +1,31 @@
+{
+  "name": "tagmanager",
+  "main": [
+    "tagmanager.js",
+    "tagmanager.css",
+    "tagmanager.less"
+  ],
+  "authors": [
+    "Max Favilli"
+  ],
+  "description": "A jQuery plugin (working nicely with twitter bootstrap)",
+  "keywords": [
+    "tag",
+    "autocomplete",
+    "jquery",
+    "bootstrap",
+    "typeahead"
+  ],
+  "dependencies": {
+    "jquery": ">= 1.0.0"
+  },
+  "license": "MPL",
+  "homepage": "http://welldonethings.com/tags/manager/v3",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
