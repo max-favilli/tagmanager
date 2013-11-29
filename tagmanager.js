@@ -38,7 +38,8 @@
         tagCloseIcon: 'x',
         tagClass: '',
         validator: null,
-        onlyTagList: false
+        onlyTagList: false,
+        tagList: null,
     },
 
     publicMethods = {
@@ -50,6 +51,27 @@
             tag = privateMethods.trimTag(tag, opts.delimiterChars);
 
             if (!tag || tag.length <= 0) { return; }
+
+            // check if restricted only to the tagList suggestions
+            if (opts.onlyTagList && undefined !== opts.tagList ){
+
+                //if the list has been updated by look pushed tag in the tagList. if not found return
+                if (opts.tagList){
+                    var $tagList = opts.tagList;
+
+                    // change each array item to lower case
+                    $.each($tagList, function(index, item) {
+                        $tagList[index] = item.toLowerCase();
+                    });
+                    var suggestion = $.inArray(tag.toLowerCase(), $tagList);
+
+                    if ( -1 === suggestion ) {
+                        //console.log("tag:" + tag + " not in tagList, not adding it");
+                        return;
+                    } 
+                }
+
+            }
 
             if (opts.CapitalizeFirstLetter && tag.length > 1) {
                 tag = tag.charAt(0).toUpperCase() + tag.slice(1).toLowerCase();
