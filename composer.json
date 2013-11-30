@@ -1,0 +1,28 @@
+{
+    "name": "max-favilli/tagmanager",
+    "description": "A tags manager, with this plugin a input field is used to collect tags and rendered as tags.",
+    "type": "component",
+    "homepage": "https://github.com/max-favilli/tagmanager",
+    "version": "3.0.0",
+    "license": "MPL",
+    "authors": [
+        {
+            "name": "Max Favilli",
+            "email": "max.favilli@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "extra": {
+        "component": {
+            "scripts": [
+                "tagmanager.js"
+            ],
+            "styles": [
+                "tagmanager.css"
+            ]
+        }
+    },
+    "require": {
+        "robloach/component-installer": "*"
+    }
+}
