@@ -15,7 +15,7 @@ The documentation is automatically synced from Github, so if you'd like to make 
 Quick start
 -----------
 
-Clone the repo, `git clone git@github.com:max-favilli/tagmanager.git`, or [download the latest release](https://github.com/max-favilli/tagmanager/zipball/master).
+Clone the repo, `git clone https://github.com/max-favilli/tagmanager.git`, or [download the latest release](https://github.com/max-favilli/tagmanager/zipball/master).
 
 
 Reporting Issues
@@ -39,9 +39,9 @@ PM> Install-Package Bootstrap-tagmanager
 Thanks to
 ------------
 
-The development of Tags Manager was financed by LogMyMoney.com a [simple and stupid online personal finance tool to track all your expenses](https:logmymoney.com), so...
+The development of Tags Manager was financed by LogMyMoney.com a [simple and stupid online personal finance tool to track all your expenses](http://logmymoney.com), so...
 
-Thanks [logmymoney.com](https:logmymoney.com)
+Thanks [logmymoney.com](http://logmymoney.com)
 
 
 Authors
