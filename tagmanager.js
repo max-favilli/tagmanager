@@ -201,6 +201,11 @@
             //if (tagManagerOptions.maxTags > 0 && tlis.length < tagManagerOptions.maxTags) {
             //  obj.show();
             //}
+        },
+
+        tags : function() {
+            var $self = this, tlis = $self.data("tlis");
+            return tlis;
         }
     },
 
