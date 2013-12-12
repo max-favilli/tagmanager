@@ -1,7 +1,24 @@
-## 3.0.0
+## 3.0.1 - 2012-12-12
 
-* Feature: Added API method 'tags', which return a json with the current list of tags (Max Favilli)
-* Deprecations: Removed support for bootstrap typeahead
+* Issue #180: Add 'tags' method to retrieve tags (LukeL99)
+* Issue #169: Fix 'AjaxPushAllTags' option (mpseidel)
+* Issue #153: Correct documentation related to hiddenTagListId (fogs)
+* Issue #178: Fix 'OnlyTagList' option (sebet)
+* Issue #176: Add bower.json for Bower support (noirbizarre)
+* Issue #168: Constructor should not return undefined (aurbano)
+* Issue #163: Add new event tm:duplicated when there is a duplicated tag (aurbano)
+* Use jQuery.map() instead of native JS map() (apperception)
+* Add composer.json for PHP projects (fogs)
+* Fix various issues related to jQuery refactor (dave0783)
+
+## 3.0.0 - 2012-08-22
+
+* Refactor tagmanager.js to confirm to jQuery plugin standards (dave0783)
+* Add jQuery event hooks (dave0783)
+* Add support for Twitter Typeahead.js
+* Drop support for Twitter Bootstrap v2 Typeahead (which is abandoned since Bootstrap v3)
+* Refactor tagmanager.js to confirm to jQuery plugin standards (dave0783)
+* Rename all files from "bootstrap-tagmanager" to "tagmanager"
 
 ## 2.4.3 - 2012-12-12
 

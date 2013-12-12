@@ -1,9 +1,9 @@
 {
     "name": "max-favilli/tagmanager",
-    "description": "A tags manager, with this plugin a input field is used to collect tags and rendered as tags.",
+    "description": "A jQuery plugin to create tag input fields, which works nicely with Twitter Typeahead.js and Twitter Bootstrap",
     "type": "component",
     "homepage": "https://github.com/max-favilli/tagmanager",
-    "version": "3.0.0",
+    "version": "3.0.1",
     "license": "MPL",
     "authors": [
         {

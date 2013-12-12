@@ -1,25 +1,21 @@
-[Tags Manager v3.0 Release Candidate](http://welldonethings.com/tags/manager/v3)
-==========
+# [Tags Manager v3.0.1](http://welldonethings.com/tags/manager/v3)
 
-A jQuery plugin (working nicely with [Twitter Bootstrap](http://twitter.github.com/bootstrap))
+A jQuery plugin to create tag input fields, which works nicely with [Twitter Typeahead.js](http://twitter.github.io/typeahead.js/) and [Twitter Bootstrap](http://twitter.github.com/bootstrap)
 
 
-[Demo and Documentation](http://welldonethings.com/tags/manager/v3)
------------
+## [Demo and Documentation](http://welldonethings.com/tags/manager/v3)
 
 See a demo and read all the documentation at http://welldonethings.com/tags/manager/v3.
 
 The documentation is automatically synced from Github, so if you'd like to make a correction please modify `/docs/docs.html` and raise a pull request.
 
 
-Quick start
------------
+## Quick Start
 
 Clone the repo, `git clone git@github.com:max-favilli/tagmanager.git`, or [download the latest release](https://github.com/max-favilli/tagmanager/zipball/master).
 
 
-Reporting Issues
------------
+## Reporting Issues
 
 * Please report issues on [our Github Issue Tracker](https://github.com/max-favilli/tagmanager/issues).
 * In your report, please provide a [jsfiddle](http://jsfiddle.net) (preferred), gist, or pasted HTML/JS with steps to **reproduce** the issue.
@@ -30,22 +26,20 @@ Reporting Issues
 * Pull requests, documentation requests, and enhancement ideas are welcome.
 
 
-NUGET 
------------
+## Package Management Tools
 
-PM> Install-Package Bootstrap-tagmanager
+We include the required files to use third-party package management tools in our repo. We rely on the community to help
+maintain these files, as the authors of this plugin do not use these tools. If you notice any issue with these or would like
+to add support for a new package manager, please raise a Pull Request.
+
+* Nuget: PM> Install-Package Bootstrap-tagmanager
+* Bower
+* Composer (PHP)
+* package.json (node.js)
+* TypeScript
 
 
-Thanks to
-------------
-
-The development of Tags Manager was financed by LogMyMoney.com a [simple and stupid online personal finance tool to track all your expenses](https:logmymoney.com), so...
-
-Thanks [logmymoney.com](https:logmymoney.com)
-
-
-Authors
--------
+## Authors
 
 **Max Favilli**
 
@@ -58,8 +52,12 @@ Authors
 + http://github.com/johnnyshields
 
 
-Copyright and license
----------------------
+## Special Thanks
+
+The initial development of Tags Manager was funded by [LogMyMoney.com](http://www.logmymoney.com), a simple online personal finance tool.
+
+
+## Copyright and License
 
 Copyright 2012 MaxFavilli.com
 

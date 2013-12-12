@@ -1,5 +1,5 @@
 /* ===================================================
- * tagmanager.js v3.0.0
+ * tagmanager.js v3.0.1
  * http://welldonethings.com/tags/manager
  * ===================================================
  * Copyright 2012 Max Favilli
