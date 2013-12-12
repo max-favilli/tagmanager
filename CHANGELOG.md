@@ -1,8 +1,17 @@
 ## Next Release
 
-* Your change here
+## 2.4.3 - 2012-12-12
 
-## 2.4.2
+* **FINAL RELEASE** on 2.x branch. 2.x code is now in deep freeze.
+* Issue #185: Sort out versioning for Bower (joelleibow)
+* Issue #148: Run library through js-lint (uxtx)
+* Issue #147: Correct issue with AJAX method GET (was being coerced to POST) (brearley)
+* Issue #143: Do not suppress tab key if the field is currently empty (pangwa)
+* Issue #142: Fix popover bug (martinbuezas)
+* Persist options state when calling tagManager actions (popTag, pushTag, etc.) (dincho)
+* Use $.map instead of native .map (danmusk)
+
+## 2.4.2 - 2012-07-15
 
 * Issue #132: Escape tags for display instead of emitting it as raw HTML (chkwok)
 * Issue #125: Fixed AjaxPushAllTags (henryoswald)
@@ -14,7 +23,7 @@
 * Wrap jQuery in a no-conflict wrapper; use `$` instead of `jQuery` consistently (johnnyshields)
 * Issue #94: 'pushTag' method does not call validator if configured (johnnyshields)
 
-## 2.4.1
+## 2.4.1 - 2012-05-04
 
 * Feature: Added API parameter 'AjaxPushParameters', which enables a custom payload on AJAX push requests (kingofthejungle)
 * Feature: Added support for 'prefilled' parameter as a function (cliffordwhansen)
