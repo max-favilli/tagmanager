@@ -12,7 +12,7 @@ The documentation is automatically synced from Github, so if you'd like to make 
 
 ## Quick Start
 
-Clone the repo, `git clone git@github.com:max-favilli/tagmanager.git`, or [download the latest release](https://github.com/max-favilli/tagmanager/zipball/master).
+Clone the repo, `git clone https://github.com/max-favilli/tagmanager.git`, or [download the latest release](https://github.com/max-favilli/tagmanager/zipball/master).
 
 
 ## Reporting Issues
