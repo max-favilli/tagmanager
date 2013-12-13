@@ -344,7 +344,7 @@
             opts.tagBaseClass = 'tm-tag';
             opts.inputBaseClass = 'tm-input';
 
-            if (!$.isFunction(opts.validator)) { opts.validator = null; };
+            if (!$.isFunction(opts.validator)) { opts.validator = null; }
 
             this.each(function() {
                 var $self = $(this), hiddenObj ='', rndid ='', albet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
