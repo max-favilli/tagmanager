@@ -61,5 +61,5 @@ The initial development of Tags Manager was funded by [LogMyMoney.com](http://ww
 
 Copyright 2012 MaxFavilli.com
 
-Licensed under the Mozilla Public License, Version 2.2
+Licensed under the Mozilla Public License, Version 2.0
 You may not use this work except in compliance with the License.
