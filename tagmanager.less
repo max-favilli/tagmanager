@@ -102,88 +102,88 @@
   -moz-transition: border 0.2s linear 0s;
   -webkit-transition: border 0.2s linear 0s;
   vertical-align: middle;
+}
 
-  // Remove button
-  // -------------------------
+// Remove button
+// -------------------------
 
-  .tm-tag-remove {
+.tm-tag-remove {
+  color: @black;
+  font-weight: bold;
+  margin-left: @tag-padding;
+  opacity: 0.2;
+  &:hover	{
     color: @black;
-    font-weight: bold;
-    margin-left: @tag-padding;
-    opacity: 0.2;
-    &:hover	{
-      color: @black;
-      text-decoration: none;
-      opacity: 0.4;
-    }
+    text-decoration: none;
+    opacity: 0.4;
   }
+}
 
-  // Semantic Colors
-  // -------------------------
+// Semantic Colors
+// -------------------------
 
-  &.tm-tag-warning {
-    color: @tag-warning-text;
-    background-color: @tag-warning-background;
-    border-color: @tag-warning-border;
+&.tm-tag-warning {
+  color: @tag-warning-text;
+  background-color: @tag-warning-background;
+  border-color: @tag-warning-border;
+}
+&.tm-tag-danger {
+  color: @tag-danger-text;
+  background-color: @tag-danger-background;
+  border-color: @tag-danger-border;
+}
+&.tm-tag-success {
+  color: @tag-success-text;
+  background-color: @tag-success-background;
+  border-color: @tag-success-border;
+}
+&.tm-tag-info {
+  color: @tag-info-text;
+  background-color: @tag-info-background;
+  border-color: @tag-info-border;
+}
+&.tm-tag-inverse {
+  color: @tag-inverse-text;
+  background-color: @tag-inverse-background;
+  border-color: @tag-inverse-border;
+  .tm-tag-remove {
+    color: @white;
   }
-  &.tm-tag-danger {
-    color: @tag-danger-text;
-    background-color: @tag-danger-background;
-    border-color: @tag-danger-border;
-  }
-  &.tm-tag-success {
-    color: @tag-success-text;
-    background-color: @tag-success-background;
-    border-color: @tag-success-border;
-  }
-  &.tm-tag-info {
-    color: @tag-info-text;
-    background-color: @tag-info-background;
-    border-color: @tag-info-border;
-  }
-  &.tm-tag-inverse {
-    color: @tag-inverse-text;
-    background-color: @tag-inverse-background;
-    border-color: @tag-inverse-border;
-    .tm-tag-remove {
-      color: @white;
-    }
-  }
+}
 
-  // Sizes
-  // -------------------------
+// Sizes
+// -------------------------
 
-  &.tm-tag-lg {
-    font-size: @font-size-large;
-    border-radius: @border-radius-base;
-    padding: 11px 7px;
-  }
-  &.tm-tag-sm {
-    font-size: @font-size-small;
-    border-radius: @border-radius-small;
-    padding: 2px 4px;
-  }
-  &.tm-tag-xs {
-    font-size: @font-size-mini;
-    border-radius: 2px;
-    padding: 0px 2px;
-  }
+&.tm-tag-lg {
+  font-size: @font-size-large;
+  border-radius: @border-radius-base;
+  padding: 11px 7px;
+}
+&.tm-tag-sm {
+  font-size: @font-size-small;
+  border-radius: @border-radius-small;
+  padding: 2px 4px;
+}
+&.tm-tag-xs {
+  font-size: @font-size-mini;
+  border-radius: 2px;
+  padding: 0px 2px;
+}
 
-  // Miscellaneous Styles
-  // -------------------------
+// Miscellaneous Styles
+// -------------------------
 
-  &.tm-tag-default {
-    color: @text-color;
-    background: none;
-    border: none;
-  }
-  &.tm-tag-disabled {
-    color: @tag-disabled-text;
-    background-color: @tag-disabled-background;
-    border-color: @tag-disabled-border;
-    .tm-tag-remove {
-      display: none;
-    }
+&.tm-tag-default {
+  color: @text-color;
+  background: none;
+  border: none;
+}
+&.tm-tag-disabled {
+  color: @tag-disabled-text;
+  background-color: @tag-disabled-background;
+  border-color: @tag-disabled-border;
+  .tm-tag-remove {
+    display: none;
   }
 }
 

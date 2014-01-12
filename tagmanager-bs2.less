@@ -95,91 +95,91 @@
   -moz-transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
   -webkit-transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
   vertical-align: middle;
+}
 
-  // Remove button
-  // -------------------------
+// Remove button
+// -------------------------
 
-  .tm-tag-remove {
+.tm-tag-remove {
+  color: @black;
+  font-weight: bold;
+  margin-left: @tagPadding;
+  opacity: 0.2;
+  &:hover	{
     color: @black;
-    font-weight: bold;
-    margin-left: @tagPadding;
-    opacity: 0.2;
-    &:hover	{
-      color: @black;
-      text-decoration: none;
-      opacity: 0.4;
-    }
+    text-decoration: none;
+    opacity: 0.4;
   }
+}
 
-  // Semantic Colors
-  // -------------------------
+// Semantic Colors
+// -------------------------
 
-  &.tm-tag-warning {
-    color: @tagWarningText;
-    background-color: @tagWarningBackground;
-    border-color: @tagWarningBorder;
+&.tm-tag-warning {
+  color: @tagWarningText;
+  background-color: @tagWarningBackground;
+  border-color: @tagWarningBorder;
+}
+&.tm-tag-error {
+  color: @tagErrorText;
+  background-color: @tagErrorBackground;
+  border-color: @tagErrorBorder;
+}
+&.tm-tag-success {
+  color: @tagSuccessText;
+  background-color: @tagSuccessBackground;
+  border-color: @tagSuccessBorder;
+}
+&.tm-tag-info {
+  color: @tagInfoText;
+  background-color: @tagInfoBackground;
+  border-color: @tagInfoBorder;
+}
+&.tm-tag-inverse {
+  color: @tagInverseText;
+  background-color: @tagInverseBackground;
+  border-color: @tagInverseBorder;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2) inset;
+  .tm-tag-remove {
+    color: @white;
   }
-  &.tm-tag-error {
-    color: @tagErrorText;
-    background-color: @tagErrorBackground;
-    border-color: @tagErrorBorder;
-  }
-  &.tm-tag-success {
-    color: @tagSuccessText;
-    background-color: @tagSuccessBackground;
-    border-color: @tagSuccessBorder;
-  }
-  &.tm-tag-info {
-    color: @tagInfoText;
-    background-color: @tagInfoBackground;
-    border-color: @tagInfoBorder;
-  }
-  &.tm-tag-inverse {
-    color: @tagInverseText;
-    background-color: @tagInverseBackground;
-    border-color: @tagInverseBorder;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2) inset;
-    .tm-tag-remove {
-      color: @white;
-    }
-  }
+}
 
-  // Sizes
-  // -------------------------
+// Sizes
+// -------------------------
 
-  &.tm-tag-large {
-    font-size: @tagFontSizeLarge;
-    border-radius: @baseBorderRadius;
-    padding: 11px 7px;
-  }
-  &.tm-tag-small {
-    font-size: @tagFontSizeSmall;
-    border-radius: @borderRadiusSmall;
-    padding: 2px 4px;
-  }
-  &.tm-tag-mini {
-    font-size: @tagFontSizeMini;
-    border-radius: 2px;
-    padding: 0px 2px;
-  }
+&.tm-tag-large {
+  font-size: @tagFontSizeLarge;
+  border-radius: @baseBorderRadius;
+  padding: 11px 7px;
+}
+&.tm-tag-small {
+  font-size: @tagFontSizeSmall;
+  border-radius: @borderRadiusSmall;
+  padding: 2px 4px;
+}
+&.tm-tag-mini {
+  font-size: @tagFontSizeMini;
+  border-radius: 2px;
+  padding: 0px 2px;
+}
 
-  // Miscellaneous Styles
-  // -------------------------
+// Miscellaneous Styles
+// -------------------------
 
-  &.tm-tag-default {
-    color: @textColor;
-    box-shadow: none;
-    background: none;
-    border: none;
-  }
-  &.tm-tag-disabled {
-    color: @tagDisabledText;
-    background-color: @tagDisabledBackground;
-    border-color: @tagDisabledBorder;
-    box-shadow: none;
-    .tm-tag-remove {
-      display: none;
-    }
+&.tm-tag-default {
+  color: @textColor;
+  box-shadow: none;
+  background: none;
+  border: none;
+}
+&.tm-tag-disabled {
+  color: @tagDisabledText;
+  background-color: @tagDisabledBackground;
+  border-color: @tagDisabledBorder;
+  box-shadow: none;
+  .tm-tag-remove {
+    display: none;
   }
 }
 

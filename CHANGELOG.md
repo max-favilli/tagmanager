@@ -10,6 +10,7 @@
 * Upgrade LESS/CSS to Bootstrap 3: Use flat style / remove inner shadows (johnnyshields)
 * Upgrade LESS/CSS to Bootstrap 3: Move old theme to tagmanager-bs2.less/css
 * Include Bootstrap LESS variables in LESS file for easy compilation (matsu911 / johnnyshields)
+* Remove unneeded CSS tag nesting and reduce CSS filesize (johnnyshields)
 * Correct license version in README (arimus)
 * Removed unnecessary semicolon (matsu911)
 * Fix clone link in README (LukeL99)
