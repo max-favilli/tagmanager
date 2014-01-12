@@ -1,3 +1,19 @@
+## 3.1.0 - Unreleased
+
+* Upgrade LESS/CSS to Bootstrap 3: Change CSS class names to match BS3 conventions (johnnyshields)
+  * .tag-error -> .tag-danger
+  * .tag-large -> .tag-lg
+  * .tag-small -> .tag-sm
+  * .tag-mini  -> .tag-xs
+  * .tag-plain -> .tag-default
+* Upgrade LESS/CSS to Bootstrap 3: Tag/font sizes now match Bootstrap 3 with 14px base (johnnyshields)
+* Upgrade LESS/CSS to Bootstrap 3: Use flat style / remove inner shadows (johnnyshields)
+* Upgrade LESS/CSS to Bootstrap 3: Move old theme to tagmanager-bs2.less/css
+* Include Bootstrap LESS variables in LESS file for easy compilation (matsu911 / johnnyshields)
+* Correct license version in README (arimus)
+* Removed unnecessary semicolon (matsu911)
+* Fix clone link in README (LukeL99)
+
 ## 3.0.1 - 2013-12-12
 
 * Issue #180: Add 'tags' method to retrieve tags (LukeL99)
