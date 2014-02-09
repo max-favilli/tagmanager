@@ -40,7 +40,7 @@
         validator: null,
         onlyTagList: false,
         tagList: null,
-        fillBackOnTagRemove: false,
+        fillInputOnTagRemove: false,
     },
 
     publicMethods = {
@@ -433,7 +433,7 @@
                 }
 
                 // on tag pop fill back the tag's content to the input field
-                if (opts.fillBackOnTagRemove) {
+                if (opts.fillInputOnTagRemove) {
                     $self.on('tm:popped', function(e, tag) {
                         $(this).val(tag);
                     });
