@@ -40,6 +40,7 @@
         validator: null,
         onlyTagList: false,
         tagList: null,
+        fillBackOnTagRemove: false,
     },
 
     publicMethods = {
@@ -428,6 +429,13 @@
                                 privateMethods.killEvent(e);
                             }
                         }
+                    });
+                }
+
+                // on tag pop fill back the tag's content to the input field
+                if (opts.fillBackOnTagRemove) {
+                    $self.on('tm:popped', function(e, tag) {
+                        $(this).val(tag);
                     });
                 }
 
