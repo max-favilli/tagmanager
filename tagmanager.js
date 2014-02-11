@@ -107,7 +107,6 @@
                     .animate({backgroundColor: opts.blinkBGColor_1}, 100)
                     .animate({backgroundColor: opts.blinkBGColor_2}, 100);
             } else {
-                if (!ignoreEvents) { $self.trigger('tm:pushing', [tag, externalTagId]); }
                 if (opts.externalTagId === true) {
                     if (externalTagId === undefined) {
                         $.error('externalTagId is not passed for tag -' + tag);
@@ -119,6 +118,7 @@
 
                     tagId = ++max;
                 }
+                if (!ignoreEvents) { $self.trigger('tm:pushing', [tag, tagId]); }
                 tlis.push(tag);
                 tlid.push(tagId);
 
