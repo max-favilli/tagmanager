@@ -107,7 +107,7 @@
                     .animate({backgroundColor: opts.blinkBGColor_1}, 100)
                     .animate({backgroundColor: opts.blinkBGColor_2}, 100);
             } else {
-                if (!ignoreEvents) { $self.trigger('tm:pushing', tag); }
+                if (!ignoreEvents) { $self.trigger('tm:pushing', [tag, externalTagId]); }
                 if (opts.externalTagId === true) {
                     if (externalTagId === undefined) {
                         $.error('externalTagId is not passed for tag -' + tag);
@@ -160,7 +160,7 @@
 
                 privateMethods.refreshHiddenTagList.call($self);
 
-                if (!ignoreEvents) { $self.trigger('tm:pushed', tag); }
+                if (!ignoreEvents) { $self.trigger('tm:pushed', [tag, tagId]); }
 
                 privateMethods.showOrHide.call($self);
                 //if (tagManagerOptions.maxTags > 0 && tlis.length >= tagManagerOptions.maxTags) {
@@ -179,13 +179,13 @@
               tagId = tlid.pop();
 
               tagBeingRemoved = tlis[tlis.length - 1];
-              $self.trigger('tm:popping', tagBeingRemoved);
+              $self.trigger('tm:popping', [tagBeingRemoved, tagId]);
               tlis.pop();
 
               // console.log("TagIdToRemove: " + tagId);
               $("#" + $self.data("tm_rndid") + "_" + tagId).remove();
               privateMethods.refreshHiddenTagList.call($self);
-              $self.trigger('tm:popped', tagBeingRemoved);
+              $self.trigger('tm:popped', [tagBeingRemoved, tagId]);
               // console.log(tlis);
             }
         },
@@ -311,12 +311,12 @@
 
             if (-1 !== idx) {
                 tagBeingRemoved = tlis[idx];
-                $self.trigger('tm:splicing', tagBeingRemoved);
+                $self.trigger('tm:splicing', [tagBeingRemoved, tagId]);
                 $("#" + $self.data("tm_rndid") + "_" + tagId).remove();
                 tlis.splice(idx, 1);
                 tlid.splice(idx, 1);
                 privateMethods.refreshHiddenTagList.call($self);
-                $self.trigger('tm:spliced', tagBeingRemoved);
+                $self.trigger('tm:spliced', [tagBeingRemoved, tagId]);
                 // console.log(tlis);
             }
 
