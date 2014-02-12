@@ -1,4 +1,4 @@
-## 3.0.1 - 2012-12-12
+## 3.0.1 - 2013-12-12
 
 * Issue #180: Add 'tags' method to retrieve tags (LukeL99)
 * Issue #169: Fix 'AjaxPushAllTags' option (mpseidel)
@@ -11,7 +11,7 @@
 * Add composer.json for PHP projects (fogs)
 * Fix various issues related to jQuery refactor (dave0783)
 
-## 3.0.0 - 2012-08-22
+## 3.0.0 - 2013-08-22
 
 * Refactor tagmanager.js to confirm to jQuery plugin standards (dave0783)
 * Add jQuery event hooks (dave0783)
