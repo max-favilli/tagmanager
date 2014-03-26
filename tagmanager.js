@@ -161,7 +161,7 @@
 
                 privateMethods.refreshHiddenTagList.call($self);
 
-                if (!ignoreEvents) { $self.trigger('tm:pushed', [tag, tagId]); }
+                if (!ignoreEvents) { $self.trigger('tm:pushed', [tag, tagId, $el]); }
 
                 privateMethods.showOrHide.call($self);
                 //if (tagManagerOptions.maxTags > 0 && tlis.length >= tagManagerOptions.maxTags) {
