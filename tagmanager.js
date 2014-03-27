@@ -41,7 +41,7 @@
         validator: null,
         onlyTagList: false,
         tagList: null,
-        fillInputOnTagRemove: false,
+        fillInputOnTagRemove: false
     },
 
     publicMethods = {
