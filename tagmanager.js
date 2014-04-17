@@ -42,6 +42,7 @@
         onlyTagList: false,
         tagList: null,
         fillInputOnTagRemove: false,
+        readOnly : false,
     },
 
     publicMethods = {
@@ -138,8 +139,10 @@
 
                 html = '<span class="' + privateMethods.tagClasses.call($self) + '" id="' + newTagId + '">';
                 html+= '<span>' + escaped + '</span>';
-                html+= '<a href="#" class="tm-tag-remove" id="' + newTagRemoveId + '" TagIdToRemove="' + tagId + '">';
-                html+= opts.tagCloseIcon + '</a></span> ';
+                if (!opts.readOnly) {
+                    html+= '<a href="#" class="tm-tag-remove" id="' + newTagRemoveId + '" TagIdToRemove="' + tagId + '">';
+                    html+= opts.tagCloseIcon + '</a></span> ';
+                }
                 $el = $(html);
 
                 if (opts.tagsContainer !== null) {
@@ -469,6 +472,10 @@
                 } else if (opts.output !== null) {
                     if ($(opts.output) && $(opts.output).val()) { var existing_tags = $(opts.output); }
                     privateMethods.prefill.call($self,$(opts.output).val().split(opts.baseDelimiter));
+                }
+
+                if (opts.readOnly) {
+                    $self.hide();
                 }
 
             });
