@@ -194,6 +194,11 @@
               // console.log(tlis);
             }
         },
+        
+	removeTagByID : function (TagID) {
+	    var $self = this;
+	    privateMethods.spliceTag.call($self,TagID);
+	},
 
         empty : function() {
             var $self = $(this), tlis = $self.data("tlis"), tlid = $self.data("tlid"), tagId;
