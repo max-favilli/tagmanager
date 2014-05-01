@@ -155,7 +155,11 @@
 
                 $el.find("#" + newTagRemoveId).on("click", $self, function(e) {
                     e.preventDefault();
-                    var TagIdToRemove = $(this).attr("TagIdToRemove");
+		    if (opts.externalTagId === true) {
+			var TagIdToRemove = $(this).attr("TagIdToRemove");
+		    } else { 
+			var TagIdToRemove = parseInt($(this).attr("TagIdToRemove"));
+		    }
                     privateMethods.spliceTag.call($self, TagIdToRemove, e.data);
                 });
 
