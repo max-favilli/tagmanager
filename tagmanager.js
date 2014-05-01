@@ -216,9 +216,9 @@
         },
         
         // Return tags ID
-		tags_id: function() { 		
-            var $self = this, tlis = $self.data("tlid");
-            return tlis;
+	tags_id: function() { 		
+            var $self = this, tlid = $self.data("tlid");
+            return tlid;
         }
     },
 
