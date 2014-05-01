@@ -155,7 +155,7 @@
 
                 $el.find("#" + newTagRemoveId).on("click", $self, function(e) {
                     e.preventDefault();
-                    var TagIdToRemove = parseInt($(this).attr("TagIdToRemove"));
+                    var TagIdToRemove = $(this).attr("TagIdToRemove");
                     privateMethods.spliceTag.call($self, TagIdToRemove, e.data);
                 });
 
@@ -212,6 +212,12 @@
 
         tags : function() {
             var $self = this, tlis = $self.data("tlis");
+            return tlis;
+        },
+        
+        // Return tags ID
+		tags_id: function() { 		
+            var $self = this, tlis = $self.data("tlid");
             return tlis;
         }
     },
