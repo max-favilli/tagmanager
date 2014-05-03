@@ -200,7 +200,7 @@
 	    privateMethods.spliceTag.call($self,TagID);
 	},
 
-        empty : function() {
+        empty : function(send_trigger) {
             var $self = $(this), tlis = $self.data("tlis"), tlid = $self.data("tlid"), tagId;
 
             while (tlid.length > 0) {
@@ -211,7 +211,9 @@
                 privateMethods.refreshHiddenTagList.call($self);
                 // console.log(tlis);
             }
-            $self.trigger('tm:emptied', null);
+            
+            send_trigger = (typeof send_trigger === "undefined") ? true : send_trigger;
+            if (send_trigger === true)  $self.trigger('tm:emptied', null);
 
             privateMethods.showOrHide.call($self);
             //if (tagManagerOptions.maxTags > 0 && tlis.length < tagManagerOptions.maxTags) {
