@@ -333,6 +333,10 @@
                 tlid.splice(idx, 1);
                 privateMethods.refreshHiddenTagList.call($self);
                 $self.trigger('tm:spliced', [tagBeingRemoved, tagId]);
+                
+		if (tlis.length == 0) {
+    		    $self.trigger('tm:empty', null);
+		}
                 // console.log(tlis);
             }
 
