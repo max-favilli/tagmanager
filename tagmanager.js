@@ -121,6 +121,7 @@
                     tagId = ++max;
                 }
                 if (!ignoreEvents) { $self.trigger('tm:pushing', [tagValue, tagId]); }
+                tlis.push(tagValue);
                 tlid.push(tagId);
 
                 if (!ignoreEvents)
