@@ -127,7 +127,7 @@
 
                 newTagId = $self.data("tm_rndid") + '_' + tagId;
                 newTagRemoveId = $self.data("tm_rndid") + '_Remover_' + tagId;
-                content = privateMethods.isString(tag) ? $("<span/>").text(tagValue).html() : tag.content;
+                content = privateMethods.isString(tag) ? $("<span/>").text(tagValue).html() : tag.displayString;
 
                 html = '<span class="' + privateMethods.tagClasses.call($self) + '" id="' + newTagId + '">';
                 html+= '<span>' + content + '</span>';
