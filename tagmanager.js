@@ -290,7 +290,11 @@
         prefill : function (pta) {
             var $self = $(this);
             $.each(pta, function (key, val) {
-                publicMethods.pushTag.call($self, val, true);
+                if( $self.data('opts').externalTagId === true ){
+                    publicMethods.pushTag.call($self, val, true, key);
+                }else{
+                    publicMethods.pushTag.call($self, val, true);
+                }                
             });
         },
 
