@@ -44,14 +44,32 @@
         onlyTagList: false,
         tagList: null,
         fillInputOnTagRemove: false,
+        parseMultiple:true,
     },
 
     publicMethods = {
-        pushTag : function (tag, ignoreEvents, externalTagId) {
-            var $self = $(this), opts = $self.data('opts'), alreadyInList, tlisLowerCase, max, tagId,
-            tlis = $self.data("tlis"), tlid = $self.data("tlid"), idx, newTagId, newTagRemoveId, escaped,
-            html, $el, lastTagId, lastTagObj;
+        parseTags: function (string, delimiterChars){
+            var $self = this[0];
+            //get the literal characters from the unicode numbers
+            var delimiterCharLiterals=$.map(delimiterChars, function(c){return String.fromCharCode(c);});
+            //match all substrings of one or more character that is not in delimiterCharLiterals
+            var parsedTags=string.match(new RegExp( '([^' + delimiterCharLiterals.join('|') + ']+)', 'g') );
+            //loop through the parsedTags, pushing each
+            $.each(parsedTags,function(i,tag){publicMethods.pushTag.call($self,tag,false,false,false);});
+        },
+        pushTag : function (tag, ignoreEvents, externalTagId, parseMultiple) {
+            var $self = $(this),
+                opts  = $self.data('opts'),
+                tlis  = $self.data("tlis"),
+                tlid  = $self.data("tlid"),
+                parseMultiple = typeof parseMultiple ==='undefined' ? opts.parseMultiple : parseMultiple,
+                alreadyInList, tlisLowerCase, max, tagId, idx, newTagId, newTagRemoveId, escaped,
+                html, $el, lastTagId, lastTagObj;
 
+            //this is true when the option is true and pushTag is not being called by parseTags
+            if(parseMultiple){
+                return publicMethods.parseTags.call($self, tag, opts.delimiterChars);
+            }
             tag = privateMethods.trimTag(tag, opts.delimiterChars);
 
             if (!tag || tag.length <= 0) { return; }
