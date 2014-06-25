@@ -24,6 +24,8 @@
         preventSubmitOnEnter: true,     // deprecated
         isClearInputOnEsc: true,        // deprecated
         externalTagId: false,
+        prefillIdFieldName: 'Id',
+        prefillValueFieldName: 'Value',
         AjaxPush: null,
         AjaxPushAllTags: null,
         AjaxPushParameters: null,
@@ -287,10 +289,15 @@
             e.preventDefault();
         },
 
-        prefill : function (pta) {
+        prefill: function (pta) {
             var $self = $(this);
+            var opts = $self.data('opts')
             $.each(pta, function (key, val) {
-                publicMethods.pushTag.call($self, val, true);
+                if (opts.externalTagId === true) {
+                    publicMethods.pushTag.call($self, val[opts.prefillValueFieldName], true, val[opts.prefillIdFieldName]);
+                } else {
+                    publicMethods.pushTag.call($self, val, true);
+                }
             });
         },
 

@@ -178,6 +178,7 @@
       <td>Populates the initial tag values. Default: null. Allowed formats:
         <ul>
           <li>an <b>Array</b> of strings</li>
+		  <li>an <b>Array</b> of objects (if externalTagId is set to true, use <b>prefillIdFieldName</b> and <b>prefillValueFieldName</b> to configure)</li>
           <li>a <b>String</b> delimited by the first char code in the <em>delimiters</em> parameter (comma by default)</li>
           <li>a <b>Function</b> which returns an array</li>
           <li>if prefill is not provided <em>output</em> will be used as a fallback if provided. Note the value in output should be a string delimited by the first char code in the <em>delimiters</em> parameter (comma by default)</li>
@@ -269,6 +270,18 @@
 	<tr>
       <td><b>externalTagId</b></td>
       <td>Optionally instead of incrementing id of tags, you could pass it as argument to pushTag and use it later. (.tagsManager('pushTag','I_am_a_new_tag', false, 1);) Default: false
+	  </td>
+	</tr>
+	<tr>
+      <td><b>prefillIdFieldName</b></td>
+      <td>Optional. If <b>externalTagId</b> and <b>prefilled</b> is set to true: This option will be used to get Tag Id from <b>prefilled</b> objects. Default: 'Id'
+	  </td>
+	</tr>
+	<tr>
+      <td><b>prefillValueFieldName</b></td>
+      <td>Optional. If <b>externalTagId</b> and <b>prefilled</b> is set to true: This option will be used to get Tag Value(name) from <b>prefilled</b> objects. Default: 'Value'
+	  </td>
+	</tr>
     <tr>
       <td><b>fillInputOnTagRemove</b></td>
       <td>If true, fills back the content of the removed tag to the input field. Default: false
