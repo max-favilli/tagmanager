@@ -1,4 +1,4 @@
-/* ===================================================
+﻿/* ===================================================
  * tagmanager.js v3.0.1
  * http://welldonethings.com/tags/manager
  * ===================================================
@@ -49,12 +49,13 @@
     publicMethods = {
         pushTag : function (tag, ignoreEvents, externalTagId) {
             var $self = $(this), opts = $self.data('opts'), alreadyInList, tlisLowerCase, max, tagId,
-            tlis = $self.data("tlis"), tlid = $self.data("tlid"), idx, newTagId, newTagRemoveId, escaped,
-            html, $el, lastTagId, lastTagObj;
+            tlis = $self.data("tlis"), tlid = $self.data("tlid"), idx, newTagId, newTagRemoveId,
+            html, $el, lastTagId, lastTagObj, tagValue, content;
 
-            tag = privateMethods.trimTag(tag, opts.delimiterChars);
+            tagValue = privateMethods.isString(tag) ? tag : tag.value;
+            tagValue = privateMethods.trimTag(tagValue, opts.delimiterChars);
 
-            if (!tag || tag.length <= 0) { return; }
+            if (!tagValue || tagValue.length <= 0) { return; }
 
             // check if restricted only to the tagList suggestions
             if (opts.onlyTagList && undefined !== opts.tagList ){
@@ -67,7 +68,7 @@
                     $.each($tagList, function(index, item) {
                         $tagList[index] = item.toLowerCase();
                     });
-                    var suggestion = $.inArray(tag.toLowerCase(), $tagList);
+                    var suggestion = $.inArray(tagValue.toLowerCase(), $tagList);
 
                     if ( -1 === suggestion ) {
                         //console.log("tag:" + tag + " not in tagList, not adding it");
@@ -77,12 +78,12 @@
 
             }
 
-            if (opts.CapitalizeFirstLetter && tag.length > 1) {
-                tag = tag.charAt(0).toUpperCase() + tag.slice(1).toLowerCase();
+            if (opts.CapitalizeFirstLetter && tagValue.length > 1) {
+                tagValue = tagValue.charAt(0).toUpperCase() + tagValue.slice(1).toLowerCase();
             }
 
             // call the validator (if any) and do not let the tag pass if invalid
-            if (opts.validator && !opts.validator(tag)) { return; }
+            if (opts.validator && !opts.validator(tagValue)) { return; }
 
             // dont accept new tags beyond the defined maximum
             if (opts.maxTags > 0 && tlis.length >= opts.maxTags) { return; }
@@ -93,7 +94,7 @@
                 return elem.toLowerCase();
             });
 
-            idx = $.inArray(tag.toLowerCase(), tlisLowerCase);
+            idx = $.inArray(tagValue.toLowerCase(), tlisLowerCase);
 
             if (-1 !== idx) {
                 // console.log("tag:" + tag + " !!already in list!!");
@@ -101,7 +102,7 @@
             }
 
             if (alreadyInList) {
-                $self.trigger('tm:duplicated', tag);
+                $self.trigger('tm:duplicated', tagValue);
                 $("#" + $self.data("tm_rndid") + "_" + tlid[idx]).stop()
                     .animate({backgroundColor: opts.blinkBGColor_1}, 100)
                     .animate({backgroundColor: opts.blinkBGColor_2}, 100)
@@ -112,7 +113,7 @@
             } else {
                 if (opts.externalTagId === true) {
                     if (externalTagId === undefined) {
-                        $.error('externalTagId is not passed for tag -' + tag);
+                        $.error('externalTagId is not passed for tag -' + tagValue);
                     }
                     tagId = externalTagId;
                 } else {
@@ -121,14 +122,14 @@
 
                     tagId = ++max;
                 }
-                if (!ignoreEvents) { $self.trigger('tm:pushing', [tag, tagId]); }
-                tlis.push(tag);
+                if (!ignoreEvents) { $self.trigger('tm:pushing', [tagValue, tagId]); }
+                tlis.push(tagValue);
                 tlid.push(tagId);
 
                 if (!ignoreEvents)
                     if (opts.AjaxPush !== null && opts.AjaxPushAllTags == null) {
-                        if ($.inArray(tag, opts.prefilled) === -1) {
-                            $.post(opts.AjaxPush, $.extend({tag: tag}, opts.AjaxPushParameters));
+                        if ($.inArray(tagValue, opts.prefilled) === -1) {
+                            $.post(opts.AjaxPush, $.extend({tag: tagValue}, opts.AjaxPushParameters));
                         }
                     }
 
@@ -136,10 +137,10 @@
 
                 newTagId = $self.data("tm_rndid") + '_' + tagId;
                 newTagRemoveId = $self.data("tm_rndid") + '_Remover_' + tagId;
-                escaped = $("<span/>").text(tag).html();
+                content = privateMethods.isString(tag) ? $("<span/>").text(tagValue).html() : tag.displayString;
 
                 html = '<span class="' + privateMethods.tagClasses.call($self) + '" id="' + newTagId + '">';
-                html+= '<span>' + escaped + '</span>';
+                html+= '<span>' + content + '</span>';
                 html+= '<a href="#" class="tm-tag-remove" id="' + newTagRemoveId + '" TagIdToRemove="' + tagId + '">';
                 html+= opts.tagCloseIcon + '</a></span> ';
                 $el = $(html);
@@ -163,7 +164,7 @@
 
                 privateMethods.refreshHiddenTagList.call($self);
 
-                if (!ignoreEvents) { $self.trigger('tm:pushed', [tag, tagId]); }
+                if (!ignoreEvents) { $self.trigger('tm:pushed', [tagValue, tagId]); }
 
                 privateMethods.showOrHide.call($self);
                 //if (tagManagerOptions.maxTags > 0 && tlis.length >= tagManagerOptions.maxTags) {
@@ -332,6 +333,10 @@
             //if (tagManagerOptions.maxTags > 0 && tlis.length < tagManagerOptions.maxTags) {
             //  obj.show();
             //}
+        },
+
+        isString : function (x) {
+            return Object.prototype.toString.call(x) === '[object String]';
         },
 
         init : function (options) {
