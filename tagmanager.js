@@ -160,11 +160,11 @@
                     $(opts.tagsContainer).append($el);
                 } else {
                     if (tlid.length > 1) {
-                        lastTagObj = $("#" + $self.data("tm_rndid") + "_" + tlid[tlid.length - 2]);
+                        lastTagObj = $self.siblings("#" + $self.data("tm_rndid") + "_" + tlid[tlid.length - 2]);
                         lastTagObj.after($el);
                     } else {
                         $self.before($el);
-                    }                
+                    }
                 }
 
                 $el.find("#" + newTagRemoveId).on("click", $self, function(e) {
