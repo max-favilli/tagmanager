@@ -82,7 +82,10 @@
             }
 
             // call the validator (if any) and do not let the tag pass if invalid
-            if (opts.validator && !opts.validator(tag)) { return; }
+            if (opts.validator && !opts.validator(tag)) {
+                $self.trigger('tm:invalid', tag)
+                return;
+            }
 
             // dont accept new tags beyond the defined maximum
             if (opts.maxTags > 0 && tlis.length >= opts.maxTags) { return; }
