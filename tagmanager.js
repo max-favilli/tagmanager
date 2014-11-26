@@ -105,13 +105,22 @@
 
             if (alreadyInList) {
                 $self.trigger('tm:duplicated', tag);
-                $("#" + $self.data("tm_rndid") + "_" + tlid[idx]).stop()
-                    .animate({backgroundColor: opts.blinkBGColor_1}, 100)
-                    .animate({backgroundColor: opts.blinkBGColor_2}, 100)
-                    .animate({backgroundColor: opts.blinkBGColor_1}, 100)
-                    .animate({backgroundColor: opts.blinkBGColor_2}, 100)
-                    .animate({backgroundColor: opts.blinkBGColor_1}, 100)
-                    .animate({backgroundColor: opts.blinkBGColor_2}, 100);
+                if (opts.blinkClass) {
+                    for (var i = 0; i < 6; ++i) {
+                        $("#" + $self.data("tm_rndid") + "_" + tlid[idx]).queue(function(next) {
+                            $(this).toggleClass(opts.blinkClass);
+                            next();
+                        }).delay(100);
+                    }
+                } else {
+                    $("#" + $self.data("tm_rndid") + "_" + tlid[idx]).stop()
+                        .animate({backgroundColor: opts.blinkBGColor_1}, 100)
+                        .animate({backgroundColor: opts.blinkBGColor_2}, 100)
+                        .animate({backgroundColor: opts.blinkBGColor_1}, 100)
+                        .animate({backgroundColor: opts.blinkBGColor_2}, 100)
+                        .animate({backgroundColor: opts.blinkBGColor_1}, 100)
+                        .animate({backgroundColor: opts.blinkBGColor_2}, 100);
+                }
             } else {
                 if (opts.externalTagId === true) {
                     if (externalTagId === undefined) {
