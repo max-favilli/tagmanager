@@ -82,7 +82,10 @@
             }
 
             // call the validator (if any) and do not let the tag pass if invalid
-            if (opts.validator && !opts.validator(tag)) { return; }
+            if (opts.validator && !opts.validator(tag)) {
+                $self.trigger('tm:invalid', tag)
+                return;
+            }
 
             // dont accept new tags beyond the defined maximum
             if (opts.maxTags > 0 && tlis.length >= opts.maxTags) { return; }
@@ -102,13 +105,22 @@
 
             if (alreadyInList) {
                 $self.trigger('tm:duplicated', tag);
-                $("#" + $self.data("tm_rndid") + "_" + tlid[idx]).stop()
-                    .animate({backgroundColor: opts.blinkBGColor_1}, 100)
-                    .animate({backgroundColor: opts.blinkBGColor_2}, 100)
-                    .animate({backgroundColor: opts.blinkBGColor_1}, 100)
-                    .animate({backgroundColor: opts.blinkBGColor_2}, 100)
-                    .animate({backgroundColor: opts.blinkBGColor_1}, 100)
-                    .animate({backgroundColor: opts.blinkBGColor_2}, 100);
+                if (opts.blinkClass) {
+                    for (var i = 0; i < 6; ++i) {
+                        $("#" + $self.data("tm_rndid") + "_" + tlid[idx]).queue(function(next) {
+                            $(this).toggleClass(opts.blinkClass);
+                            next();
+                        }).delay(100);
+                    }
+                } else {
+                    $("#" + $self.data("tm_rndid") + "_" + tlid[idx]).stop()
+                        .animate({backgroundColor: opts.blinkBGColor_1}, 100)
+                        .animate({backgroundColor: opts.blinkBGColor_2}, 100)
+                        .animate({backgroundColor: opts.blinkBGColor_1}, 100)
+                        .animate({backgroundColor: opts.blinkBGColor_2}, 100)
+                        .animate({backgroundColor: opts.blinkBGColor_1}, 100)
+                        .animate({backgroundColor: opts.blinkBGColor_2}, 100);
+                }
             } else {
                 if (opts.externalTagId === true) {
                     if (externalTagId === undefined) {
@@ -148,11 +160,11 @@
                     $(opts.tagsContainer).append($el);
                 } else {
                     if (tlid.length > 1) {
-                        lastTagObj = $("#" + $self.data("tm_rndid") + "_" + tlid[tlid.length - 2]);
+                        lastTagObj = $self.siblings("#" + $self.data("tm_rndid") + "_" + tlid[tlid.length - 2]);
                         lastTagObj.after($el);
                     } else {
                         $self.before($el);
-                    }                
+                    }
                 }
 
                 $el.find("#" + newTagRemoveId).on("click", $self, function(e) {
