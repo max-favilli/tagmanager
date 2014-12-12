@@ -160,7 +160,11 @@
                     $(opts.tagsContainer).append($el);
                 } else {
                     if (tlid.length > 1) {
-                        lastTagObj = $self.siblings("#" + $self.data("tm_rndid") + "_" + tlid[tlid.length - 2]);
+                        var lastTagObjSelector = "#" + $self.data("tm_rndid") + "_" + tlid[tlid.length - 2];
+                        // If there's a typeahead, we'll need to go up one element
+                        lastTagObj =  $self.siblings(lastTagObjSelector).length > 0
+                                      && $self.siblings(lastTagObjSelector)
+                                      || $self.parent().siblings(lastTagObjSelector);
                         lastTagObj.after($el);
                     } else {
                         $self.before($el);
