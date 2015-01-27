@@ -47,7 +47,7 @@
     },
 
     publicMethods = {
-        pushTag : function (tag, ignoreEvents, externalTagId) {
+        pushTag : function (tag, ignoreEvents, externalTagId, ignoreValidator) {
             var $self = $(this), opts = $self.data('opts'), alreadyInList, tlisLowerCase, max, tagId,
             tlis = $self.data("tlis"), tlid = $self.data("tlid"), idx, newTagId, newTagRemoveId, escaped,
             html, $el, lastTagId, lastTagObj;
@@ -82,7 +82,7 @@
             }
 
             // call the validator (if any) and do not let the tag pass if invalid
-            if (opts.validator && !opts.validator(tag)) {
+            if (!ignoreValidator && opts.validator && !opts.validator(tag)) {
                 $self.trigger('tm:invalid', tag)
                 return;
             }
@@ -310,9 +310,9 @@
             var opts = $self.data('opts')
             $.each(pta, function (key, val) {
                 if (opts.externalTagId === true) {
-                    publicMethods.pushTag.call($self, val[opts.prefillValueFieldName], true, val[opts.prefillIdFieldName]);
+                    publicMethods.pushTag.call($self, val[opts.prefillValueFieldName], true, val[opts.prefillIdFieldName], true);
                 } else {
-                    publicMethods.pushTag.call($self, val, true);
+                    publicMethods.pushTag.call($self, val, true, false, true);
                 }
             });
         },
