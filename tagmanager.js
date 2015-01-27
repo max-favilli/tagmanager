@@ -169,7 +169,11 @@
 
                 $el.find("#" + newTagRemoveId).on("click", $self, function(e) {
                     e.preventDefault();
-                    var TagIdToRemove = parseInt($(this).attr("TagIdToRemove"));
+		    if (opts.externalTagId === true) {
+			var TagIdToRemove = $(this).attr("TagIdToRemove");
+		    } else { 
+			var TagIdToRemove = parseInt($(this).attr("TagIdToRemove"));
+		    }
                     privateMethods.spliceTag.call($self, TagIdToRemove, e.data);
                 });
 
@@ -204,8 +208,13 @@
               // console.log(tlis);
             }
         },
+        
+	removeTagByID : function (TagID) {
+	    var $self = this;
+	    privateMethods.spliceTag.call($self,TagID);
+	},
 
-        empty : function() {
+        empty : function(send_trigger) {
             var $self = $(this), tlis = $self.data("tlis"), tlid = $self.data("tlid"), tagId;
 
             while (tlid.length > 0) {
@@ -216,7 +225,9 @@
                 privateMethods.refreshHiddenTagList.call($self);
                 // console.log(tlis);
             }
-            $self.trigger('tm:emptied', null);
+            
+            send_trigger = (typeof send_trigger === "undefined") ? true : send_trigger;
+            if (send_trigger === true)  $self.trigger('tm:emptied', null);
 
             privateMethods.showOrHide.call($self);
             //if (tagManagerOptions.maxTags > 0 && tlis.length < tagManagerOptions.maxTags) {
@@ -227,6 +238,12 @@
         tags : function() {
             var $self = this, tlis = $self.data("tlis");
             return tlis;
+        },
+        
+        // Return tags ID
+	tags_id: function() { 		
+            var $self = this, tlid = $self.data("tlid");
+            return tlid;
         }
     },
 
@@ -337,6 +354,10 @@
                 tlid.splice(idx, 1);
                 privateMethods.refreshHiddenTagList.call($self);
                 $self.trigger('tm:spliced', [tagBeingRemoved, tagId]);
+                
+		if (tlis.length == 0) {
+    		    $self.trigger('tm:empty', null);
+		}
                 // console.log(tlis);
             }
 
