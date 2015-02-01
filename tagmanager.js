@@ -50,7 +50,7 @@
         pushTag : function (tag, ignoreEvents, externalTagId) {
             var $self = $(this), opts = $self.data('opts'), alreadyInList, tlisLowerCase, max, tagId,
             tlis = $self.data("tlis"), tlid = $self.data("tlid"), idx, newTagId, newTagRemoveId, escaped,
-            html, $el, lastTagId, lastTagObj;
+            html, $el, lastTagId, lastTagObj, pushedElements;
 
             tag = privateMethods.trimTag(tag, opts.delimiterChars);
 
@@ -175,6 +175,13 @@
 
                 privateMethods.refreshHiddenTagList.call($self);
 
+                pushedElements = $self.data('pushedElements');
+
+                if(!pushedElements) {
+                    pushedElements = [];
+                }
+                pushedElements.push($el);
+                $self.data('pushedElements',pushedElements);
                 if (!ignoreEvents) { $self.trigger('tm:pushed', [tag, tagId]); }
 
                 privateMethods.showOrHide.call($self);
@@ -183,6 +190,69 @@
                 //}
             }
             $self.val("");
+        },
+
+        editTag: function (tagId,tag) {
+           var $self = $(this), opts = $self.data('opts'), alreadyInList, tlisLowerCase, max, tagId,
+            tlis = $self.data("tlis"), tlid = $self.data("tlid"), idx, newTagId, newTagRemoveId, escaped,
+            html, $el, lastTagId, lastTagObj, pushedElements = $self.data('pushedElements');
+
+            tag = privateMethods.trimTag(tag, opts.delimiterChars);
+
+            if (!tag || tag.length <= 0) { return; }
+
+            // check if restricted only to the tagList suggestions
+            if (opts.onlyTagList && undefined !== opts.tagList ){
+
+                //if the list has been updated by look pushed tag in the tagList. if not found return
+                if (opts.tagList){
+                    var $tagList = opts.tagList;
+
+                    // change each array item to lower case
+                    $.each($tagList, function(index, item) {
+                        $tagList[index] = item.toLowerCase();
+                    });
+                    var suggestion = $.inArray(tag.toLowerCase(), $tagList);
+
+                    if ( -1 === suggestion ) {
+                        //console.log("tag:" + tag + " not in tagList, not adding it");
+                        return;
+                    } 
+                }
+
+            }
+
+            if (opts.CapitalizeFirstLetter && tag.length > 1) {
+                tag = tag.charAt(0).toUpperCase() + tag.slice(1).toLowerCase();
+            }
+
+            // call the validator (if any) and do not let the tag pass if invalid
+            if (opts.validator && !opts.validator(tag)) { return; }
+
+            // dont accept new tags beyond the defined maximum
+            if (opts.maxTags > 0 && tlis.length >= opts.maxTags) { return; }
+
+            alreadyInList = false;
+            //use jQuery.map to make this work in IE8 (pure JS map is JS 1.6 but IE8 only supports JS 1.5)
+            tlisLowerCase = jQuery.map(tlis, function(elem) {
+                return elem.toLowerCase();
+            });
+
+            idx = $.inArray(tag.toLowerCase(), tlisLowerCase);
+
+            if (-1 !== idx) {
+                // console.log("tag:" + tag + " !!already in list!!");
+                alreadyInList = true;
+            }
+
+            if(!alreadyInList) {
+                if(tlis.length >= tagId) {
+                   tlis[tagId - 1] = tag;
+                   pushedElements[tagId -1].children('span').text(tag);
+                }
+                privateMethods.refreshHiddenTagList.call($self);
+                privateMethods.showOrHide.call($self);
+            }
         },
 
         popTag : function () {
