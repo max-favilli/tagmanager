@@ -133,7 +133,15 @@
 
                     tagId = ++max;
                 }
-                if (!ignoreEvents) { $self.trigger('tm:pushing', [tag, tagId]); }
+                if (!ignoreEvents) {
+                	var control={cancel:false,tag:tag,tagId: tagId};
+                	$self.trigger('tm:pushing', [control, tag, tagId]);
+                	if (control.cancel) {
+                		console.log("Pushing canceled");
+                		$self.val("");
+                		return;
+                	}
+                }
                 tlis.push(tag);
                 tlid.push(tagId);
 
