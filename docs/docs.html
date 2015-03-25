@@ -60,7 +60,7 @@
   <h2>Using tag manager in conjunction with <a href="http://twitter.github.io/typeahead.js/">typeahead.js</a></h2>
   <p><span class="badge badge-important">Note</span> before v3.0 tagmanager was using bootstrap-typeahead, but bootstrap deprecated typeahead from bootstrap v3.0; in this example we are using twitter-typeahead, which is different from <i>bootstrap-typeahead</i>. Both bootstrap-typeahead and twitter-typeahead are developed by the same developers, but they have a different API; and twitter-typeahead is much more feature rich.</p>
   <form class="form-inline">
-    <input type="text" autocomplete="off" name="tagsk" placeholder="Tags" style="width:9em;" class="input-medium tm-input tm-input-success" data-original-title="" />
+    <input type="text" autocomplete="off" name="tagsk" placeholder="Tags" style="width:9em;" class="input-medium tm-input tm-input-success tm-input-typeahead" data-original-title="" />
   </form>
   <pre class="prettyprint linenums">
     var tagApi = jQuery("#your_pretty_id").tagsManager({
@@ -416,37 +416,80 @@
     blinkBGColor_2: '#CDE69C'//,
   });
 
-  jQuery(".tm-input:eq(2)").tagsManager({
+  //jQuery(".tm-input:eq(2)").tagsManager({
+  //  prefilled: ["Angola", "Laos", "Nepal"]
+  //});
+
+  //jQuery(".tm-input:eq(2)").typeahead({
+  //  name: 'countries',
+  //  limit: 15,
+  //  prefetch: '/ajax/countries/json'
+  //}).on('typeahead:selected', function (e, d) {
+
+  //  console.log("new tag from typeahead.js: " + d.value );
+  //  console.log("all existing tags: " + jQuery(".tm-input:eq(2)").tagsManager("tags").tags);
+
+  //  jQuery(".tm-input:eq(2)").tagsManager("pushTag", d.value);
+
+  //  console.log("new list of tags: " + jQuery(".tm-input:eq(2)").tagsManager("tags").tags);
+
+  //});
+
+  var countries = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    limit: 10,
+    prefetch: {
+      // url points to a json file that contains an array of country names, see
+      // https://github.com/twitter/typeahead.js/blob/gh-pages/data/countries.json
+      url: '/ajax/countries/json',
+      // the json file contains an array of strings, but the Bloodhound
+      // suggestion engine expects JavaScript objects so this converts all of
+      // those strings
+      filter: function (list) {
+        return $.map(list, function (country) {
+          return { name: country };
+        });
+      }
+    }
+  });
+
+  // kicks off the loading/processing of `local` and `prefetch`
+  countries.initialize();
+
+  // passing in `null` for the `options` arguments will result in the default
+  // options being used
+  var tagApi = jQuery(".tm-input.tm-input-typeahead").tagsManager({
     prefilled: ["Angola", "Laos", "Nepal"]
   });
-
-  jQuery(".tm-input:eq(2)").typeahead({
+  jQuery(".tm-input.tm-input-typeahead").typeahead(null, {
     name: 'countries',
-    limit: 15,
-    prefetch: '/ajax/countries/json'
+    displayKey: 'name',
+    source: countries.ttAdapter()
   }).on('typeahead:selected', function (e, d) {
 
-    console.log("new tag from typeahead.js: " + d.value );
-    console.log("all existing tags: " + jQuery(".tm-input:eq(2)").tagsManager("tags").tags);
+      //console.log("new tag from typeahead.js: " + d.value );
+      //console.log("all existing tags: " + jQuery(".tm-input:eq(2)").tagsManager("tags").tags);
 
-    jQuery(".tm-input:eq(2)").tagsManager("pushTag", d.value);
+      tagApi.tagsManager("pushTag", d.name);
+    //jQuery(".tm-input.tm-input-typeahead").tagsManager("pushTag", d.value);
 
-    console.log("new list of tags: " + jQuery(".tm-input:eq(2)").tagsManager("tags").tags);
+      //console.log("new list of tags: " + jQuery(".tm-input:eq(2)").tagsManager("tags").tags);
 
-  });
+    });
 
-  jQuery(".tm-input:eq(3)").tagsManager({
-    prefilled: ["Angola", "Laos", "Nepal"],
-    AjaxPush: '/ajax/countries/push',
-    AjaxPushAllTags: true,
-    AjaxPushParameters: { 'authToken': 'foobar' }
-  });
+  //jQuery(".tm-input:eq(3)").tagsManager({
+  //  prefilled: ["Angola", "Laos", "Nepal"],
+  //  AjaxPush: '/ajax/countries/push',
+  //  AjaxPushAllTags: true,
+  //  AjaxPushParameters: { 'authToken': 'foobar' }
+  //});
 
-  jQuery(".tm-input:eq(4)").tagsManager({
-    AjaxPush: '/ajax/countries/push',
-    AjaxPushAllTags: true,
-    AjaxPushParameters: { 'authToken': 'foobar' }
-  });
+  //jQuery(".tm-input:eq(4)").tagsManager({
+  //  AjaxPush: '/ajax/countries/push',
+  //  AjaxPushAllTags: true,
+  //  AjaxPushParameters: { 'authToken': 'foobar' }
+  //});
 
   jQuery('#addtag').on('click', function (e) {
     e.preventDefault();
