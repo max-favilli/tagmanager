@@ -54,7 +54,7 @@ to add support for a new package manager, please raise a Pull Request.
 
 ## Special Thanks
 
-The initial development of Tags Manager was funded by [LogMyMoney.com](http://www.logmymoney.com), a simple online personal finance tool.
+The initial development of Tags Manager was funded by (now defunct) [LogMyMoney.com](http://www.logmymoney.com), a simple online personal finance tool.
 
 
 ## Copyright and License
