@@ -1,4 +1,4 @@
-﻿<style>
+<style>
   /*typeahead*/
   .tt-dropdown-menu {
     width: 422px;
@@ -8,11 +8,11 @@
     border: 1px solid #ccc;
     border: 1px solid rgba(0, 0, 0, 0.2);
     -webkit-border-radius: 8px;
-       -moz-border-radius: 8px;
-            border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
     -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
-       -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
-            box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
   }
 
   .tt-suggestion {
@@ -21,15 +21,14 @@
     line-height: 24px;
   }
 
-  .tt-suggestion.tt-is-under-cursor {
-    color: #fff;
-    background-color: #0097cf;
+    .tt-suggestion.tt-is-under-cursor {
+      color: #fff;
+      background-color: #0097cf;
+    }
 
-  }
-
-  .tt-suggestion p {
-    margin: 0;
-  }
+    .tt-suggestion p {
+      margin: 0;
+    }
 </style>
 
 <a href=""><h1>Tag Manager (a jQuery plugin)</h1></a>
@@ -37,7 +36,7 @@
 <div class="space-nicely">
   <p>Type some <a target="_blank" href="http://en.wikipedia.org/wiki/Tag_(metadata)">tags</a> in the input field, and separate them with enter, comma, or tab:</p>
   <form class="form-inline">
-    <input type="text" autocomplete="off" name="tags" placeholder="Tags" style="width:9em;" class="input-medium tm-input tm-input-info" data-original-title=""/>
+    <input type="text" autocomplete="off" name="tags" placeholder="Tags" style="width:9em;" class="input-medium tm-input tm-input-info" data-original-title="" />
   </form>
 </div>
 
@@ -53,7 +52,7 @@
   <h2>Using multiple tag manager instances on the same page</h2>
   <p><span class="badge badge-important">Note</span> you can have as many instances of tag manager on a single page as you want, with no conflicts; but please read below how to manage them when retrieving user input during &lt;form&gt; submit.</p>
   <form class="form-inline">
-    <input type="text" autocomplete="off" name="tagsk" placeholder="Tags" style="width:9em;" class="input-medium tm-input tm-input-success" data-original-title=""/>
+    <input type="text" autocomplete="off" name="tagsk" placeholder="Tags" style="width:9em;" class="input-medium tm-input tm-input-success" data-original-title="" />
   </form>
 </div>
 
@@ -61,21 +60,18 @@
   <h2>Using tag manager in conjunction with <a href="http://twitter.github.io/typeahead.js/">typeahead.js</a></h2>
   <p><span class="badge badge-important">Note</span> before v3.0 tagmanager was using bootstrap-typeahead, but bootstrap deprecated typeahead from bootstrap v3.0; in this example we are using twitter-typeahead, which is different from <i>bootstrap-typeahead</i>. Both bootstrap-typeahead and twitter-typeahead are developed by the same developers, but they have a different API; and twitter-typeahead is much more feature rich.</p>
   <form class="form-inline">
-    <input type="text" autocomplete="off" name="tagsk" placeholder="Tags" style="width:9em;" class="input-medium tm-input tm-input-success" data-original-title=""/>
+    <input type="text" autocomplete="off" name="tagsk" placeholder="Tags" style="width:9em;" class="input-medium tm-input tm-input-success" data-original-title="" />
   </form>
   <pre class="prettyprint linenums">
     var tagApi = jQuery("#your_pretty_id").tagsManager({
       prefilled: ["Angola", "Laos", "Nepal"]
     });
-
     jQuery("#your_pretty_id").typeahead({
       name: 'countries',
       limit: 15,
       prefetch: '/ajax/countries/json'
     }).on('typeahead:selected', function (e, d) {
-
       tagApi.tagsManager("pushTag", d.value);
-
     });
   </pre>
 </div>
@@ -112,7 +108,7 @@
     Refer to documentation for additional parameters.
   </p>
   <form class="form-inline">
-    <input type="text" autocomplete="off" name="tagsk" placeholder="Tags" style="width:9em;" class="input-medium tm-input tm-input-success" data-original-title=""/>
+    <input type="text" autocomplete="off" name="tagsk" placeholder="Tags" style="width:9em;" class="input-medium tm-input tm-input-success" data-original-title="" />
   </form>
   <pre class="prettyprint linenums">
     jQuery(".tm-input").tagsManager({
@@ -130,7 +126,7 @@
     Tagmanager has a nice API you can use to programmatically add or remove tags, see below an example, and check the complete list of methods in the configuration section.
   </p>
   <form class="form-inline">
-    <input type="text" autocomplete="off" name="tagsk" placeholder="Tags" style="width:9em;" class="input-medium tm-input tm-input-success" data-original-title=""/>
+    <input type="text" autocomplete="off" name="tagsk" placeholder="Tags" style="width:9em;" class="input-medium tm-input tm-input-success" data-original-title="" />
     <button class="btn" id="addtag">add a tag</button>
     <button class="btn" id="removetag">remove last tag</button>
   </form>
@@ -146,42 +142,39 @@
 
 <div class="space-nicely">
   <h2>Tagmanager Configuration</h2>
-  <p>The code below show all the configurable options available (as of version 3.0.0):</p>
+  <p>The code below show all the configurable options available (as of version 3.0.1):</p>
   <pre class="prettyprint linenums">
     jQuery(".tm-input").tagsManager({
-      prefilled: null,
-      CapitalizeFirstLetter: false,
-      preventSubmitOnEnter: true, // deprecated
-      isClearInputOnEsc: true, // deprecated
-      AjaxPush: null,
-      AjaxPushAllTags: null,
-      AjaxPushParameters: null,
-      delimiters: [9, 13, 44], // tab, enter, comma
-      backspace: [8],
-      maxTags: 0,
-      hiddenTagListName: null, // deprecated
-      hiddenTagListId: null, // deprecated
-      replace: true,
-      output: null,
-      deleteTagsOnBackspace: true, // deprecated
-      tagsContainer: null,
-      tagCloseIcon: 'x',
-      tagClass: '',
-      validator: null,
-      onlyTagList: false
+        prefilled: ["Pisa", "Rome"],
+        CapitalizeFirstLetter: true,
+        AjaxPush: null,
+        AjaxPushAllTags: null,
+        AjaxPushParameters: null,
+        delimiters: [9, 13, 44],
+        backspace: [8]
+        blinkBGColor_1: '#FFFF9C',
+        blinkBGColor_2: '#CDE69C',
+        hiddenTagListName: 'hiddenTagListA',
+        hiddenTagListId: null,
+        deleteTagsOnBackspace: true,
+        tagsContainer: null,
+        tagCloseIcon: '×',
+        tagClass: '',
+        validator: null,
+        onlyTagList: false
     });
   </pre>
 
   <table class="table">
     <tr>
       <td><b>prefilled</b></td>
-      <td>Populates the initial tag values. Default: null. Allowed formats:
+      <td>
+        Populates the initial tag values. Default: null. Allowed formats:
         <ul>
           <li>an <b>Array</b> of strings</li>
-		  <li>an <b>Array</b> of objects (if externalTagId is set to true, use <b>prefillIdFieldName</b> and <b>prefillValueFieldName</b> to configure)</li>
           <li>a <b>String</b> delimited by the first char code in the <em>delimiters</em> parameter (comma by default)</li>
           <li>a <b>Function</b> which returns an array</li>
-          <li>if prefill is not provided <em>output</em> will be used as a fallback if provided. Note the value in output should be a string delimited by the first char code in the <em>delimiters</em> parameter (comma by default)</li>
+          <li>if prefill is not provided <em>hiddenTagListId</em> will be used as a fallback if provided. Note the value in hiddenTagListId should be a string delimited by the first char code in the <em>delimiters</em> parameter (comma by default)</li>
         </ul>
       </td>
     </tr>
@@ -206,7 +199,8 @@
     </tr>
     <tr>
       <td><b>delimiters</b></td>
-      <td>Default: <code>[9,13,44]</code> (tab, enter, comma). Delimiters should be numeric ASCII char codes. Please note the following:
+      <td>
+        Default: <code>[9,13,44]</code> (tab, enter, comma). Delimiters should be numeric ASCII char codes. Please note the following:
         <ul>
           <li>The following values are handled as key codes: 9 (tab), 13 (enter), 16 (shift), 17 (ctrl), 18 (alt), 19 (pause/break), 37 (leftarrow), 38 (uparrow), 39 (rightarrow), 40 (downarrow)</li>
           <li>Note that codes 45 (key = insert, char = -) and 46 (key = delete, char = .) are handled as chars, so currently insert and delete keys cannot be used as delimiters</li>
@@ -217,11 +211,12 @@
     </tr>
     <tr>
       <td><b>backspace</b></td>
-      <td>When the input field is empty, and some tags are rendered on the left of the input field, and the user hit the <a target="_blank" href="http://en.wikipedia.org/wiki/Backspace">backspace</a> the plugin remove the rightest tag (which is the last the user entered).<br/>With this option you can provide an array of char codes (like the delimiters above) you want the system to use in place of the backspace (char code 8), or provide an empty array if you don't want this feature at all.</td>
+      <td>When the input field is empty, and some tags are rendered on the left of the input field, and the user hit the <a target="_blank" href="http://en.wikipedia.org/wiki/Backspace">backspace</a> the plugin remove the rightest tag (which is the last the user entered).<br />With this option you can provide an array of char codes (like the delimiters above) you want the system to use in place of the backspace (char code 8), or provide an empty array if you don't want this feature at all.</td>
     </tr>
     <tr>
-      <td><b>blinkBGColor_1<br/>blinkBGColor_2</b></td>
-      <td>When a duplicate tag is entered the user is notified with a blinking of the corresponding (duplicate) tag, here you can configure the colors.
+      <td><b>blinkBGColor_1<br />blinkBGColor_2</b></td>
+      <td>
+        When a duplicate tag is entered the user is notified with a blinking of the corresponding (duplicate) tag, here you can configure the colors.
         <p><span class="badge badge-important">Note</span> this is working only if you also include <a hrf="http://jqueryui.com/">jQuery UI</a> in your project.</p>
       </td>
     </tr>
@@ -239,60 +234,45 @@
     </tr>
     <tr>
       <td><b>maxTags</b></td>
-      <td>Optionally defines the maximum number of tags accepted. Default: 0 (no limit)
+      <td>
+        Optionally defines the maximum number of tags accepted. Default: 0 (no limit)
       </td>
     </tr>
     <tr>
       <td><b>tagCloseIcon</b></td>
-      <td>Sets the HTML string to be used as the tag close icon. Default: ×
+      <td>
+        Sets the HTML string to be used as the tag close icon. Default: ×
       </td>
     </tr>
     <tr>
       <td><b>tagsContainer</b></td>
-      <td>Optional jQuery selector for the element to contain the tags. Default: tags appear immediately before the tag input.
+      <td>
+        Optional jQuery selector for the element to contain the tags. Default: tags appear immediately before the tag input.
       </td>
     </tr>
     <tr>
       <td><b>tagClass</b></td>
-      <td>Optional class to be applied to all tags. Please as see note about automatic tag styling. Default: none
+      <td>
+        Optional class to be applied to all tags. Please as see note about automatic tag styling. Default: none
       </td>
     </tr>
     <tr>
       <td><b>validator</b></td>
-      <td>An optional callback function to validate the user input. Takes the tag string as input, and must return true or false. Default: null (no validation function used).
+      <td>
+        An optional callback function to validate the user input. Takes the tag string as input, and must return true or false. Default: null (no validation function used).
       </td>
     </tr>
     <tr>
       <td><b>onlyTagList</b></td>
-      <td>If true, rejects tags which do not appear in the typeahead list. Default: false
+      <td>
+        If true, rejects tags which do not appear in the typeahead list. Default: false
       </td>
     </tr>
-	<tr>
-      <td><b>externalTagId</b></td>
-      <td>Optionally instead of incrementing id of tags, you could pass it as argument to pushTag and use it later. (.tagsManager('pushTag','I_am_a_new_tag', false, 1);) Default: false
-	  </td>
-	</tr>
-	<tr>
-      <td><b>prefillIdFieldName</b></td>
-      <td>Optional. If <b>externalTagId</b> and <b>prefilled</b> is set to true: This option will be used to get Tag Id from <b>prefilled</b> objects. Default: 'Id'
-	  </td>
-	</tr>
-	<tr>
-      <td><b>prefillValueFieldName</b></td>
-      <td>Optional. If <b>externalTagId</b> and <b>prefilled</b> is set to true: This option will be used to get Tag Value(name) from <b>prefilled</b> objects. Default: 'Value'
-	  </td>
-	</tr>
-    <tr>
-      <td><b>fillInputOnTagRemove</b></td>
-      <td>If true, fills back the content of the removed tag to the input field. Default: false
-      </td>
-    </tr>
-
   </table>
 </div>
 
 <div class="space-nicely">
-  <h2>Tag Manager Methods</h2>
+  <h2>Tag Manager API Methods</h2>
   <p>You can pop the last added tag (the rightmost being show)</p>
   <pre class="prettyprint linenums">.tagsManager('popTag');</pre>
   <p>You can push a new tag </p>
@@ -304,15 +284,71 @@
 </div>
 
 <div class="space-nicely">
+  <h2>Tag Manager Events</h2>
+  <p>You can hook on events to get notified when things happen.</p>
+  <p><span class="label label-info">tm:afterPush</span> when a new tag is pushed.</p>
+  <pre class="prettyprint linenums">
+    jQuery(".tm-input").on('tm:afterPush', function(e, tag) {
+      alert(tag + " was pushed!");
+    });</pre>
+  <p><span class="label label-info">tm:beforePush</span> when a new tag is <i>going to be</i> pushed.</p>
+  <pre class="prettyprint linenums">
+    jQuery(".tm-input").on('tm:beforePush', function(e, tag) {
+      alert(tag + " is almost there!");
+    });</pre>
+  <p><span class="label label-info">tm:afterSplice</span> when a new tag is removed.</p>
+  <pre class="prettyprint linenums">
+    jQuery(".tm-input").on('tm:afterSplice', function(e, tag) {
+      alert(tag + " was removed!");
+    });</pre>
+  <p><span class="label label-info">tm:beforeSplice</span> when a new tag is <i>going to be</i> removed.</p>
+  <pre class="prettyprint linenums">
+    jQuery(".tm-input").on('tm:beforeSplice', function(e, tag) {
+      alert(tag + " is almost removed!");
+    });</pre>
+  <p><span class="label label-info">tm:afterPop</span> when the last tag (rightmost) is removed.</p>
+  <pre class="prettyprint linenums">
+    jQuery(".tm-input").on('tm:afterPop', function(e, tag) {
+      alert(tag + " was removed!");
+    });</pre>
+  <p><span class="label label-info">tm:beforePop</span> when the last (rightmost) tag is <i>going to be</i> removed.</p>
+  <pre class="prettyprint linenums">
+    jQuery(".tm-input").on('tm:beforePop', function(e, tag) {
+      alert(tag + " is almost removed!");
+    });</pre>
+  <p><span class="label label-info">tm:refresh</span> when the hidden field containing the comma separated list of tags has been updated.</p>
+  <pre class="prettyprint linenums">
+    jQuery(".tm-input").on('tm:refresh', function(e, taglist) {
+      alert(taglist + " is the new list of tags!");
+    });</pre>
+  <p><span class="label label-info">tm:emptied</span> when all tags have been removed programmatically.</p>
+  <pre class="prettyprint linenums">
+    jQuery(".tm-input").on('tm:emptied', function(e, taglist) {
+      alert("Tags have been nuked!");
+    });</pre>
+  <p><span class="label label-info">tm:hide</span> when the input field has been hidden due to <code>maxTags</code> limit being hit.</p>
+  <pre class="prettyprint linenums">
+    jQuery(".tm-input").on('tm:hide', function(e, taglist) {
+      alert("Holy smoke how many tags!");
+    });</pre>
+  <p><span class="label label-info">tm:show</span> when the input field has been show again after being previously removed due to <code>maxTags</code> limit being hit.</p>
+  <pre class="prettyprint linenums">
+    jQuery(".tm-input").on('tm:show', function(e, taglist) {
+      alert("Here we are again!");
+    });</pre>
+</div>
+
+<div class="space-nicely">
   <h2>Tag Manager Styles</h2>
-  <p>Tag Manager comes bundled with a Bootstrap-themed set semantic colors/sizes, and provides multiple methods to define tag styles:
+  <p>
+    Tag Manager comes bundled with a Bootstrap-themed set semantic colors/sizes, and provides multiple methods to define tag styles:
     <ol>
       <li>the CSS base class <code>tm-tag</code> is applied to all tags</li>
       <li>classes assigned to the input are used to infer the semantic tag classes, for example <code>&lt;input class='tm-input tm-input-success tm-input-small'/&gt;</code> will apply classes <code>tm-tag-success</code> and <code>tm-tag-small</code> to the tags.</li>
       <li>you can apply a custom class(es) to the tags using the <code>tagClass</code> parameter</li>
     </ol>
   </p>
-  <img src="https://f.cloud.github.com/assets/27655/520826/d6aa924e-bf4a-11e2-94b5-33d3340801ac.png"/>
+  <img src="https://f.cloud.github.com/assets/27655/520826/d6aa924e-bf4a-11e2-94b5-33d3340801ac.png" />
   <p>In order to have correct alignment we recommend that you give the input the class <code>tm-tag</code>. If using TagManager within a Bootstrap <code>control-group</code> container, please also add <code>tm-group</code> class to the container node.</p>
 </div>
 
@@ -325,13 +361,17 @@
   <h2>Alternatives to my Tagmanager</h2>
   <p>Before to develop my own tags manager I spent quite a lot of time investigating what other solutions where available, so I think I can spare you some time listing them here and explaining why I developed my own.</p>
   <ul>
-    <li><a target="_blank" href="http://levycarneiro.com/projects/tag-it/example.html">Tag it! by Levy Carneiro Jr</a>, one of the very first one as far as I know, which inspired all the others.
+    <li>
+      <a target="_blank" href="http://levycarneiro.com/projects/tag-it/example.html">Tag it! by Levy Carneiro Jr</a>, one of the very first one as far as I know, which inspired all the others.
     </li>
-    <li><a target="_blank" href="http://ioncache.github.com/Tag-Handler/">Tag Handler by ioncache</a>, in my opinion is probably the best general purpose tags manager around.
+    <li>
+      <a target="_blank" href="http://ioncache.github.com/Tag-Handler/">Tag Handler by ioncache</a>, in my opinion is probably the best general purpose tags manager around.
     </li>
-    <li><a target="_blank" href="http://xoxco.com/projects/code/tagsinput/">jQuery Tags Input Plugin</a>, it's really very cute.
+    <li>
+      <a target="_blank" href="http://xoxco.com/projects/code/tagsinput/">jQuery Tags Input Plugin</a>, it's really very cute.
     </li>
-    <li><a target="_blank" href="http://stackapps.com/questions/2062/stack-overflow-tag-manager">Stack Overflow Tag Manager</a>, if you want to mimic StackOverflow behavior.
+    <li>
+      <a target="_blank" href="http://stackapps.com/questions/2062/stack-overflow-tag-manager">Stack Overflow Tag Manager</a>, if you want to mimic StackOverflow behavior.
     </li>
   </ul>
   <p>The four above are the best around in my opinion, but... I developed Tagmanager. I wanted it to be very simple, I didn't need a pencil mouse pointer when the user hover it. I didn't need inplace edit of the tag, I think it's confusing for the user. I didn't want the tag manager to generate a lot of html in the form.</p>
@@ -348,7 +388,8 @@
 <div class="space-nicely">
   <h2>Third-Party Add-ons</h2>
   <ul>
-    <li><a target="_blank" href="https://rubygems.org/gems/tagmanager-rails">tagmanager-rails by tmaier</a> integrates TagManager with the Rails asset pipeline.
+    <li>
+      <a target="_blank" href="https://rubygems.org/gems/tagmanager-rails">tagmanager-rails by tmaier</a> integrates TagManager with the Rails asset pipeline.
     </li>
   </ul>
 </div>
@@ -375,10 +416,8 @@
     blinkBGColor_2: '#CDE69C'//,
   });
 
-  var tagApi = jQuery(".tm-input:eq(2)").tagsManager({
-    prefilled: ["Angola", "Laos", "Nepal"],
-    blinkBGColor_1: '#FFFF9C',
-    blinkBGColor_2: '#CDE69C'
+  jQuery(".tm-input:eq(2)").tagsManager({
+    prefilled: ["Angola", "Laos", "Nepal"]
   });
 
   jQuery(".tm-input:eq(2)").typeahead({
@@ -388,11 +427,11 @@
   }).on('typeahead:selected', function (e, d) {
 
     console.log("new tag from typeahead.js: " + d.value );
-    console.log("all existing tags: " + tagApi.tagsManager("tags").tags);
+    console.log("all existing tags: " + jQuery(".tm-input:eq(2)").tagsManager("tags").tags);
 
-    tagApi.tagsManager("pushTag", d.value);
+    jQuery(".tm-input:eq(2)").tagsManager("pushTag", d.value);
 
-    console.log("new list of tags: " + tagApi.tagsManager("tags").tags);
+    console.log("new list of tags: " + jQuery(".tm-input:eq(2)").tagsManager("tags").tags);
 
   });
 
@@ -403,7 +442,7 @@
     AjaxPushParameters: { 'authToken': 'foobar' }
   });
 
-  var tmfour = jQuery(".tm-input:eq(4)").tagsManager({
+  jQuery(".tm-input:eq(4)").tagsManager({
     AjaxPush: '/ajax/countries/push',
     AjaxPushAllTags: true,
     AjaxPushParameters: { 'authToken': 'foobar' }
@@ -416,14 +455,13 @@
     var albet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     for (var i = 0; i < 5; i++)
       tag += albet.charAt(Math.floor(Math.random() * albet.length));
-    tmfour.tagsManager('pushTag', tag);
+    jQuery(".tm-input:eq(4)").tagsManager('pushTag', tag);
   });
 
   jQuery('#removetag').on('click', function (e) {
     e.preventDefault();
 
-    tmfour.tagsManager('popTag');
+    jQuery(".tm-input:eq(4)").tagsManager('popTag');
   });
 
 </script>
-/ul
