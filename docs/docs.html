@@ -302,34 +302,34 @@
 <div class="space-nicely">
   <h2>Tag Manager Events</h2>
   <p>You can hook on events to get notified when things happen.</p>
-  <p><span class="label label-info">tm:afterPush</span> when a new tag is pushed.</p>
+  <p><span class="label label-info">tm:pushed</span> when a new tag is pushed.</p>
   <pre class="prettyprint linenums">
-    jQuery(".tm-input").on('tm:afterPush', function(e, tag) {
+    jQuery(".tm-input").on('tm:pushed', function(e, tag) {
       alert(tag + " was pushed!");
     });</pre>
-  <p><span class="label label-info">tm:beforePush</span> when a new tag is <i>going to be</i> pushed.</p>
+  <p><span class="label label-info">tm:pushing</span> when a new tag is <i>going to be</i> pushed.</p>
   <pre class="prettyprint linenums">
-    jQuery(".tm-input").on('tm:beforePush', function(e, tag) {
+    jQuery(".tm-input").on('tm:pushing', function(e, tag) {
       alert(tag + " is almost there!");
     });</pre>
-  <p><span class="label label-info">tm:afterSplice</span> when a new tag is removed.</p>
+  <p><span class="label label-info">tm:spliced</span> when a new tag is removed.</p>
   <pre class="prettyprint linenums">
-    jQuery(".tm-input").on('tm:afterSplice', function(e, tag) {
+    jQuery(".tm-input").on('tm:spliced', function(e, tag) {
       alert(tag + " was removed!");
     });</pre>
-  <p><span class="label label-info">tm:beforeSplice</span> when a new tag is <i>going to be</i> removed.</p>
+  <p><span class="label label-info">tm:splicing</span> when a new tag is <i>going to be</i> removed.</p>
   <pre class="prettyprint linenums">
-    jQuery(".tm-input").on('tm:beforeSplice', function(e, tag) {
+    jQuery(".tm-input").on('tm:splicing', function(e, tag) {
       alert(tag + " is almost removed!");
     });</pre>
-  <p><span class="label label-info">tm:afterPop</span> when the last tag (rightmost) is removed.</p>
+  <p><span class="label label-info">tm:popped</span> when the last tag (rightmost) is removed.</p>
   <pre class="prettyprint linenums">
-    jQuery(".tm-input").on('tm:afterPop', function(e, tag) {
+    jQuery(".tm-input").on('tm:popped', function(e, tag) {
       alert(tag + " was removed!");
     });</pre>
-  <p><span class="label label-info">tm:beforePop</span> when the last (rightmost) tag is <i>going to be</i> removed.</p>
+  <p><span class="label label-info">tm:popping</span> when the last (rightmost) tag is <i>going to be</i> removed.</p>
   <pre class="prettyprint linenums">
-    jQuery(".tm-input").on('tm:beforePop', function(e, tag) {
+    jQuery(".tm-input").on('tm:popping', function(e, tag) {
       alert(tag + " is almost removed!");
     });</pre>
   <p><span class="label label-info">tm:refresh</span> when the hidden field containing the comma separated list of tags has been updated.</p>
