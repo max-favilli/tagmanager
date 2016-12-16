@@ -212,6 +212,8 @@
         $("#" + $self.data("tm_rndid") + "_" + tagId).remove();
         privateMethods.refreshHiddenTagList.call($self);
         $self.trigger('tm:popped', [tagBeingRemoved, tagId]);
+
+        privateMethods.showOrHide.call($self);
         // console.log(tlis);
       }
     },
