@@ -43,7 +43,8 @@
     validator: null,
     onlyTagList: false,
     tagList: null,
-    fillInputOnTagRemove: false
+    fillInputOnTagRemove: false,
+    AjaxPushDataType: 'json' //allow plugin to send data using different encodings (xml, json, script, text, html)
   },
 
   publicMethods = {
@@ -140,7 +141,7 @@
         if (!ignoreEvents)
           if (opts.AjaxPush !== null && opts.AjaxPushAllTags == null) {
             if ($.inArray(tag, opts.prefilled) === -1) {
-              $.post(opts.AjaxPush, $.extend({ tag: tag }, opts.AjaxPushParameters));
+              $.post(opts.AjaxPush, $.extend({ tag: tag }, opts.AjaxPushParameters), null, opts.AjaxPushDataType);
             }
           }
 
