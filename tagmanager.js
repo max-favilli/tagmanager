@@ -160,7 +160,7 @@
         
         var typeAheadMess = $self.parents('.twitter-typeahead')[0] !== undefined;
         if (opts.tagsContainer !== null) {
-          $(opts.tagsContainer).append($el);
+          $('.'+opts.tagsContainer).append($el);
         } else {
           if (tlid.length > 1) {
             if (typeAheadMess) {
