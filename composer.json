@@ -23,6 +23,6 @@
         }
     },
     "require": {
-        "robloach/component-installer": "*"
+        "oomphinc/composer-installers-extender": "dev-master"
     }
 }
