@@ -1,5 +1,5 @@
 /* ===================================================
- * tagmanager.js v3.0.2
+ * tagmanager.js v3.0.3-bmaso-extractTagsFromString
  * http://welldonethings.com/tags/manager
  * ===================================================
  * Copyright 2012 Max Favilli
@@ -241,6 +241,26 @@
     tags: function () {
       var $self = this, tlis = $self.data("tlis");
       return tlis;
+    },
+
+    extractTagsFromString: function(sourceStr) {
+      var $self = $(this), opts = $self.data('opts'), str = $.trim(sourceStr);
+      for(var ii=0; ii<str.length; ii++) {
+        if($.inArray(str.charCodeAt(ii), opts.delimiterChars) != -1) {
+          str = str.substring(0, ii) + "#" + str.substring(ii+1, str.length);
+        }
+      }
+
+      var tagsArr = str.split(/[#\s]+/);
+
+      //...remove any 0-length members of the response array...
+      for(var jj=tagsArr.length-1; jj>=0; --jj) {
+        if(!tagsArr[jj].length) {
+          tagsArr.splice(jj, 1); // note: Array.prototype.splice is a mutator method, so this changes original array
+        }
+      }
+
+      return tagsArr;
     }
   },
 
