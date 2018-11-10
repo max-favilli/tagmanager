@@ -1,3 +1,6 @@
+## 3.0.3-bmaso-extractTagsFromString
+* support for new public method "extractTagsFromString"
+
 ## 3.0.1 - 2013-12-12
 
 * Issue #180: Add 'tags' method to retrieve tags (LukeL99)
